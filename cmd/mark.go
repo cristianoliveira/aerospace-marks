@@ -1,19 +1,20 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
-	"os/exec"
 	"strings"
 
+	"github.com/cristianoliveira/aerospace-ext/internal/storage"
+	"github.com/cristianoliveira/aerospace-ext/internal/aerospace"
 	"github.com/spf13/cobra"
 )
 
-var marks = make(map[string]string) // Map to store marks with window IDs
+var markClient *storage.MarkClient
 var markCmd = &cobra.Command{
+	// aerospace mark 
 	Use:   "mark",
 	Short: "Manage marks like in i3wm and Sway",
 	Long: `Manage marks like in i3wm and Sway
@@ -30,58 +31,99 @@ instead add identifier to the list of current marks for that window.
 If --toggle is specified mark will remove identifier if it is already marked.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		// Retrieve flags
+		markClient, err := storage.NewMarkClient()
+		if err != nil {
+			fmt.Printf("Error initializing mark client: %v\n", err)
+			return
+		}
+		defer markClient.Close()
+
+		getID, _ := cmd.Flags().GetString("get-id")
 		add, _ := cmd.Flags().GetBool("add")
+		winArgID, _ := cmd.Flags().GetString("window")
 		replace, _ := cmd.Flags().GetBool("replace")
 		toggle, _ := cmd.Flags().GetBool("toggle")
 
-		// Validate arguments
-		if len(args) < 1 {
-			fmt.Println("Error: identifier is required")
-			return
-		}
-		identifier := args[0]
-
-		// Call external command to get focused window ID
-		out, err := exec.Command("aerospace", "list-windows", "--focused").Output()
-		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-			return
-		}
-		windowID := strings.Fields(string(out))[0]
-
-		// Manage marks in memory
-		if toggle {
-			// Toggle logic
-			if _, exists := marks[identifier]; exists {
-				delete(marks, identifier)
-				fmt.Printf("Removed mark: %s\n", identifier)
+		if getID != "" {
+			// Get window ID by mark
+			windowID, err := markClient.GetWindowIDByMark(getID)
+			if err != nil {
+				fmt.Printf("Error retrieving window ID for mark '%s': %v\n", getID, err)
+				return
+			}
+			if windowID == "" {
+				fmt.Printf("No window found for mark: %s\n", getID)
 			} else {
-				marks[identifier] = windowID
-				fmt.Printf("Added mark: %s\n", identifier)
+				fmt.Printf("Window ID for mark '%s': %s\n", getID, windowID)
 			}
-		} else if add {
+			return
+		} else if replace || toggle {
+			panic("replace and toggle are not implemented yet")
+		}
+
+		// Validate arguments
+		var identifier string
+		if add {
+			if len(args) < 1 {
+				fmt.Println("Error: identifier is required")
+				return
+			} else {
+				identifier = args[0]
+			}
+		}
+
+		// Get the window ID from the command line argument
+		windowID := strings.TrimSpace(winArgID)
+
+		// Manage marks using MarkClient
+		if add {
 			// Add logic
-			marks[identifier] = windowID
+			if winArgID == "" {
+				windowQuery, err := aerospace.GetFocusedWindowID()
+				if err != nil {
+					fmt.Printf("Error getting focused window ID: %v\n", err)
+					return
+				}
+
+				windowID = strings.TrimSpace(windowQuery)
+			} else {
+				windowID = strings.TrimSpace(winArgID)
+			}
+
+			err = markClient.AddMark(windowID, identifier)
+			if err != nil {
+				fmt.Printf("Error adding mark: %v\n", err)
+				return
+			}
 			fmt.Printf("Added mark: %s\n", identifier)
-		} else if replace {
-			// Replace logic
-			for id, win := range marks {
-				if win == windowID {
-					delete(marks, id)
-				}
-			}
-			marks[identifier] = windowID
-			fmt.Printf("Replaced mark: %s\n", identifier)
 		} else {
-			// Default behavior
-			for id, win := range marks {
-				if win == windowID {
-					delete(marks, id)
+			// List the marks
+			var marks []storage.Mark
+			// If no identifier is provided, get all marks
+			if winArgID == "" {
+				marks, err = markClient.GetMarks()
+				if err != nil {
+					fmt.Printf("Error getting marks: %v\n", err)
+					return
+				}
+			} else {
+				// Get marks for the specified window ID
+				marks, err = markClient.GetMarksByWindowID(windowID)
+				if err != nil {
+					fmt.Printf("Error getting marks: %v\n", err)
+					return
 				}
 			}
-			marks[identifier] = windowID
-			fmt.Printf("Set mark: %s\n", identifier)
+
+			if len(marks) == 0 {
+				fmt.Println("No marks found")
+				return
+			}
+
+			fmt.Println("Marks:")
+			for _, mark := range marks {
+				fmt.Printf(" - %s\n", mark.Mark)
+			}
 		}
 	},
 }
@@ -90,9 +132,11 @@ func init() {
 	rootCmd.AddCommand(markCmd)
 
 	// Define flags and configuration settings
+	markCmd.Flags().String("get-id", "", "Get the window ID associated with the specified mark")
 	markCmd.Flags().Bool("add", false, "Add a mark to the window")
-	markCmd.Flags().Bool("replace", false, "Replace the mark on the window")
+	markCmd.Flags().Bool("replace", false, "Replace all marks on the window")
 	markCmd.Flags().Bool("toggle", false, "Toggle the mark on the window")
+	markCmd.Flags().StringP("window", "w", "", "Window ID to mark (default: focused window)")
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
