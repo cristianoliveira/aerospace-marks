@@ -1,4 +1,4 @@
-module github.com/cristianoliveira/aerospace-ext
+module github.com/cristianoliveira/aerospace-marks
 
 go 1.24.2
 

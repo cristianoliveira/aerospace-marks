@@ -1,7 +1,3 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
@@ -10,19 +6,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "aerospace-ext",
-	Short: "Aerospace extension - Extension to implement missing features to Aerospace WM",
-	Long: `Aerospace extension - Extension to implement missing features to Aerospace WM
+	Use:   "aerospace-marks [cmd] [flags] <identifier>",
+	Short: "AeroSpace marks - Marks for Aerospace WM",
+	Long: `AeroSpace marks is a command line tool to manage marks for the AeroSpace WM.
 
-  Marks - Allow managing marks like in i3wm and Sway`,
+mark --add|--replace [--toggle] <identifier>
 
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Marks are arbitrary labels that can be used to identify certain windows 
+	and then jump to them at a later time. Each identifier can only be 
+	set on a single window at a time since they act as a unique identifier.
+	By default, mark sets identifier as the only mark on a window. --add will 
+	instead add identifier to the list of current marks for that window.
+	If --toggle is specified mark will remove identifier if it is already marked.
+
+See: man 5 sway
+`,
+
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -33,18 +34,3 @@ func Execute() {
 		os.Exit(1)
 	}
 }
-
-func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.aerospace-marks.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.Flags().StringP("window", "w", "", "Window ID to mark")
-}
-
-

@@ -20,12 +20,12 @@ type MarkClient struct {
 
 func NewMarkClient() (*MarkClient, error) {
 	// Create the directory if it doesn't exist
-	dir := fmt.Sprintf("%s/.local/state/aerospace-ext", os.Getenv("HOME"))
+	dir := fmt.Sprintf("%s/.local/state/aerospace-marks", os.Getenv("HOME"))
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return nil, err
 	}
 
-	dbPath := fmt.Sprintf("%s/.local/state/aerospace-ext/storage.db", os.Getenv("HOME"))
+	dbPath := fmt.Sprintf("%s/.local/state/aerospace-marks/storage.db", os.Getenv("HOME"))
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return nil, err
@@ -130,6 +130,33 @@ func (c *MarkClient) GetWindowIDByMark(mark string) (string, error) {
 	}
 
 	return windowID, nil
+}
+
+// ReplaceAllMarks replaces all marks for a window with a new mark
+// This function will delete all marks for the specified window ID and
+// then add the new mark
+// It returns true if marks were deleted, false if no marks were found
+func (c *MarkClient) ReplaceAllMarks(id string, mark string) (bool, error) {
+	// Delete all marks for the window
+	query := `
+	DELETE FROM marks
+	WHERE window_id = ?
+	`
+
+	var hasDeleted bool
+	res, err := c.db.Exec(query, id)
+	if err != nil {
+		return false, err
+	}
+
+	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 0 {
+		hasDeleted = false
+	} else {
+		hasDeleted = true
+	}
+
+	// Add the new mark
+	return hasDeleted, c.AddMark(id, mark)
 }
 
 func (c *MarkClient) Close() error {
