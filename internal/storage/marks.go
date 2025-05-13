@@ -10,7 +10,7 @@ import (
 )
 
 type Mark struct {
-	windowID  string
+	WindowID  string
 	Mark      string
 }
 
@@ -76,7 +76,7 @@ func (c *MarkClient) GetMarks() ([]Mark, error) {
 	var marks []Mark
 	for rows.Next() {
 		var mark Mark
-		if err := rows.Scan(&mark.windowID, &mark.Mark); err != nil {
+		if err := rows.Scan(&mark.WindowID, &mark.Mark); err != nil {
 			return nil, err
 		}
 		marks = append(marks, mark)
@@ -100,7 +100,7 @@ func (c *MarkClient) GetMarksByWindowID(id string) ([]Mark, error) {
 	var marks []Mark
 	for rows.Next() {
 		var mark Mark
-		if err := rows.Scan(&mark.windowID, &mark.Mark); err != nil {
+		if err := rows.Scan(&mark.WindowID, &mark.Mark); err != nil {
 			return nil, err
 		}
 		marks = append(marks, mark)
@@ -135,16 +135,16 @@ func (c *MarkClient) GetWindowIDByMark(mark string) (string, error) {
 // ReplaceAllMarks replaces all marks for a window with a new mark
 // This function will delete all marks for the specified window ID and
 // then add the new mark
-// It returns true if marks were deleted, false if no marks were found
+//
 func (c *MarkClient) ReplaceAllMarks(id string, mark string) (bool, error) {
 	// Delete all marks for the window
 	query := `
 	DELETE FROM marks
-	WHERE window_id = ?
+	WHERE mark = ?
 	`
 
 	var hasDeleted bool
-	res, err := c.db.Exec(query, id)
+	res, err := c.db.Exec(query, mark)
 	if err != nil {
 		return false, err
 	}
