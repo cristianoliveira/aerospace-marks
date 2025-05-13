@@ -57,6 +57,7 @@ func SetFocusToWindowId(windowID string) error {
 
 // GetAllWindows returns all windows
 func GetAllWindows() ([]string, error) {
+	// FIXME: use --json and return a struct instead
 	response, err := aerospacecli.SendCommand("list-windows", []string{"--all"})
 	if err != nil {
 		return nil, err
