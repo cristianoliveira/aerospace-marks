@@ -4,7 +4,7 @@ Set of extensions for AeroSpace WM
 
 ### CLIs 
 
- - AeroSpace Marks - [aerospace-marks](cmds/aerospace-marks)
+ - AeroSpace Marks - [aerospace-marks](cmd/aerospace-marks)
 
 ### Packages
 
