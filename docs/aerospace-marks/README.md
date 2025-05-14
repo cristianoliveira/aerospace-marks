@@ -6,7 +6,13 @@ Similar to sway marks [sway](https://man.archlinux.org/man/sway.5.en)
 ```text
 mark --add|--replace [--toggle] <identifier>
 
-Marks are arbitrary labels that can be used to identify certain windows and then jump to them at a later time. Each identifier can only be set on a single window at a time since they act as a unique identifier. By default, mark sets identifier as the only mark on a window. --add will instead add identifier to the list of current marks for that window. If --toggle is specified mark will remove identifier if it is already marked.
+Marks are arbitrary labels that can be used to identify certain
+windows and then jump to them at a later time. Each identifier
+can only be set on a single window at a time since they act as
+a unique identifier. By default, mark sets identifier as the only
+mark on a window. --add will instead add identifier to the list
+of current marks for that window. If --toggle is specified mark will
+remove identifier if it is already marked.
 ```
 
 ## Command: `mark`
