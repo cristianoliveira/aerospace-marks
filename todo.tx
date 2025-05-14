@@ -1,0 +1,8 @@
+# IDEA: create a way to prompt for a dynamic mark input
+similar to i3-input
+eg.
+`i3-input -F 'mark %s'` # prompt for a mark name
+and then use it to focus
+`i3-input -F 'mark %s' -o 'focus mark %s'` # prompt for a mark name and focus it
+---
+

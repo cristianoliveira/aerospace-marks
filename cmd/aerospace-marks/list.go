@@ -1,7 +1,7 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 Cristian Oliveira me@cristianoliveira.dev
 */
-package cmd
+package main
 
 import (
 	"fmt"
