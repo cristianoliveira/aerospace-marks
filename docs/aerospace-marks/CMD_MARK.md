@@ -1,6 +1,6 @@
-# aerospace-ext mark
+# Command: `mark`
 
-USAGE: `aerospacex mark [--add|--replace] [--toggle] <identifier>`
+USAGE: `aerospace-marks mark [--add|--replace] [--toggle] <identifier>`
 
 ## Description
 
@@ -20,25 +20,10 @@ Marks are arbitrary labels that can be used to identify certain windows and then
 - `--add` - Add a mark to the window. 
 - `--replace` - Replace the current mark with the new one.
 - `--toggle` - Toggle the mark on the window. If the mark is already set, it will be removed.
-- `--get-id <mark>` - Retrieve the window ID associated with the specified mark. This option allows you to find which window currently has a particular mark assigned to it. If the mark is not found, no window ID will be returned.
+- `--window-id` - The id of the window to mark. If not specified, it will use the current focused window.
 
 ## Examples
 
 ```bash
-aerospacex mark --add mymark  # Add a mark to the current focused window
+aerospace-marks mark --add mymark  # Add a mark to the current focused window
 ```
-
-## Implemantation details
-
- - The command will call `aerospace list-windows --focused` and collect the window id (first column).
- - It will store the given mark among with the window id in memory at first.
-
-### Storage
-
- - The marks are stored using sqlite3 in the `~/.local/state/aerospacex/storage.db` file.
- - Each window may have one or more marks. (list of strings)
- - The table is called `marks` and has the following columns:
-    - `window_id` - The id of the window.
-    - `mark` - The mark of the window.
-   
- - The sqlite3 database is created if it does not exist.
