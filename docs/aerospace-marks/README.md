@@ -21,7 +21,7 @@ Mark a window with the given identifier.
 
 USAGE: `aerospace-marks mark [--add|--replace] [--toggle] <identifier>`
 
-[read more](docs/aerospace-marks/CMD_MARK.md)
+[read more](/docs/aerospace-marks/CMD_MARK.md)
 
 ## Command: `focus`
 
