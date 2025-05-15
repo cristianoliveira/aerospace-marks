@@ -1,14 +1,22 @@
 package aerospace
 
 import (
-	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
-	"strings"
 	"fmt"
+	"strconv"
+	"strings"
+
+	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
 )
 
 // GetFocusedWindowID returns the ID of the currently focused window
 func GetFocusedWindowID() (string, error) {
-	response, err := aerospacecli.SendCommand("list-windows", []string{"--focused"})
+	cli, err := aerospacecli.NewAeroSpaceConnection()
+	if err != nil {
+		return "", err
+	}
+	defer cli.CloseConnection()
+
+	response, err := cli.SendCommand("list-windows", []string{"--focused"})
 	if err != nil {
 		return "", err
 	}
@@ -18,34 +26,31 @@ func GetFocusedWindowID() (string, error) {
 
 // GetWindowByID returns the window information for a given window ID
 func GetWindowByID(windowID string) (string, error) {
-	response, err := aerospacecli.SendCommand("list-windows", []string{"--all"})
+	intWindowID, err := strconv.Atoi(windowID)
+	cli, err := aerospacecli.NewAeroSpaceConnection()
 	if err != nil {
 		return "", err
 	}
-	// Split the output into lines
-	lines := strings.Split(response.StdOut, "\n")
-	// Find the line that contains the window ID
-	var windowInfo string
-	for _, line := range lines {
-		id := strings.Split(line, "|")[0]
-		id = strings.TrimSpace(id)
+	defer cli.CloseConnection()
 
-		if id == windowID {
-			windowInfo = line
-			break
-		}
+	window, err := cli.GetWindowByID(intWindowID)
+	if err != nil {
+		return "", err
 	}
 
-	if windowInfo == "" {
-		return "", fmt.Errorf("window with ID %s not found", windowID)
-	}
-
+	windowInfo := fmt.Sprintf("%d | %s | %s", window.WindowID, window.AppName, window.WindowTitle)
 	return windowInfo, nil
 }
 
 // SetFocusToWindowId sets the focus to a window by id
 func SetFocusToWindowId(windowID string) error {
-	response, err := aerospacecli.SendCommand("focus", []string{"--window-id", windowID})
+	cli, err := aerospacecli.NewAeroSpaceConnection()
+	if err != nil {
+		return err
+	}
+	defer cli.CloseConnection()
+
+	response, err := cli.SendCommand("focus", []string{"--window-id", windowID})
 	if err != nil {
 		return err
 	}
@@ -57,8 +62,13 @@ func SetFocusToWindowId(windowID string) error {
 
 // GetAllWindows returns all windows
 func GetAllWindows() ([]string, error) {
+	cli, err := aerospacecli.NewAeroSpaceConnection()
+	if err != nil {
+		return nil, err
+	}
+	defer cli.CloseConnection()
 	// FIXME: use --json and return a struct instead
-	response, err := aerospacecli.SendCommand("list-windows", []string{"--all"})
+	response, err := cli.SendCommand("list-windows", []string{"--all"})
 	if err != nil {
 		return nil, err
 	}
