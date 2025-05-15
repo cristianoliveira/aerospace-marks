@@ -24,6 +24,13 @@ I wanted something more granular than workspaces — I want to jump to a specifi
 
 Sometimes my "video" context means YouTube, sometimes it’s a video player, sometimes a browser. I want to be able to jump to the right window, regardless of which workspace it's on.
 
+### Why not use named workspaces?
+
+> TL;DR: Dynamic mappings to specific windows, not workspaces.
+
+I wanted something more granular than workspaces, I want to jump to a specific window, given a context.
+Sometimes my "video" is youtube, sometimes it's a video player, sometimes it's a browser. I want to be able to jump to the right window, no matter what workspace it is on.
+
 ## Usage
 
 Allow one to mark a window with the given identifier. 
@@ -39,10 +46,10 @@ aerospace-marks focus <identifier>
 
 ```toml
 # ~/.config/aerospace/config.toml
-[mode.main.binding]
-# Mark
-cmd-shift-a = ["exec-and-forget aerospace-marks focus a 2> /tmp/marks.log", "mode main"]
-cmd-shift-b = ["exec-and-forget aerospace-marks focus browser 2> /tmp/marks.log", "mode main"]
+[mode.main.binding] 
+# Mark 
+cmd-shift-a = ["exec-and-forget aerospace-marks mark a 2> /tmp/marks.log", "mode main"]
+cmd-shift-b = ["exec-and-forget aerospace-marks mark browser 2> /tmp/marks.log", "mode main"]
 # Focus
 cmd-ctrl-a = ["exec-and-forget aerospace-marks focus a 2> /tmp/marks.log", "mode main"]
 cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser 2> /tmp/marks.log", "mode main"]
