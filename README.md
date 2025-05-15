@@ -14,6 +14,12 @@ mark on a window. --add will instead add identifier to the list
 of current marks for that window. If --toggle is specified mark will
 remove identifier if it is already marked.
 ```
+### Why not use named workspaces?
+
+> TL;DR: Dynamic mappings to specific windows, not workspaces.
+
+I wanted something more granular than workspaces, I want to jump to a specific window, given a context.
+Sometimes my "video" context is youtube, sometimes it's a video player, sometimes it's a browser. I want to be able to jump to the right window, no matter what workspace it is on.
 
 ## Usage
 
@@ -25,13 +31,6 @@ And then focus to a window with the given mark.
 ```text
 aerospace-marks focus <identifier>
 ```
-
-### Why not use named workspaces?
-
-I wanted something more granular than workspaces, I want to jump to a specific window, given a context.
-Sometimes my "video" is youtube, sometimes it's a video player, sometimes it's a browser. I want to be able to jump to the right window, no matter what workspace it is on.
-
-TL;DR: Dynamic mappings to specific windows, not workspaces.
 
 ### Config Usage
 
