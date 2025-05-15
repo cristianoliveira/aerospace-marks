@@ -46,7 +46,7 @@ cmd-ctrl-a = ["exec-and-forget aerospace-marks focus a 2> /tmp/marks.log", "mode
 cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser 2> /tmp/marks.log", "mode main"]
 ```
 
-See more in [documentation](docs/)
+See more in [documentation](docs/aerospace-marks)
 
 ### Packages
 
