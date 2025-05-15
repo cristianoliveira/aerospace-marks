@@ -1,8 +1,10 @@
 # aerospace-marks
 
-This is an cli for AeroSpace WM to manage marks on windows. 
+**Beta**: I use it daily, but it's a WIP. Please report any issue or ideas in [issues](https://github.com/cristianoliveira/aerospace-marks/issues)
 
-Similar to sway marks [sway](https://man.archlinux.org/man/sway.5.en)
+This is a cli for AeroSpace WM to manage marks on windows. 
+
+I's heavily based on sway marks [sway](https://man.archlinux.org/man/sway.5.en) but following the `aerospace` style of commands
 ```text
 mark --add|--replace [--toggle] <identifier>
 
