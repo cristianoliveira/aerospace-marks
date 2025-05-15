@@ -2,7 +2,7 @@
 
 **Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
 
-This is a CLI tool for the AeroSpace WM that helps manage marks on windows.
+This is a CLI tool for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace) that helps manage marks on windows.
 
 It’s heavily inspired by [sway marks](https://man.archlinux.org/man/sway.5.en), but follows the `aerospace` style of commands:
 ```text
@@ -41,10 +41,17 @@ aerospace-marks focus <identifier>
 # ~/.config/aerospace/config.toml
 [mode.main.binding] 
 # Mark 
-cmd-shift-a = ["exec-and-forget aerospace-marks mark a 2> /tmp/marks.log", "mode main"]
+cmd-shift-h = ["exec-and-forget aerospace-marks mark h 2> /tmp/marks.log", "mode main"]
+cmd-shift-j = ["exec-and-forget aerospace-marks mark j 2> /tmp/marks.log", "mode main"]
+cmd-shift-k = ["exec-and-forget aerospace-marks mark k 2> /tmp/marks.log", "mode main"]
+cmd-shift-l = ["exec-and-forget aerospace-marks mark l 2> /tmp/marks.log", "mode main"]
 cmd-shift-b = ["exec-and-forget aerospace-marks mark browser 2> /tmp/marks.log", "mode main"]
+
 # Focus
-cmd-ctrl-a = ["exec-and-forget aerospace-marks focus a 2> /tmp/marks.log", "mode main"]
+cmd-ctrl-h = ["exec-and-forget aerospace-marks focus h 2> /tmp/marks.log", "mode main"]
+cmd-ctrl-j = ["exec-and-forget aerospace-marks focus j 2> /tmp/marks.log", "mode main"]
+cmd-ctrl-k = ["exec-and-forget aerospace-marks focus k 2> /tmp/marks.log", "mode main"]
+cmd-ctrl-l = ["exec-and-forget aerospace-marks focus l 2> /tmp/marks.log", "mode main"]
 cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser 2> /tmp/marks.log", "mode main"]
 ```
 
