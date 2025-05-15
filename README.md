@@ -2,7 +2,7 @@
 
 **Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
 
-This is a CLI tool for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace) that helps manage marks on windows.
+This is a CLI extension for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace) that helps manage marks on windows.
 
 It’s heavily inspired by [sway marks](https://man.archlinux.org/man/sway.5.en), but follows the `aerospace` style of commands:
 ```text
