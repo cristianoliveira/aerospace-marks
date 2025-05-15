@@ -1,7 +1,7 @@
 /*
 Copyright © 2025 Cristian Oliveira me@cristianoliveira.dev
 */
-package main
+package cmd
 
 import (
 	"github.com/spf13/cobra"

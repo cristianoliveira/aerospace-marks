@@ -1,11 +1,11 @@
 /*
 Copyright © 2025 Cristian Oliveira me@cristianoliveira.dev
 */
-package main
+package cmd
 
 import "os"
 
-func main() {
+func Run() {
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)

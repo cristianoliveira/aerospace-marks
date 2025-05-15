@@ -57,3 +57,4 @@ aerospace-marks get <mark> # Will get the window ID | Name of the window marked 
     - `mark` - The mark of the window.
    
  - The sqlite3 database is created if it does not exist.
+
