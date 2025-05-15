@@ -24,13 +24,6 @@ I wanted something more granular than workspaces — I want to jump to a specifi
 
 Sometimes my "video" context means YouTube, sometimes it’s a video player, sometimes a browser. I want to be able to jump to the right window, regardless of which workspace it's on.
 
-### Why not use named workspaces?
-
-> TL;DR: Dynamic mappings to specific windows, not workspaces.
-
-I wanted something more granular than workspaces, I want to jump to a specific window, given a context.
-Sometimes my "video" is youtube, sometimes it's a video player, sometimes it's a browser. I want to be able to jump to the right window, no matter what workspace it is on.
-
 ## Usage
 
 Allow one to mark a window with the given identifier. 
