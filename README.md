@@ -50,6 +50,46 @@ cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser 2> /tmp/marks.log",
 
 See more in [documentation](docs/aerospace-marks)
 
+## Installation
+
+### Using Nix
+
+If you have Nix installed, you can build and install `aerospace-marks` using the following command:
+
+```bash
+nix profile install github:cristianoliveira/aerospace-marks
+```
+
+You can also run without installing it by using:
+
+```bash
+nix run github:cristianoliveira/aerospace-marks
+```
+
+This will build the default package defined in `flake.nix`.
+
+### Installing with Go
+
+If you have Go installed, you can install `aerospace-marks` directly using:
+
+```bash
+go install github.com/cristianoliveira/aerospace-marks@latest
+```
+
+This will download and install the latest version of `aerospace-marks` to your `$GOPATH/bin`.
+
+### Building from Source
+
+To build from source, ensure you have Go installed. Then, clone the repository and run:
+
+```bash
+git clone https://github.com/cristianoliveira/aerospace-marks.git
+cd aerospace-marks
+go build -o aerospace-marks
+```
+
+This will create an executable named `aerospace-marks` in the current directory.
+
 ### Packages
 
- - AeroSpace Socket Client - [aerospacecli](pkgs/aerospacecli)
+- AeroSpace Socket Client - [aerospacecli](pkgs/aerospacecli)
