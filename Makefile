@@ -10,6 +10,16 @@ run: ## Run the cli
 	@echo "Running the CLI..."
 	@go run main.go
 
+.PHONY: test
+test: ## Run the tests
+	@echo "Running the tests..."
+	@go test ./... -v
+
+.PHONY: update-snap-all
+update-snap-all: ## Update all the snaps
+	@echo "Updating the snaps..."
+	UPDATE_SNAPS=true go test ./... -v
+
 .PHONY: install
 install: ## Install the CLI
 	@echo "Installing the CLI..."
