@@ -8,6 +8,7 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
+	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 )
 
@@ -17,22 +18,27 @@ func TestOutputSetter(t *testing.T) {
 		defer ctrl.Finish()
 
 		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
-		storageDbClient.EXPECT().QueryAll(gomock.Any()).Return(
-			[]storage.Mark{
-				{
-					WindowID: "1",
-					Mark:    "mark1",
-				},
-			}, nil,
-		)
+		storageDbClient.EXPECT().
+			QueryAll(gomock.Any()).
+				Return(
+					[]storage.Mark{
+						{
+							WindowID: "1",
+							Mark:     "mark1",
+						},
+					}, nil,
+				)
 
 		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
-		mockAeroSpaceConnection.EXPECT().SendCommand("list-windows", []string{"--all"}).Return(&aerospacecli.Response{
-			ServerVersion: "1.0",
-			StdOut:        "1 | app1 | title1",
-			StdErr:        "",
-			ExitCode:      0,
-		}, nil).Times(1)
+		mockAeroSpaceConnection.EXPECT().
+			SendCommand("list-windows", []string{"--all"}).
+			Return(
+				&aerospacecli.Response{
+					ServerVersion: "1.0",
+					StdOut:        "1 | app1 | title1",
+					StdErr:        "",
+					ExitCode:      0,
+				}, nil).Times(1)
 
 		out, err := testutils.CmdExecute(rootCmd, "list")
 		if err != nil {
@@ -40,9 +46,6 @@ func TestOutputSetter(t *testing.T) {
 		}
 
 		result := strings.TrimSpace(out)
-		expectedOutput := "mark1| 1 | app1 | title1"
-		if result != expectedOutput {
-			t.Errorf("\r\nexpected %s \n     got  %s", expectedOutput, out)
-		}
+		assert.Equal(t, "mark1| 1 | app1 | title1", result)
 	})
 }
