@@ -7,6 +7,7 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"
 	storage_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
+	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
 	"go.uber.org/mock/gomock"
 )
@@ -44,8 +45,7 @@ func TestOutputSetter(t *testing.T) {
 		storage.DefaultConnector = mockStorage
 		aerospacecli.DefaultConnector = mockAeroSpaceConnetor
 
-
-		out, err := cmdExecute("ls")
+		out, err := testutils.CmdExecute(rootCmd, "list")
 		if err != nil {
 			t.Fatal(err)
 		}
