@@ -5,13 +5,15 @@ import (
 	"fmt"
 )
 
-/**
+/*
+*
 Example:
-  {
-    "window-id" : 7984,
-    "window-title" : "WhatsApp",
-    "app-name" : "WhatsApp"
-  }
+
+	{
+	  "window-id" : 7984,
+	  "window-title" : "WhatsApp",
+	  "app-name" : "WhatsApp"
+	}
 */
 type Window struct {
 	WindowID    int    `json:"window-id"`
@@ -45,4 +47,3 @@ func (c *AeroSpaceDefaultConnection) GetWindowByID(windowID int) (Window, error)
 	}
 	return Window{}, fmt.Errorf("window with ID %d not found", windowID)
 }
-

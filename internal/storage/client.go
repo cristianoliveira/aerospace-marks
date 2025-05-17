@@ -7,8 +7,8 @@ import (
 )
 
 type Mark struct {
-	WindowID  string
-	Mark      string
+	WindowID string
+	Mark     string
 }
 
 type DbResult interface {
@@ -117,7 +117,7 @@ type DatabaseConnector interface {
 	Connect() (StorageDbClient, error)
 }
 
-type MarksDatabaseConnector struct {}
+type MarksDatabaseConnector struct{}
 
 func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 	// Create the directory if it doesn't exist

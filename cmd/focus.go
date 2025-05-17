@@ -51,7 +51,7 @@ aerospace-marks focus <mark> # Will focus to FIRST window marked with <mark>
 
 		fmt.Printf("Focus moved to window ID %s\n", windowID)
 
-		return nil;
+		return nil
 	},
 }
 
