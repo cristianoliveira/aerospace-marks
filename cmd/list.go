@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
+	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
@@ -55,22 +56,19 @@ var listCmd = &cobra.Command{
 			return stdout.ErrorAndExit(err)
 		}
 
+		lines := make([]string, 0)
 		for _, mark := range marks {
 			window, err := popWindow(windows, mark.WindowID)
 			if err != nil {
 				continue
 			}
 
-			fmt.Printf("%s| %s", mark.Mark, window)
-			fmt.Println()
+			line := fmt.Sprintf("%s|%s\r\n", mark.Mark, window)
+			lines = append(lines, line)
 		}
 
-		// if len(errors) > 0 {
-		// 	fmt.Println("Errors occurred while retrieving window information:")
-		// 	for _, err := range errors {
-		// 		fmt.Println(err)
-		// 	}
-		// }
+		formattedOutput := format.FormatTableList(lines)
+		fmt.Println(formattedOutput)
 
 		return nil
 	},
