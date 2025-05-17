@@ -5,29 +5,32 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
+	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
 	"github.com/spf13/cobra"
 )
 
-func popWindow(windows []string, windowID string) (string, error) {
+func popWindow(windows []aerospacecli.Window, windowID string) (*aerospacecli.Window, error) {
 	for i, window := range windows {
 		if windowID == "" {
-			return "", fmt.Errorf("window ID not found")
+			return nil, fmt.Errorf("window ID not found")
 		}
-		winId := window[:strings.Index(window, "|")]
+		winId := strconv.Itoa(window.WindowID)
 		winId = strings.TrimSpace(winId)
 		if windowID == winId {
 			// Remove the window from the list
 			windows = append(windows[:i], windows[i+1:]...)
-			return window, nil
+			return &window, nil
 		}
 	}
-	return "", fmt.Errorf("window ID not found")
+
+	return nil, fmt.Errorf("window ID not found")
 }
 
 // listCmd represents the list command

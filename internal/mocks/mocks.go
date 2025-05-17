@@ -1,6 +1,9 @@
 package mocks
 
 import (
+	"encoding/json"
+	"os"
+
 	aerospacecli_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"
 	storage_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
@@ -32,4 +35,42 @@ func MockAerospaceConnection(ctrl *gomock.Controller) (*aerospacecli_mock.MockAe
 	aerospacecli.DefaultConnector = mockAeroSpaceConnetor
 
 	return mockAeroSpaceConnection, mockAeroSpaceConnetor
+}
+
+func LoadMarksFixture(jsonFilePath string) ([]storage.Mark, error) {
+	file, err := os.ReadFile(jsonFilePath)
+	if err != nil {
+		return nil, err
+	}
+
+	var marks []storage.Mark
+	err = json.Unmarshal(file, &marks)
+	if err != nil {
+		return nil, err
+	}
+
+	return marks, nil
+}
+
+func LoadAeroWindowsFixture(jsonFilePath string) ([]aerospacecli.Window, error) {
+	file, err := os.ReadFile(jsonFilePath)
+	if err != nil {
+		return nil, err
+	}
+
+	var windows []aerospacecli.Window
+	err = json.Unmarshal(file, &windows)
+	if err != nil {
+		return nil, err
+	}
+
+	return windows, nil
+}
+
+func LoadAeroWindowsFixtureRaw(jsonFilePath string) (string, error) {
+	file, err := os.ReadFile(jsonFilePath)
+	if err != nil {
+		return "", err
+	}
+	return string(file), nil
 }

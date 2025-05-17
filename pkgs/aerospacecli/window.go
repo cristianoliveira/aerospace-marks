@@ -21,6 +21,10 @@ type Window struct {
 	AppName     string `json:"app-name"`
 }
 
+func (w Window) String() string {
+	return fmt.Sprintf("%d | %s | %s", w.WindowID, w.AppName, w.WindowTitle)
+}
+
 // GetAllWindows returns all windows
 func (c *AeroSpaceDefaultConnection) GetAllWindows() ([]Window, error) {
 	response, err := c.Conn.SendCommand("list-windows", []string{"--json", "--all"})
