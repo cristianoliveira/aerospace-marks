@@ -1,15 +1,22 @@
-package cmd
+package testutils
+
+// This module contains test utilities for CLI commands.
+// - Shell output
+// - Cobra command execution
+// - Standard input/output capturing
 
 import (
 	"bytes"
 	"io"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
-func cmdExecute(args... string) (string, error) {
-	rootCmd.SetArgs(args)
-	stdOut, err := captureStdOut(func() error {
-		return rootCmd.Execute()
+func CmdExecute(cmd *cobra.Command, args ...string) (string, error) {
+	cmd.SetArgs(args)
+	stdOut, err := CaptureStdOut(func() error {
+		return cmd.Execute()
 	})
 
 	if err != nil {
@@ -19,7 +26,7 @@ func cmdExecute(args... string) (string, error) {
 	return string(stdOut), nil
 }
 
-func captureStdOut(f func() error) (string, error) {
+func CaptureStdOut(f func() error) (string, error) {
 	var buf bytes.Buffer
 	// Save original stdout
 	old := os.Stdout
