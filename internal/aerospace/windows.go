@@ -35,21 +35,20 @@ func GetFocusedWindowID() (*aerospacecli.Window, error) {
 }
 
 // GetWindowByID returns the window information for a given window ID
-func GetWindowByID(windowID string) (string, error) {
+func GetWindowByID(windowID string) (*aerospacecli.Window, error) {
 	intWindowID, err := strconv.Atoi(windowID)
 	cli, err := aerospacecli.NewAeroSpaceConnection()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer cli.Conn.CloseConnection()
 
 	window, err := cli.GetWindowByID(intWindowID)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	windowInfo := fmt.Sprintf("%d | %s | %s", window.WindowID, window.AppName, window.WindowTitle)
-	return windowInfo, nil
+	return window, nil
 }
 
 // SetFocusToWindowId sets the focus to a window by id

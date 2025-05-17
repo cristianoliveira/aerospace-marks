@@ -32,6 +32,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 		}
 		defer markClient.Close()
 
+
 		if len(args) < 1 {
 			return stdout.ErrorAndExitf("no identifier provided")
 		}
@@ -39,25 +40,22 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 		identifier := args[0]
 
 		add, _ := cmd.Flags().GetBool("add")
-		winArgID, _ := cmd.Flags().GetString("window")
-		replace, _ := cmd.Flags().GetBool("replace")
-		toggle, _ := cmd.Flags().GetBool("toggle")
-
-		if replace || toggle {
-			panic("replace and toggle are not implemented yet")
-		}
+		winArgID, _ := cmd.Flags().GetString("window-id")
 
 		// Get the window ID from the command line argument
 		windowID := strings.TrimSpace(winArgID)
-		window, err := aerospace.GetFocusedWindowID()
-		if err != nil {
-			return stdout.ErrorAndExit(err)
-		}
-
 		if winArgID == "" {
+			window, err := aerospace.GetFocusedWindowID()
+			if err != nil {
+				return stdout.ErrorAndExit(err)
+			}
 			windowID = fmt.Sprintf("%d", window.WindowID)
 		} else {
-			windowID = strings.TrimSpace(winArgID)
+			window, err := aerospace.GetWindowByID(windowID)
+			if err != nil {
+				return stdout.ErrorAndExit(err)
+			}
+			windowID = fmt.Sprintf("%d", window.WindowID)
 		}
 
 		// Manage marks using MarkClient
@@ -91,7 +89,5 @@ func init() {
 
 	// Define flags and configuration settings
 	markCmd.Flags().Bool("add", false, "Add a mark to the window")
-	markCmd.Flags().Bool("replace", false, "Replace all marks on the window")
-	markCmd.Flags().Bool("toggle", false, "Toggle the mark on the window")
 	markCmd.Flags().String("window-id", "", "Window ID to mark (default: focused window)")
 }
