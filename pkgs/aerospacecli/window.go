@@ -21,7 +21,7 @@ type Window struct {
 
 // GetAllWindows returns all windows
 func (c *AeroSpaceDefaultConnection) GetAllWindows() ([]Window, error) {
-	response, err := c.SendCommand("list-windows", []string{"--json", "--all"})
+	response, err := c.Conn.SendCommand("list-windows", []string{"--json", "--all"})
 	if err != nil {
 		return nil, err
 	}

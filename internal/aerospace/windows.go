@@ -14,9 +14,9 @@ func GetFocusedWindowID() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer cli.CloseConnection()
+	defer cli.Conn.CloseConnection()
 
-	response, err := cli.SendCommand("list-windows", []string{"--focused"})
+	response, err := cli.Conn.SendCommand("list-windows", []string{"--focused"})
 	if err != nil {
 		return "", err
 	}
@@ -31,7 +31,7 @@ func GetWindowByID(windowID string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer cli.CloseConnection()
+	defer cli.Conn.CloseConnection()
 
 	window, err := cli.GetWindowByID(intWindowID)
 	if err != nil {
@@ -48,9 +48,9 @@ func SetFocusToWindowId(windowID string) error {
 	if err != nil {
 		return err
 	}
-	defer cli.CloseConnection()
+	defer cli.Conn.CloseConnection()
 
-	response, err := cli.SendCommand("focus", []string{"--window-id", windowID})
+	response, err := cli.Conn.SendCommand("focus", []string{"--window-id", windowID})
 	if err != nil {
 		return err
 	}
@@ -66,9 +66,9 @@ func GetAllWindows() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer cli.CloseConnection()
+	defer cli.Conn.CloseConnection()
 	// FIXME: use --json and return a struct instead
-	response, err := cli.SendCommand("list-windows", []string{"--all"})
+	response, err := cli.Conn.SendCommand("list-windows", []string{"--all"})
 	if err != nil {
 		return nil, err
 	}
