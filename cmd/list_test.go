@@ -58,8 +58,8 @@ func TestListCommand(t *testing.T) {
 		lines := strings.Split(result, "\n")
 		assert.Equal(t, 2, len(lines))
 		assert.Equal(t, lines, []string{
-			"mark1| 1 | app1 | title1",
-			"mark2| 2 | app2 | title2",
+			"mark1 | 1 | app1 | title1",
+			"mark2 | 2 | app2 | title2",
 		})
 	})
 }
