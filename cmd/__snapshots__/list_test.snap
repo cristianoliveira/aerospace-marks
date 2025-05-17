@@ -1,0 +1,52 @@
+
+[TestListCommand/print_all_marked_windows - 1]
+[
+  {
+    "window-title" : "Alacritty",
+    "app-name" : "Alacritty",
+    "window-id" : 1
+  },
+  {
+    "window-id" : 2,
+    "window-title" : "Chat Box Widget - Brave",
+    "app-name" : "Brave Browser"
+  },
+  {
+    "window-id" : 3,
+    "app-name" : "Brave Browser",
+    "window-title" : "GitHub - Brave"
+  },
+  {
+    "window-id" : 28104,
+    "app-name" : "ChatGPT",
+    "window-title" : ""
+  },
+  {
+    "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
+    "app-name" : "OBS Studio",
+    "window-id" : 34647
+  },
+  {
+    "app-name" : "Telegram",
+    "window-id" : 7988,
+    "window-title" : "Telegram"
+  },
+  {
+    "app-name" : "Twitch - cris0liver",
+    "window-id" : 34394,
+    "window-title" : ""
+  }
+]
+
+[]storage.Mark{
+    {WindowID:"1", Mark:"mark-1"},
+    {WindowID:"22", Mark:"mark-2"},
+    {WindowID:"3", Mark:"mark-3"},
+    {WindowID:"444", Mark:"mark-4"},
+    {WindowID:"5555", Mark:"mark-5"},
+}
+result:
+
+mark-1 | 1 | Alacritty     | Alacritty     
+mark-3 | 3 | Brave Browser | GitHub - Brave
+---

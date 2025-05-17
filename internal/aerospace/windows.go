@@ -1,6 +1,7 @@
 package aerospace
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -61,18 +62,23 @@ func SetFocusToWindowId(windowID string) error {
 }
 
 // GetAllWindows returns all windows
-func GetAllWindows() ([]string, error) {
+func GetAllWindows() ([]aerospacecli.Window, error) {
 	cli, err := aerospacecli.NewAeroSpaceConnection()
 	if err != nil {
 		return nil, err
 	}
 	defer cli.Conn.CloseConnection()
 	// FIXME: use --json and return a struct instead
-	response, err := cli.Conn.SendCommand("list-windows", []string{"--all"})
+	res, err := cli.Conn.SendCommand("list-windows", []string{"--all", "--json"})
 	if err != nil {
 		return nil, err
 	}
-	// Split the output into lines
-	lines := strings.Split(response.StdOut, "\n")
-	return lines, nil
+
+	var windows []aerospacecli.Window
+	err = json.Unmarshal([]byte(res.StdOut), &windows)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal windows\n%w", err)
+	}
+
+	return windows, nil
 }

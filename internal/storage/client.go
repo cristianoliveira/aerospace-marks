@@ -7,8 +7,8 @@ import (
 )
 
 type Mark struct {
-	WindowID string
-	Mark     string
+	WindowID string `json:"window_id"`
+	Mark     string `json:"mark"`
 }
 
 type DbResult interface {

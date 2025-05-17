@@ -1,0 +1,37 @@
+[
+  {
+    "window-title" : "Alacritty",
+    "app-name" : "Alacritty",
+    "window-id" : 1
+  },
+  {
+    "window-id" : 2,
+    "window-title" : "Chat Box Widget - Brave",
+    "app-name" : "Brave Browser"
+  },
+  {
+    "window-id" : 3,
+    "app-name" : "Brave Browser",
+    "window-title" : "GitHub - Brave"
+  },
+  {
+    "window-id" : 28104,
+    "app-name" : "ChatGPT",
+    "window-title" : ""
+  },
+  {
+    "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
+    "app-name" : "OBS Studio",
+    "window-id" : 34647
+  },
+  {
+    "app-name" : "Telegram",
+    "window-id" : 7988,
+    "window-title" : "Telegram"
+  },
+  {
+    "app-name" : "Twitch - cris0liver",
+    "window-id" : 34394,
+    "window-title" : ""
+  }
+]
