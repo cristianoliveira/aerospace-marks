@@ -67,6 +67,11 @@ var listCmd = &cobra.Command{
 			lines = append(lines, line)
 		}
 
+		if len(lines) == 0 {
+			fmt.Println("No marked window found")
+			return nil
+		}
+
 		formattedOutput := format.FormatTableList(lines)
 		fmt.Println(formattedOutput)
 
