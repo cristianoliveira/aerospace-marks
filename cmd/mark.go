@@ -15,7 +15,7 @@ import (
 
 var markClient *storage.StorageClient
 var markCmd = &cobra.Command{
-	// aerospace mark 
+	// aerospace mark
 	Use:   "mark <identifier> [flags]",
 	Short: "Mark a window with a specific identifier",
 	Long: `Manage marks like in i3wm and Sway

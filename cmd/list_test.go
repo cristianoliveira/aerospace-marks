@@ -20,14 +20,14 @@ func TestOutputSetter(t *testing.T) {
 		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
 		storageDbClient.EXPECT().
 			QueryAll(gomock.Any()).
-				Return(
-					[]storage.Mark{
-						{
-							WindowID: "1",
-							Mark:     "mark1",
-						},
-					}, nil,
-				)
+			Return(
+				[]storage.Mark{
+					{
+						WindowID: "1",
+						Mark:     "mark1",
+					},
+				}, nil,
+			)
 
 		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
 		mockAeroSpaceConnection.EXPECT().

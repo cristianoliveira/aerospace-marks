@@ -18,18 +18,18 @@ func MockStorageDbClient(ctrl *gomock.Controller) (*storage_mock.MockStorageDbCl
 	mockStorage := storage_mock.NewMockDatabaseConnector(ctrl)
 	mockStorage.EXPECT().Connect().Return(storageDbClient, nil).Times(1)
 
-  storage.DefaultConnector = mockStorage
+	storage.DefaultConnector = mockStorage
 
 	return storageDbClient, mockStorage
 }
 
 func MockAerospaceConnection(ctrl *gomock.Controller) (*aerospacecli_mock.MockAeroSpaceSocketConn, *aerospacecli_mock.MockAeroSpaceConnector) {
-  mockAeroSpaceConnection := aerospacecli_mock.NewMockAeroSpaceSocketConn(ctrl)
-  mockAeroSpaceConnetor := aerospacecli_mock.NewMockAeroSpaceConnector(ctrl)
-  mockAeroSpaceConnetor.EXPECT().Connect().Return(mockAeroSpaceConnection, nil).Times(1)
-  mockAeroSpaceConnection.EXPECT().CloseConnection().Return(nil).Times(1)
+	mockAeroSpaceConnection := aerospacecli_mock.NewMockAeroSpaceSocketConn(ctrl)
+	mockAeroSpaceConnetor := aerospacecli_mock.NewMockAeroSpaceConnector(ctrl)
+	mockAeroSpaceConnetor.EXPECT().Connect().Return(mockAeroSpaceConnection, nil).Times(1)
+	mockAeroSpaceConnection.EXPECT().CloseConnection().Return(nil).Times(1)
 
-  aerospacecli.DefaultConnector = mockAeroSpaceConnetor
+	aerospacecli.DefaultConnector = mockAeroSpaceConnetor
 
-  return mockAeroSpaceConnection, mockAeroSpaceConnetor
+	return mockAeroSpaceConnection, mockAeroSpaceConnetor
 }

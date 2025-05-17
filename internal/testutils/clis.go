@@ -48,4 +48,3 @@ func CaptureStdOut(f func() error) (string, error) {
 	io.Copy(&buf, r)
 	return buf.String(), nil
 }
-

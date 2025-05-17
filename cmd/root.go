@@ -24,7 +24,6 @@ mark --add|--replace [--toggle] <identifier>
 
 See: man 5 sway
 `,
-
 }
 
 func init() {

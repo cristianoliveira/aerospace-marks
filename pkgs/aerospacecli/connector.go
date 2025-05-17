@@ -99,7 +99,7 @@ type AeroSpaceConnector interface {
 	Connect() (AeroSpaceSocketConn, error)
 }
 
-type AeroSpaceDefaultConnector struct {}
+type AeroSpaceDefaultConnector struct{}
 
 func (c *AeroSpaceDefaultConnector) Connect() (AeroSpaceSocketConn, error) {
 	socketPath, err := GetSocketPath()

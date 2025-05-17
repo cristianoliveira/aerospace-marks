@@ -31,9 +31,9 @@ func popWindow(windows []string, windowID string) (string, error) {
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
-	Use:   "list",
+	Use:     "list",
 	Aliases: []string{"ls"},
-	Short: "List all windows marked",
+	Short:   "List all windows marked",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		markClient, err := storage.NewMarkClient()
 		if err != nil {

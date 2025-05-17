@@ -79,7 +79,7 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 	FROM marks
 	WHERE mark = ?
 	`
-	markedWindow, err := c.storage.QueryOne(query, markI) 
+	markedWindow, err := c.storage.QueryOne(query, markI)
 	if err != nil {
 		return "", err
 	}
@@ -90,7 +90,6 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 // ReplaceAllMarks replaces all marks for a window with a new mark
 // This function will delete all marks for the specified window ID and
 // then add the new mark
-//
 func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (bool, error) {
 	// Delete all marks for the window
 	query := `

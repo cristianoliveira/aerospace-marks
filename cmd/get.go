@@ -46,7 +46,7 @@ aerospace-marks get <mark> # Will get the window ID | Name of the window marked 
 			fmt.Printf("%s", windowID)
 			return nil
 		}
-		
+
 		// Get window name by mark
 		windowInfo, err := aerospace.GetWindowByID(windowID)
 		if err != nil {
