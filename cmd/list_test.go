@@ -12,8 +12,8 @@ import (
 	"go.uber.org/mock/gomock"
 )
 
-func TestOutputSetter(t *testing.T) {
-	t.Run("SetOutputPosition", func(t *testing.T) {
+func TestListCommand(t *testing.T) {
+	t.Run("shows only the marked windows", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -26,16 +26,25 @@ func TestOutputSetter(t *testing.T) {
 						WindowID: "1",
 						Mark:     "mark1",
 					},
+					{
+						WindowID: "2",
+						Mark:     "mark2",
+					},
 				}, nil,
 			)
 
 		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		aerospaceResponseOutput := []string{
+			"1 | app1 | title1",
+			"2 | app2 | title2",
+			"3 | app3 | title3",
+		}
 		mockAeroSpaceConnection.EXPECT().
 			SendCommand("list-windows", []string{"--all"}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
-					StdOut:        "1 | app1 | title1",
+					StdOut:        strings.Join(aerospaceResponseOutput, "\n"),
 					StdErr:        "",
 					ExitCode:      0,
 				}, nil).Times(1)
@@ -46,6 +55,11 @@ func TestOutputSetter(t *testing.T) {
 		}
 
 		result := strings.TrimSpace(out)
-		assert.Equal(t, "mark1| 1 | app1 | title1", result)
+		lines := strings.Split(result, "\n")
+		assert.Equal(t, 2, len(lines))
+		assert.Equal(t, lines, []string{
+			"mark1| 1 | app1 | title1",
+			"mark2| 2 | app2 | title2",
+		})
 	})
 }
