@@ -16,7 +16,6 @@ import (
 
 func TestListCommand(t *testing.T) {
 	t.Run("shows only the marked windows", func(t *testing.T) {
-		t.Skip("TODO: fix this test")
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -83,7 +82,6 @@ func TestListCommand(t *testing.T) {
 	})
 
 	t.Run("shows no marked window found", func(t *testing.T) {
-		t.Skip("TODO: fix this test")
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -145,7 +143,6 @@ func TestListCommand(t *testing.T) {
 	})
 
 	t.Run("shows no marks found", func(t *testing.T) {
-		t.Skip("TODO: fix this test")
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
