@@ -49,13 +49,13 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 
 		// Get the window ID from the command line argument
 		windowID := strings.TrimSpace(winArgID)
-		focusedWindowID, err := aerospace.GetFocusedWindowID()
+		window, err := aerospace.GetFocusedWindowID()
 		if err != nil {
 			return stdout.ErrorAndExit(err)
 		}
 
 		if winArgID == "" {
-			windowID = strings.TrimSpace(focusedWindowID)
+			windowID = fmt.Sprintf("%d", window.WindowID)
 		} else {
 			windowID = strings.TrimSpace(winArgID)
 		}
@@ -74,7 +74,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 				return stdout.ErrorAndExit(err)
 			}
 
-			if hasBeenDeleted {
+			if hasBeenDeleted > 0 {
 				fmt.Printf("Replaced all marks with '%s'\n", identifier)
 			} else {
 				fmt.Printf("Marked window with '%s'\n", identifier)

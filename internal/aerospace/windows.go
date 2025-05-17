@@ -4,25 +4,34 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
 )
 
 // GetFocusedWindowID returns the ID of the currently focused window
-func GetFocusedWindowID() (string, error) {
+func GetFocusedWindowID() (*aerospacecli.Window, error) {
 	cli, err := aerospacecli.NewAeroSpaceConnection()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer cli.Conn.CloseConnection()
 
-	response, err := cli.Conn.SendCommand("list-windows", []string{"--focused"})
+	response, err := cli.Conn.SendCommand("list-windows", []string{"--focused", "--json"})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	windowID := strings.Fields(response.StdOut)[0]
-	return windowID, nil
+
+	windows := []aerospacecli.Window{}
+	err = json.Unmarshal([]byte(response.StdOut), &windows)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal windows\n%w", err)
+	}
+
+	if len(windows) == 0 {
+		return nil, fmt.Errorf("no focused windows found")
+	}
+
+	return &windows[0], nil
 }
 
 // GetWindowByID returns the window information for a given window ID
