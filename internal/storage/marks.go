@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"time"
+	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -39,11 +39,10 @@ func NewMarkClient() (*MarkStorageClient, error) {
 }
 
 func (c *MarkStorageClient) AddMark(id string, mark string) error {
-	query := `
-	INSERT INTO marks (window_id, mark)
-	VALUES (?, ?)
-	`
-	_, err := c.storage.Execute(query, id, mark, time.Now(), time.Now())
+	query := strings.TrimSpace(`
+	INSERT INTO marks (window_id, mark) VALUES (?, ?)
+	`)
+	_, err := c.storage.Execute(query, id, mark)
 	return err
 }
 
@@ -90,27 +89,22 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 // ReplaceAllMarks replaces all marks for a window with a new mark
 // This function will delete all marks for the specified window ID and
 // then add the new mark
-func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (bool, error) {
+func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (int64, error) {
 	// Delete all marks for the window
-	query := `
-	DELETE FROM marks
-	WHERE mark = ?
-	`
+	query := strings.TrimSpace(`
+	DELETE FROM marks WHERE mark = ?
+	`)
 
-	var hasDeleted bool
 	res, err := c.storage.Execute(query, mark)
 	if err != nil {
-		return false, err
+		return 0, err
 	}
-
-	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 0 {
-		hasDeleted = false
-	} else {
-		hasDeleted = true
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return 0, err
 	}
-
 	// Add the new mark
-	return hasDeleted, c.AddMark(id, mark)
+	return rowsAffected, c.AddMark(id, mark)
 }
 
 func (c *MarkStorageClient) Close() error {

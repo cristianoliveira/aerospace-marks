@@ -37,6 +37,25 @@ func MockAerospaceConnection(ctrl *gomock.Controller) (*aerospacecli_mock.MockAe
 	return mockAeroSpaceConnection, mockAeroSpaceConnetor
 }
 
+func MockStorageDbResult(ctrl *gomock.Controller, lastInsertId *int64, rowsAffected *int64) (*storage_mock.MockDbResult) {
+	dbResult := storage_mock.NewMockDbResult(ctrl)
+	if lastInsertId != nil {
+		dbResult.EXPECT().
+			LastInsertId().
+			Return(*lastInsertId, nil).
+			Times(1)
+	}
+
+	if rowsAffected != nil {
+		dbResult.EXPECT().
+			RowsAffected().
+			Return(*rowsAffected, nil).
+			Times(1)
+	}
+
+	return dbResult
+}
+
 func LoadMarksFixture(jsonFilePath string) ([]storage.Mark, error) {
 	file, err := os.ReadFile(jsonFilePath)
 	if err != nil {
