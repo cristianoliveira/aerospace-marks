@@ -6,21 +6,7 @@ import (
 	"net"
 )
 
-// Command represents the JSON structure for the command to be sent to the Unix socket.
-type Command struct {
-	Command string   `json:"command"`
-	Args    []string `json:"args"`
-	Stdin   string   `json:"stdin"`
-}
-
-type Response struct {
-	ServerVersion string `json:"serverVersion"`
-	StdErr        string `json:"stderr"`
-	StdOut        string `json:"stdout"`
-	ExitCode      int32  `json:"exitCode"`
-}
-
-type AeroSpaceConnection struct {
+type AeroSpaceDefaultConnection struct {
 	SocketPath          string
 	MinAerospaceVersion string
 	Conn                *net.Conn
@@ -29,7 +15,7 @@ type AeroSpaceConnection struct {
 // NewAeroSpaceClient creates a new AeroSpaceClient with the default socket path.
 // It checks for environment variable AEROSPACESOCK or uses the default socket path.
 // which is usually /tmp/bobko.aerospace-<username>.sock
-func NewAeroSpaceConnection() (*AeroSpaceConnection, error) {
+func NewAeroSpaceConnection() (*AeroSpaceDefaultConnection, error) {
 	socketPath, err := GetSocketPath()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get socket path\n %w", err)
@@ -40,7 +26,7 @@ func NewAeroSpaceConnection() (*AeroSpaceConnection, error) {
 		return nil, fmt.Errorf("failed to connect to socket\n %w", err)
 	}
 
-	client := &AeroSpaceConnection{
+	client := &AeroSpaceDefaultConnection{
 		SocketPath:          socketPath,
 		MinAerospaceVersion: "0.15.2-Beta",
 		Conn:                &conn,
@@ -50,7 +36,7 @@ func NewAeroSpaceConnection() (*AeroSpaceConnection, error) {
 }
 
 // Close closes the connection to the AeroSpace socket.
-func (c *AeroSpaceConnection) CloseConnection() error {
+func (c *AeroSpaceDefaultConnection) CloseConnection() error {
 	if c.Conn != nil {
 		err := (*c.Conn).Close()
 		if err != nil {
@@ -61,7 +47,7 @@ func (c *AeroSpaceConnection) CloseConnection() error {
 }
 
 // SendCommand sends a command to the AeroSpace window manager via Unix socket and returns the response.
-func (c *AeroSpaceConnection) SendCommand(command string, args []string) (*Response, error) {
+func (c *AeroSpaceDefaultConnection) SendCommand(command string, args []string) (*Response, error) {
 	if c.Conn == nil {
 		return nil, fmt.Errorf("connection is not established")
 	}
@@ -105,20 +91,4 @@ func (c *AeroSpaceConnection) SendCommand(command string, args []string) (*Respo
 	}
 
 	return &response, nil
-}
-
-// ConnectSendAndClose sends a command to the AeroSpace window manager via Unix socket and closes the connection.
-func ConnectSendAndClose(handler func(client *AeroSpaceConnection) (*any, error)) (*any, error) {
-	client, err := NewAeroSpaceConnection()
-	if err != nil {
-		return nil, fmt.Errorf("failed to create AeroSpace client\n%w", err)
-	}
-	defer client.CloseConnection()
-
-	response, err := handler(client)
-	if err != nil {
-		return nil, fmt.Errorf("failed to execute command\n%w", err)
-	}
-
-	return response, nil
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var markClient *storage.MarkClient
+var markClient *storage.StorageClient
 var markCmd = &cobra.Command{
 	// aerospace mark 
 	Use:   "mark <identifier> [flags]",

@@ -20,7 +20,7 @@ type Window struct {
 }
 
 // GetAllWindows returns all windows
-func (c *AeroSpaceConnection) GetAllWindows() ([]Window, error) {
+func (c *AeroSpaceDefaultConnection) GetAllWindows() ([]Window, error) {
 	response, err := c.SendCommand("list-windows", []string{"--json", "--all"})
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func (c *AeroSpaceConnection) GetAllWindows() ([]Window, error) {
 	return windows, nil
 }
 
-func (c *AeroSpaceConnection) GetWindowByID(windowID int) (Window, error) {
+func (c *AeroSpaceDefaultConnection) GetWindowByID(windowID int) (Window, error) {
 	windows, err := c.GetAllWindows()
 	if err != nil {
 		return Window{}, err
