@@ -27,7 +27,7 @@ func (w Window) String() string {
 
 // GetAllWindows returns all windows
 func (c *AeroSpaceDefaultConnection) GetAllWindows() ([]Window, error) {
-	response, err := c.Conn.SendCommand("list-windows", []string{"--json", "--all"})
+	response, err := c.Conn.SendCommand("list-windows", []string{"--all", "--json"})
 	if err != nil {
 		return nil, err
 	}
@@ -39,15 +39,15 @@ func (c *AeroSpaceDefaultConnection) GetAllWindows() ([]Window, error) {
 	return windows, nil
 }
 
-func (c *AeroSpaceDefaultConnection) GetWindowByID(windowID int) (Window, error) {
+func (c *AeroSpaceDefaultConnection) GetWindowByID(windowID int) (*Window, error) {
 	windows, err := c.GetAllWindows()
 	if err != nil {
-		return Window{}, err
+		return nil, err
 	}
 	for _, window := range windows {
 		if window.WindowID == windowID {
-			return window, nil
+			return &window, nil
 		}
 	}
-	return Window{}, fmt.Errorf("window with ID %d not found", windowID)
+	return nil, fmt.Errorf("window with ID %d not found", windowID)
 }
