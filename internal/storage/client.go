@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 )
 
 type Mark struct {
@@ -48,6 +50,9 @@ type StorageClient struct {
 }
 
 func (c *StorageClient) QueryAll(query string, args ...any) ([]Mark, error) {
+	log := logger.GetDefaultLogger()
+	log.LogInfo("querying all marks", query, args)
+
 	rows, err := c.db.Query(query)
 	if err != nil {
 		return nil, err
@@ -63,10 +68,15 @@ func (c *StorageClient) QueryAll(query string, args ...any) ([]Mark, error) {
 		marks = append(marks, mark)
 	}
 
+	log.LogInfo("result", log.AsJson(marks))
+
 	return marks, nil
 }
 
 func (c *StorageClient) QueryOne(query string, args ...any) (*Mark, error) {
+	log := logger.GetDefaultLogger()
+	log.LogInfo("querying one mark", query, args)
+
 	row := c.db.QueryRow(query, args...)
 
 	var mark Mark
@@ -77,15 +87,19 @@ func (c *StorageClient) QueryOne(query string, args ...any) (*Mark, error) {
 		return nil, err
 	}
 
+	log.LogInfo("result", mark)
 	return &mark, nil
 }
 
 func (c *StorageClient) Execute(query string, args ...any) (DbResult, error) {
+	log := logger.GetDefaultLogger()
+	log.LogInfo("executing query", query, args)
 	result, err := c.db.Exec(query, args...)
 	if err != nil {
 		return nil, err
 	}
 
+	log.LogInfo("result", result)
 	return result, nil
 }
 

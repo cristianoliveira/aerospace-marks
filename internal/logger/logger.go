@@ -1,9 +1,10 @@
 package logger
 
 import (
-  "fmt"
-  "os"
-  "log/slog"
+	"encoding/json"
+	"fmt"
+	"log/slog"
+	"os"
 )
 
 
@@ -16,6 +17,10 @@ type Logger interface {
   LogError(msg string, args ...any)
   // Debug logs a debug message
   LogDebug(msg string, args ...any)
+
+  // AsJson returns the logger as a JSON object
+  // In error, logs the error and returns an empty string
+  AsJson(data any) string
 
   // Close closes the logger
   Close() error
@@ -36,6 +41,15 @@ func (l *LoggerClient) LogError(msg string, args ...any) {
 
 func (l *LoggerClient) LogDebug(msg string, args ...any) {
   l.logger.Debug(msg, args...)
+}
+
+func (l *LoggerClient) AsJson(data any) string {
+  json, err := json.Marshal(data)
+  if err != nil {
+    l.LogError("failed to marshal data to JSON", err)
+    return ""
+  }
+  return string(json)
 }
 
 func (l *LoggerClient) Close() error {
@@ -62,16 +76,15 @@ func (l *EmptyLogger) Close() error {
   // No-op
   return nil
 }
+func (l *EmptyLogger) AsJson(data any) string {
+  // No-op
+  return ""
+}
 
 // NewLogger creates a new logger instance
 // It accepts a path to a file where logs will be written
 // and a boolean indicating whether to log to stdout as well
 func NewLogger() (Logger, error) {
-  logEnabled := os.Getenv("AEROSPACE_MARKS_LOG")
-  if logEnabled == "" {
-    return &EmptyLogger{}, nil
-  }
-
   path := os.Getenv("AEROSPACE_MARKS_LOG_FILEPATH")
   if path == "" {
     path = "/tmp/aerospace-marks.log"
@@ -83,6 +96,10 @@ func NewLogger() (Logger, error) {
   }
 
   configLogLevel := os.Getenv("AEROSPACE_MARKS_LOG_LEVEL")
+  if configLogLevel == "" {
+    return &EmptyLogger{}, nil
+  }
+
   logLevel := slog.LevelError
   if configLogLevel != "" {
     switch configLogLevel {
@@ -115,9 +132,9 @@ func SetDefaultLogger(logger Logger) {
   defaultLogger = logger
 }
 
-func GetDefaultLogger() (Logger, error) {
+func GetDefaultLogger() (Logger) {
   if defaultLogger == nil {
-    return nil, fmt.Errorf("default logger is not set")
+    panic("Unrecoverable error because default logger is not set")
   }
-  return defaultLogger, nil
+  return defaultLogger
 }
