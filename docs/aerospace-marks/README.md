@@ -35,6 +35,14 @@ List all marks.
 
 USAGE: `aerospace-marks list`
 
+## Command: `unmark`
+
+unmark will remove identifier from the list of current marks on a window. If identifier is omitted , all marks are removed.
+
+USAGE: `aerospace-marks unmark [<identifier>]`
+
+[read more](/docs/aerospace-marks/CMD_UNMARK.md)
+
 ## Command: `config`
 
 Show the current configurations and other info related

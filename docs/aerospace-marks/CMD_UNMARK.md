@@ -4,7 +4,7 @@ Unmark one or more windows by identifier.
 
 unmark [<identifier>]
 
-unmark will remove identifier from the list of current marks on a window. If identifier is omitted and `--all` flag provided, all marks are removed.
+unmark will remove identifier from the list of current marks on a window. If identifier is omitted , all marks are removed.
 
 ## Usage
 
