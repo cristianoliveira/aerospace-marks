@@ -14,12 +14,11 @@ import (
 
 // focusCmd represents the focus command
 var focusCmd = &cobra.Command{
-	Use:   "focus <mark> [flags]",
-	Short: "Focus to a window by mark",
-	Long: `Focus to a window by mark
+	Use:   "focus <identifier> [flags]",
+	Short: "Move focus to a window by mark (identifier)",
+	Long: `Move focus to a window by mark (identifier)
 
-USAGE:
-aerospace-marks focus <mark> # Will focus to FIRST window marked with <mark>
+Moves focus to the first window marked with the specified identifier.
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		markClient, err := storage.NewMarkClient()
@@ -29,7 +28,7 @@ aerospace-marks focus <mark> # Will focus to FIRST window marked with <mark>
 		defer markClient.Close()
 
 		if len(args) < 1 {
-			return stdout.ErrorAndExitf("No mark provided")
+			return fmt.Errorf("Error: no identifier provided to focus")
 		}
 
 		mark := args[0]

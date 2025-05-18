@@ -12,3 +12,10 @@ result:
 
 Focus moved to window ID 1
 ---
+
+[TestFocusCmd/validate_missing_identifier - 1]
+[]string{"focus"}
+result:
+
+Error: no identifier provided to focus
+---

@@ -4,6 +4,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
@@ -13,6 +14,22 @@ import (
 )
 
 func TestFocusCmd(t *testing.T) {
+	t.Run("validate missing identifier", func(t *testing.T) {
+		logger.SetDefaultLogger(&logger.EmptyLogger{})
+
+		args := []string{"focus"}
+		out, err := testutils.CmdExecute(rootCmd, args...)
+		if out != "" {
+			t.Fatal("output should be empty", out)
+		}
+		if err == nil {
+			t.Fatal(err)
+		}
+
+		result := strings.TrimSpace(err.Error())
+		snaps.MatchSnapshot(t, args, "result:\n", result)
+	})
+
 	t.Run("focus to a window by mark - `marks focus mark1`", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
