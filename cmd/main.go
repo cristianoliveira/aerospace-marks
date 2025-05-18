@@ -1,5 +1,5 @@
 /*
-Copyright © 2025 Cristian Oliveira me@cristianoliveira.dev
+Copyright © 2025 Cristian Oliveira licence@cristianoliveira.dev
 */
 package cmd
 
