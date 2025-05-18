@@ -35,7 +35,7 @@ See: man 5 sway
 Environment variables:
 
 AEROSPACE_MARKS_LOGS_LEVEL - Log level [debug|info|warn|error] (default: disabled)
-ROSPACE_MARKS_LOGS_PATH    - Path to the logs file
+AROSPACE_MARKS_LOGS_PATH   - Path to the logs file (default: /tmp/aerospace-marks.log)
 			`)
 
 			return
