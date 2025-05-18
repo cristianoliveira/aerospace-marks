@@ -22,10 +22,9 @@ func NewRootCmd() *cobra.Command {
 
 	// Required new Mark Cmd because of leaking context
 	newRootCmd.AddCommand(MarkCmd())
-
-	newRootCmd.AddCommand(listCmd)
-	newRootCmd.AddCommand(focusCmd)
-	newRootCmd.AddCommand(configCmd)
+	newRootCmd.AddCommand(FocusCmd())
+	newRootCmd.AddCommand(ListCmd())
+	newRootCmd.AddCommand(ConfigCmd())
 
 	return newRootCmd
 }

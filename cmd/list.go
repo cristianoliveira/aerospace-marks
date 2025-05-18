@@ -34,61 +34,59 @@ func popWindow(windows []aerospacecli.Window, windowID string) (*aerospacecli.Wi
 }
 
 // listCmd represents the list command
-var listCmd = &cobra.Command{
-	Use:     "list",
-	Aliases: []string{"ls"},
-	Short:   "List all marked windows",
-	Long: `List all marked windows
+func ListCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "list",
+		Aliases: []string{"ls"},
+		Short:   "List all marked windows",
+		Long: `List all marked windows
 
-This command lists all marked windows with their respective marks.
-Display in the following format:
+	This command lists all marked windows with their respective marks.
+	Display in the following format:
 
-<mark>|<window-id>|<window-title>|<window-app>
-`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		markClient, err := storage.NewMarkClient()
-		if err != nil {
-			return stdout.ErrorAndExit(err)
-		}
-		defer markClient.Close()
-
-		marks, err := markClient.GetMarks()
-		if err != nil {
-			return stdout.ErrorAndExit(err)
-		}
-		if len(marks) == 0 {
-			fmt.Println("No marks found")
-			return nil
-		}
-
-		windows, err := aerospace.GetAllWindows()
-		if err != nil {
-			return stdout.ErrorAndExit(err)
-		}
-
-		lines := make([]string, 0)
-		for _, mark := range marks {
-			window, err := popWindow(windows, mark.WindowID)
+	<mark>|<window-id>|<window-title>|<window-app>
+	`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			markClient, err := storage.NewMarkClient()
 			if err != nil {
-				continue
+				return stdout.ErrorAndExit(err)
+			}
+			defer markClient.Close()
+
+			marks, err := markClient.GetMarks()
+			if err != nil {
+				return stdout.ErrorAndExit(err)
+			}
+			if len(marks) == 0 {
+				fmt.Println("No marks found")
+				return nil
 			}
 
-			line := fmt.Sprintf("%s|%s\r\n", mark.Mark, window)
-			lines = append(lines, line)
-		}
+			windows, err := aerospace.GetAllWindows()
+			if err != nil {
+				return stdout.ErrorAndExit(err)
+			}
 
-		if len(lines) == 0 {
-			fmt.Println("No marked window found")
+			lines := make([]string, 0)
+			for _, mark := range marks {
+				window, err := popWindow(windows, mark.WindowID)
+				if err != nil {
+					continue
+				}
+
+				line := fmt.Sprintf("%s|%s\r\n", mark.Mark, window)
+				lines = append(lines, line)
+			}
+
+			if len(lines) == 0 {
+				fmt.Println("No marked window found")
+				return nil
+			}
+
+			formattedOutput := format.FormatTableList(lines)
+			fmt.Println(formattedOutput)
+
 			return nil
-		}
-
-		formattedOutput := format.FormatTableList(lines)
-		fmt.Println(formattedOutput)
-
-		return nil
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(listCmd)
+		},
+	}
 }
