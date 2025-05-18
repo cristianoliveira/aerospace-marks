@@ -26,3 +26,7 @@ Allows to configure the path to the database file (default is ~/.local/state/aer
 # TEST: create a way to test failed commands (exit 1)
 
 # CMD: adds command for clear all marks
+From `man 5 sway`:
+  unmark [<identifier>]
+    unmark will remove identifier from the list of current marks on a window. If identifier is omitted, all marks are removed.
+
