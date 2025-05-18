@@ -4,8 +4,10 @@ Copyright © 2025 Cristian Oliveira licence@cristianoliveira.dev
 package cmd
 
 import (
+	"fmt"
 	"os"
 
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -29,14 +31,23 @@ See: man 5 sway
 	Version: VERSION,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		configHelp, _ := cmd.Flags().GetBool("help-config")
+		logConfig := logger.GetDefaultLogger().GetConfig()
 		if configHelp {
-			cmd.Println(`Aerospace Marks CLI - Configuration
+			cmd.Println(fmt.Sprintf(`Aerospace Marks CLI - Configuration
 
-Environment variables:
+[Database]
+path: ~/.local/state/aerospace-marks/storage.db
+[Logging]
+Path: %s
+Level: %s
 
+Configure with ENV variables:
 AEROSPACE_MARKS_LOGS_LEVEL - Log level [debug|info|warn|error] (default: disabled)
-AROSPACE_MARKS_LOGS_PATH   - Path to the logs file (default: /tmp/aerospace-marks.log)
-			`)
+AROSPACE_MARKS_LOGS_PATH   - Path to the logs file
+			`, 
+			logConfig.Path,
+			logConfig.Level,
+		))
 
 			return nil
 		}

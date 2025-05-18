@@ -10,6 +10,13 @@ import (
 
 var defaultLogger Logger
 
+type LogConfig struct {
+  // Path to the log file
+  Path string `json:"path"`
+  // Log level
+  Level string `json:"level"`
+}
+
 type Logger interface {
   // Info logs an informational message
   LogInfo(msg string, args ...any)
@@ -17,6 +24,9 @@ type Logger interface {
   LogError(msg string, args ...any)
   // Debug logs a debug message
   LogDebug(msg string, args ...any)
+
+  // GetConfig returns the logger configuration
+  GetConfig() LogConfig
 
   // AsJson returns the logger as a JSON object
   // In error, logs the error and returns an empty string
@@ -29,6 +39,7 @@ type Logger interface {
 type LoggerClient struct {
   logger *slog.Logger
   file   *os.File
+  config LogConfig
 }
 
 func (l *LoggerClient) LogInfo(msg string, args ...any) {
@@ -41,6 +52,10 @@ func (l *LoggerClient) LogError(msg string, args ...any) {
 
 func (l *LoggerClient) LogDebug(msg string, args ...any) {
   l.logger.Debug(msg, args...)
+}
+
+func (l *LoggerClient) GetConfig() LogConfig {
+  return l.config
 }
 
 func (l *LoggerClient) AsJson(data any) string {
@@ -75,6 +90,13 @@ func (l *EmptyLogger) LogDebug(msg string, args ...any) {
 func (l *EmptyLogger) Close() error {
   // No-op
   return nil
+}
+func (l *EmptyLogger) GetConfig() LogConfig {
+  // No-op
+  return LogConfig{
+    Path:   "/tmp/aerospace-marks.log",
+    Level:  "DISABLED",
+  }
 }
 func (l *EmptyLogger) AsJson(data any) string {
   // No-op
@@ -122,6 +144,10 @@ func NewLogger() (Logger, error) {
   logClient := &LoggerClient{
     logger: newLogger,
     file:   file,
+    config: LogConfig{
+      Path:   path,
+      Level:  configLogLevel,
+    },
   }
 
   return logClient, nil
