@@ -35,26 +35,17 @@ List all marks.
 
 USAGE: `aerospace-marks list`
 
-## Command: `get`
-
-Get windows (id) marked with a mark
-
-USAGE:
-
-aerospace-marks get <mark> # Will get the window ID | Name of the window marked with <mark>
-
 # Implemantation details
 
- - The command will call `aerospace list-windows --focused` and collect the window id (first column).
+ - The command will send to aerospace socket `list-windows --focused` and collect the window id (first column).
  - It will store the given mark among with the window id in memory at first.
 
 ### Storage
 
- - The marks are stored using sqlite3 in the `~/.local/state/aerospacex/storage.db` file.
+ - The marks are stored using sqlite3 in the `~/.local/state/aerospace-marks/storage.db` file.
  - Each window may have one or more marks. (list of strings)
  - The table is called `marks` and has the following columns:
     - `window_id` - The id of the window.
     - `mark` - The mark of the window.
    
  - The sqlite3 database is created if it does not exist.
-
