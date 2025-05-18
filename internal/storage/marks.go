@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"fmt"
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -86,6 +87,10 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 	markedWindow, err := c.storage.QueryOne(query, markI)
 	if err != nil {
 		return "", err
+	}
+
+	if markedWindow == nil {
+		return "", fmt.Errorf("no window found for mark %s", markI)
 	}
 
 	return markedWindow.WindowID, nil
