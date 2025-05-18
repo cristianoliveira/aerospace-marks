@@ -15,7 +15,7 @@ func NewRootCmd() *cobra.Command {
 		Short: "AeroSpace marks - Marks for Aerospace WM",
 		Long: `AeroSpace marks is a command line tool to manage marks for the AeroSpace WM.
 
-		This CLI is heavily inspired by the marks feature of i3 and sway window managers.
+This CLI is heavily inspired by the marks feature of i3 and sway window managers.
 		`,
 		Version: VERSION,
 	}

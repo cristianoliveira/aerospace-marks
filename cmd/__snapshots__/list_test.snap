@@ -50,3 +50,24 @@ result:
 mark-1 | 1 | Alacritty     | Alacritty     
 mark-3 | 3 | Brave Browser | GitHub - Brave
 ---
+
+[TestListCommand/print_all_marked_windows#01 - 1]
+aerospace-marks ls --help
+
+List all marked windows
+
+This command lists all marked windows with their respective marks.
+Display in the following format:
+
+<mark>|<window-id>|<window-title>|<window-app>
+
+Usage:
+  aerospace-marks list [flags]
+
+Aliases:
+  list, ls
+
+Flags:
+  -h, --help   help for list
+
+---

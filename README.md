@@ -41,18 +41,20 @@ aerospace-marks focus <identifier>
 # ~/.config/aerospace/config.toml
 [mode.main.binding] 
 # Mark 
-cmd-shift-h = ["exec-and-forget aerospace-marks mark h 2> /tmp/marks.log", "mode main"]
-cmd-shift-j = ["exec-and-forget aerospace-marks mark j 2> /tmp/marks.log", "mode main"]
-cmd-shift-k = ["exec-and-forget aerospace-marks mark k 2> /tmp/marks.log", "mode main"]
-cmd-shift-l = ["exec-and-forget aerospace-marks mark l 2> /tmp/marks.log", "mode main"]
-cmd-shift-b = ["exec-and-forget aerospace-marks mark browser 2> /tmp/marks.log", "mode main"]
+cmd-shift-h = ["exec-and-forget aerospace-marks mark h", "mode main"]
+cmd-shift-j = ["exec-and-forget aerospace-marks mark j", "mode main"]
+cmd-shift-k = ["exec-and-forget aerospace-marks mark k", "mode main"]
+cmd-shift-l = ["exec-and-forget aerospace-marks mark l", "mode main"]
+
+cmd-shift-b = ["exec-and-forget aerospace-marks mark browser", "mode main"]
 
 # Focus
-cmd-ctrl-h = ["exec-and-forget aerospace-marks focus h 2> /tmp/marks.log", "mode main"]
-cmd-ctrl-j = ["exec-and-forget aerospace-marks focus j 2> /tmp/marks.log", "mode main"]
-cmd-ctrl-k = ["exec-and-forget aerospace-marks focus k 2> /tmp/marks.log", "mode main"]
-cmd-ctrl-l = ["exec-and-forget aerospace-marks focus l 2> /tmp/marks.log", "mode main"]
-cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser 2> /tmp/marks.log", "mode main"]
+cmd-ctrl-h = ["exec-and-forget aerospace-marks focus h", "mode main"]
+cmd-ctrl-j = ["exec-and-forget aerospace-marks focus j", "mode main"]
+cmd-ctrl-k = ["exec-and-forget aerospace-marks focus k", "mode main"]
+cmd-ctrl-l = ["exec-and-forget aerospace-marks focus l", "mode main"]
+
+cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser", "mode main"]
 ```
 
 See more in [documentation](docs/aerospace-marks)

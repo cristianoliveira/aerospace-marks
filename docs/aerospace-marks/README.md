@@ -35,6 +35,10 @@ List all marks.
 
 USAGE: `aerospace-marks list`
 
+## Command: `config`
+
+Show the current configurations and other info related
+
 # Implemantation details
 
  - The command will send to aerospace socket `list-windows --focused` and collect the window id (first column).

@@ -41,10 +41,10 @@ func ListCmd() *cobra.Command {
 		Short:   "List all marked windows",
 		Long: `List all marked windows
 
-	This command lists all marked windows with their respective marks.
-	Display in the following format:
+This command lists all marked windows with their respective marks.
+Display in the following format:
 
-	<mark>|<window-id>|<window-title>|<window-app>
+<mark>|<window-id>|<window-title>|<window-app>
 	`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			markClient, err := storage.NewMarkClient()

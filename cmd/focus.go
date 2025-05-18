@@ -19,7 +19,7 @@ func FocusCmd() *cobra.Command {
 		Short: "Move focus to a window by mark (identifier)",
 		Long: `Move focus to a window by mark (identifier)
 
-	Moves focus to the first window marked with the specified identifier.
+Moves focus to the first window marked with the specified identifier.
 	`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			markClient, err := storage.NewMarkClient()

@@ -199,4 +199,18 @@ func TestListCommand(t *testing.T) {
 		result := strings.TrimSpace(out)
 		snaps.MatchSnapshot(t,windows, marks, "result:\n", result)
 	})
+
+	t.Run("print all marked windows", func(t *testing.T) {
+		// t.Skip("Skipping")
+		command := "ls"
+		args := []string{command, "--help"}
+
+		out, err := testutils.CmdExecute(NewRootCmd(), args...)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, cmdAsString, out)
+	})
 }
