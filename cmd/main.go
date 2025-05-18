@@ -27,11 +27,29 @@ mark --add|--replace [--toggle] <identifier>
 See: man 5 sway
 `,
 	Version: VERSION,
+	Run: func(cmd *cobra.Command, args []string) {
+		configHelp, _ := cmd.Flags().GetBool("help-config")
+		if configHelp {
+			cmd.Println(`Aerospace Marks CLI - Configuration
+
+Environment variables:
+
+AEROSPACE_MARKS_LOG        - [1] Enable logs | [0/undefined] Disable logs
+AEROSPACE_MARKS_LOGS_PATH  - Path to the logs file
+AEROSPACE_MARKS_LOGS_LEVEL - Log level [debug|info|warn|error]
+			`)
+
+			return
+		}
+
+		cmd.Run(cmd, args)
+	},
 }
 
 func init() {
 	// NOTE: add here global flags
 	// rootCmd.Flags().BoolP("version", "v", false, "Print version information")
+	rootCmd.Flags().Bool("help-config", false, "Print configuration help information")
 }
 
 func Run() {
