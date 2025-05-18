@@ -73,11 +73,8 @@ func (c *MarkStorageClient) GetMarksByWindowID(id string) ([]Mark, error) {
 // This function will return the first window ID that matches the mark
 // If multiple window IDs match the mark, it will return the first one found
 func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
-	query := `
-	SELECT *
-	FROM marks
-	WHERE mark = ?
-	`
+	query := "SELECT * FROM marks WHERE mark = ?"
+
 	markedWindow, err := c.storage.QueryOne(query, markI)
 	if err != nil {
 		return "", err

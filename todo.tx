@@ -27,3 +27,5 @@ It must be configurable or /tmp/aerospace-marks.log
 ---
 Allows to configure the path to the database file (default is ~/.local/state/aerospace-marks/storage.db)
 ---
+
+# TEST: create a way to test failed commands (exit 1)
