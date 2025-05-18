@@ -14,11 +14,13 @@ import (
 )
 
 var markClient *storage.StorageClient
-var markCmd = &cobra.Command{
-	// aerospace mark
-	Use:   "mark <identifier> [flags]",
-	Short: "Mark a window with a specific identifier",
-	Long: `Mark a window with a specific identifier
+
+func MarkCmd() *cobra.Command {
+	newMarkCmd := &cobra.Command{
+		// aerospace mark
+		Use:   "mark <identifier> [flags]",
+		Short: "Mark a window with a specific identifier",
+		Long: `Mark a window with a specific identifier
 
 mark --add|--replace [--toggle] <identifier>
 
@@ -37,46 +39,64 @@ aerospace-marks mark first # Will set the mark first on the current window [firs
 aerospace-marks mark --add sec # Will add the mark sec to the current window [first sec]
 `,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			return fmt.Errorf("No identifier provided to mark")
-		}
-		identifier := args[0]
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return fmt.Errorf("No identifier provided to mark")
+			}
+			identifier := args[0]
 
-		markClient, err := storage.NewMarkClient()
-		if err != nil {
-			return stdout.ErrorAndExit(err)
-		}
-		defer markClient.Close()
-
-		add, _ := cmd.Flags().GetBool("add")
-		winArgID, _ := cmd.Flags().GetString("window-id")
-
-		// Get the window ID from the command line argument
-		windowID := strings.TrimSpace(winArgID)
-		if winArgID == "" {
-			window, err := aerospace.GetFocusedWindowID()
+			markClient, err := storage.NewMarkClient()
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}
-			windowID = fmt.Sprintf("%d", window.WindowID)
-		} else {
-			window, err := aerospace.GetWindowByID(windowID)
-			if err != nil {
-				return stdout.ErrorAndExit(err)
-			}
-			windowID = fmt.Sprintf("%d", window.WindowID)
-		}
+			defer markClient.Close()
 
-		// Manage marks using MarkClient
-		if add {
-			err = markClient.AddMark(windowID, identifier)
-			if err != nil {
-				return stdout.ErrorAndExit(err)
+			add, _ := cmd.Flags().GetBool("add")
+			replace, _ := cmd.Flags().GetBool("replace")
+			winArgID, _ := cmd.Flags().GetString("window-id")
+
+			// Get the window ID from the command line argument
+			windowID := strings.TrimSpace(winArgID)
+			if winArgID == "" {
+				window, err := aerospace.GetFocusedWindowID()
+				if err != nil {
+					return stdout.ErrorAndExit(err)
+				}
+				windowID = fmt.Sprintf("%d", window.WindowID)
+			} else {
+				window, err := aerospace.GetWindowByID(windowID)
+				if err != nil {
+					return stdout.ErrorAndExit(err)
+				}
+				windowID = fmt.Sprintf("%d", window.WindowID)
 			}
 
-			fmt.Printf("Added mark: %s\n", identifier)
-		} else {
+			// Manage marks using MarkClient
+			if add && !replace {
+				err = markClient.AddMark(windowID, identifier)
+				if err != nil {
+					return stdout.ErrorAndExit(err)
+				}
+
+				fmt.Printf("Added mark: %s\n", identifier)
+				return nil
+			}
+
+			if toggle, err := cmd.Flags().GetBool("toggle"); toggle {
+				if err != nil {
+					return stdout.ErrorAndExit(err)
+				}
+
+				err := markClient.ToggleMark(windowID, identifier)
+				if err != nil {
+					return stdout.ErrorAndExit(err)
+				}
+
+				fmt.Printf("Toggling mark: %s\n", identifier)
+
+				return nil
+			}
+
 			hasBeenDeleted, err := markClient.ReplaceAllMarks(windowID, identifier)
 			if err != nil {
 				return stdout.ErrorAndExit(err)
@@ -88,18 +108,15 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 				fmt.Printf("Marked window with '%s'\n", identifier)
 			}
 
-		}
-
-		return nil
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(markCmd)
+			return nil
+		},
+	}
 
 	// Define flags and configuration settings
-	markCmd.Flags().Bool("add", false, "Add a mark to the window")
-	markCmd.Flags().Bool("replace", false, "Replace all marks on the window with the new mark")
-	markCmd.Flags().Bool("toggle", false, "Toggle the mark on the window")
-	markCmd.Flags().String("window-id", "", "Window ID to mark (default: focused window)")
+	newMarkCmd.Flags().Bool("add", false, "Add a mark to the window")
+	newMarkCmd.Flags().Bool("replace", false, "Replace all marks on the window with the new mark")
+	newMarkCmd.Flags().Bool("toggle", false, "Toggle the mark on the window")
+	newMarkCmd.Flags().String("window-id", "", "Window ID to mark (default: focused window)")
+
+	return newMarkCmd
 }

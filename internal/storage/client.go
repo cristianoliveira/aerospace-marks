@@ -44,11 +44,9 @@ type StorageDbClient interface {
 	// This function will return the first mark that matches the query
 	// if multiple marks match the query, it will return an error
 	QueryOne(query string, args ...any) (*Mark, error)
-
 	// Execute a query
 	// This function will execute a query and return a raw result
 	Execute(query string, args ...any) (DbResult, error)
-
 	// Close the database connection
 	Close() error
 }

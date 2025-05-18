@@ -36,3 +36,23 @@ aerospace-marks mark
 
 No identifier provided to mark
 ---
+
+[TestMarkCommand/marks_toggles_mark_(remove)_-_`marks_foobar_--toggle` - 1]
+[]aerospacecli.Window{
+    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
+}
+aerospace-marks mark foobar --toggle
+
+Toggling mark: foobar
+
+---
+
+[TestMarkCommand/marks_toggles_mark_(adding)_-_`marks_foobar_--toggle` - 1]
+[]aerospacecli.Window{
+    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
+}
+aerospace-marks mark foobar --toggle
+
+Toggling mark: foobar
+
+---

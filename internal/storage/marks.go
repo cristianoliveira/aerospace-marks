@@ -17,6 +17,10 @@ type MarkStorage interface {
 	GetWindowIDByMark(mark string) (string, error)
 	// ReplaceAllMarks replaces all marks for a window with a new mark
 	ReplaceAllMarks(id string, mark string) (bool, error)
+	// ToggleMark toggles a mark for a window
+	ToggleMark(id string, mark string) error
+	// DeleteMark deletes a mark from the database
+	// DeleteMark(id string, mark string) error
 	// Close closes the database connection
 	Close() error
 }
@@ -83,6 +87,26 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 	return markedWindow.WindowID, nil
 }
 
+// DeleteMark deletes a mark from the database
+// This function will delete the mark from the database
+func (c *MarkStorageClient) DeleteByMark(mark string) (int64, error) {
+	query := strings.TrimSpace(`
+	DELETE FROM marks WHERE mark = ?
+	`)
+
+	res, err := c.storage.Execute(query, mark)
+	if err != nil {
+		return 0, err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return rowsAffected, nil
+}
+
 // ReplaceAllMarks replaces all marks for a window with a new mark
 // This function will delete all marks for the specified window ID and
 // then add the new mark
@@ -107,3 +131,24 @@ func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (int64, erro
 func (c *MarkStorageClient) Close() error {
 	return c.storage.Close()
 }
+
+// ToggleMark toggles a mark for a window
+// If the mark exists, it will be deleted
+// If the mark does not exist, it will be added
+func (c *MarkStorageClient) ToggleMark(id string, mark string) error {
+	rowsAffected, err := c.DeleteByMark(mark)
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected > 0 {
+		// Mark was deleted
+		return nil
+	}
+
+	// Mark was not deleted, so add it
+	err = c.AddMark(id, mark)
+
+	return nil
+}
+

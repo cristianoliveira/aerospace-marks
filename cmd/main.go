@@ -9,16 +9,29 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "aerospace-marks [cmd] [flags] <identifier>",
-	Short: "AeroSpace marks - Marks for Aerospace WM",
-	Long: `AeroSpace marks is a command line tool to manage marks for the AeroSpace WM.
+func NewRootCmd() *cobra.Command {
+	newRootCmd := &cobra.Command{
+		Use:   "aerospace-marks [cmd] [flags] <identifier>",
+		Short: "AeroSpace marks - Marks for Aerospace WM",
+		Long: `AeroSpace marks is a command line tool to manage marks for the AeroSpace WM.
 
-This CLI is heavily inspired by the marks feature of i3 and sway window managers.
-`,
-	Version: VERSION,
+		This CLI is heavily inspired by the marks feature of i3 and sway window managers.
+		`,
+		Version: VERSION,
+	}
+
+	// Required new Mark Cmd because of leaking context
+	newRootCmd.AddCommand(MarkCmd())
+
+	newRootCmd.AddCommand(listCmd)
+	newRootCmd.AddCommand(focusCmd)
+	newRootCmd.AddCommand(configCmd)
+
+	return newRootCmd
 }
+
+// rootCmd represents the base command when called without any subcommands
+var rootCmd = NewRootCmd()
 
 func init() {
 	// NOTE: add here global flags
