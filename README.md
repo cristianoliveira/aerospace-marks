@@ -1,8 +1,8 @@
 # aerospace-marks
 
-**Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
+An extension to manage marks on windows in [AeroSpace WM](https://github.com/nikitabobko/AeroSpace).
 
-This is a CLI extension for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace) that helps manage marks on windows.
+**Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
 
 It’s heavily inspired by [sway marks](https://man.archlinux.org/man/sway.5.en), but follows the `aerospace` style of commands:
 ```text
@@ -16,6 +16,7 @@ mark on a window. --add will instead add identifier to the list
 of current marks for that window. If --toggle is specified mark will
 remove identifier if it is already marked.
 ```
+
 ### Why not use named workspaces?
 
 > TL;DR: Dynamic mappings to specific windows, not workspaces.
@@ -41,18 +42,18 @@ aerospace-marks focus <identifier>
 # ~/.config/aerospace/config.toml
 [mode.main.binding] 
 # Mark 
-cmd-shift-h = ["exec-and-forget aerospace-marks mark h", "mode main"]
-cmd-shift-j = ["exec-and-forget aerospace-marks mark j", "mode main"]
-cmd-shift-k = ["exec-and-forget aerospace-marks mark k", "mode main"]
-cmd-shift-l = ["exec-and-forget aerospace-marks mark l", "mode main"]
+cmd-shift-h = ["exec-and-forget aerospace-marks mark h"]
+cmd-shift-j = ["exec-and-forget aerospace-marks mark j"]
+cmd-shift-k = ["exec-and-forget aerospace-marks mark k"]
+cmd-shift-l = ["exec-and-forget aerospace-marks mark l"]
 
 cmd-shift-b = ["exec-and-forget aerospace-marks mark browser", "mode main"]
 
 # Focus
-cmd-ctrl-h = ["exec-and-forget aerospace-marks focus h", "mode main"]
-cmd-ctrl-j = ["exec-and-forget aerospace-marks focus j", "mode main"]
-cmd-ctrl-k = ["exec-and-forget aerospace-marks focus k", "mode main"]
-cmd-ctrl-l = ["exec-and-forget aerospace-marks focus l", "mode main"]
+cmd-ctrl-h = ["exec-and-forget aerospace-marks focus h"]
+cmd-ctrl-j = ["exec-and-forget aerospace-marks focus j"]
+cmd-ctrl-k = ["exec-and-forget aerospace-marks focus k"]
+cmd-ctrl-l = ["exec-and-forget aerospace-marks focus l"]
 
 cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser", "mode main"]
 ```
@@ -60,6 +61,14 @@ cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser", "mode main"]
 See more in [documentation](docs/aerospace-marks)
 
 ## Installation
+
+### Using Homebrew
+
+If you have Homebrew installed, you can install `aerospace-marks` using the following command:
+
+```bash
+brew install cristianoliveira/tap/aerospace-marks
+```
 
 ### Using Nix
 
