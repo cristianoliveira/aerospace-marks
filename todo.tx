@@ -18,14 +18,11 @@ Each identifier can only be
 set on a single window at a time since they act as a unique identifier
 ---
 
-# FEAT: adds logger for debugging
----
-It must be configurable or /tmp/aerospace-marks.log
----
-
 # FEAT: db file configuration AEROSPACE_MARK_DB_PATH
 ---
 Allows to configure the path to the database file (default is ~/.local/state/aerospace-marks/storage.db)
 ---
 
 # TEST: create a way to test failed commands (exit 1)
+
+# CMD: adds command for clear all marks
