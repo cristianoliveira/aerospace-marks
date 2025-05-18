@@ -27,6 +27,14 @@ type DbResult interface {
 	RowsAffected() (int64, error)
 }
 
+type StorageConfig struct {
+	// Path to the database file
+	DbPath string
+
+	// Name of the database file
+	DbName string
+}
+
 type StorageDbClient interface {
 	// Get all marks as a list
 	// This function will return all marks in the database
@@ -134,13 +142,17 @@ type DatabaseConnector interface {
 type MarksDatabaseConnector struct{}
 
 func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
+	log := logger.GetDefaultLogger()
+	dbConfig := GetDatabaseConfig()
+
 	// Create the directory if it doesn't exist
-	dir := fmt.Sprintf("%s/.local/state/aerospace-marks", os.Getenv("HOME"))
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	if err := os.MkdirAll(dbConfig.DbPath, 0755); err != nil {
 		return nil, err
 	}
 
-	dbPath := fmt.Sprintf("%s/.local/state/aerospace-marks/storage.db", os.Getenv("HOME"))
+	dbPath := fmt.Sprintf("%s/storage.db", dbConfig.DbPath)
+
+	log.LogInfo("connecting to database", dbPath)
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return nil, err
@@ -148,10 +160,25 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 
 	client := &StorageClient{db: db}
 	if err := client.createTableIfNotExists(); err != nil {
+		log.LogError("failed to create table", err)
 		return nil, err
 	}
 
 	return client, nil
+}
+
+func GetDatabaseConfig() StorageConfig {
+	dbDir := fmt.Sprintf("%s/.local/state/aerospace-marks", os.Getenv("HOME"))
+
+	configDbPath := os.Getenv("AEROSPACE_MARKS_DB_PATH")
+	if configDbPath != "" {
+		dbDir = fmt.Sprintf("%s", configDbPath)
+	} 
+
+	return StorageConfig{
+		DbPath: dbDir,
+		DbName: "storage.db",
+	}
 }
 
 var DefaultConnector DatabaseConnector = &MarksDatabaseConnector{}

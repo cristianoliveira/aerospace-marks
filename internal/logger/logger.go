@@ -107,7 +107,7 @@ func (l *EmptyLogger) AsJson(data any) string {
 // It accepts a path to a file where logs will be written
 // and a boolean indicating whether to log to stdout as well
 func NewLogger() (Logger, error) {
-  path := os.Getenv("AEROSPACE_MARKS_LOG_FILEPATH")
+  path := os.Getenv("AEROSPACE_MARKS_LOGS_PATH")
   if path == "" {
     path = "/tmp/aerospace-marks.log"
   }
@@ -117,7 +117,7 @@ func NewLogger() (Logger, error) {
       return nil, fmt.Errorf("failed to open log file: %v", err)
   }
 
-  configLogLevel := os.Getenv("AEROSPACE_MARKS_LOG_LEVEL")
+  configLogLevel := os.Getenv("AEROSPACE_MARKS_LOGS_LEVEL")
   if configLogLevel == "" {
     return &EmptyLogger{}, nil
   }

@@ -4,10 +4,8 @@ Copyright © 2025 Cristian Oliveira licence@cristianoliveira.dev
 package cmd
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -29,41 +27,11 @@ mark --add|--replace [--toggle] <identifier>
 See: man 5 sway
 `,
 	Version: VERSION,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		configHelp, _ := cmd.Flags().GetBool("help-config")
-		logConfig := logger.GetDefaultLogger().GetConfig()
-		if configHelp {
-			cmd.Println(fmt.Sprintf(`Aerospace Marks CLI - Configuration
-
-[Database]
-path: ~/.local/state/aerospace-marks/storage.db
-[Logging]
-Path: %s
-Level: %s
-
-Configure with ENV variables:
-AEROSPACE_MARKS_LOGS_LEVEL - Log level [debug|info|warn|error] (default: disabled)
-AROSPACE_MARKS_LOGS_PATH   - Path to the logs file
-			`, 
-			logConfig.Path,
-			logConfig.Level,
-		))
-
-			return nil
-		}
-
-		if len(args) < 1 {
-			return cmd.Help()
-		}
-
-		return nil
-	},
 }
 
 func init() {
 	// NOTE: add here global flags
 	// rootCmd.Flags().BoolP("version", "v", false, "Print version information")
-	rootCmd.Flags().Bool("help-config", false, "Print configuration help information")
 }
 
 func Run() {
