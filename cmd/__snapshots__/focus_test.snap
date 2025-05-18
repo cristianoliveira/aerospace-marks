@@ -1,21 +1,13 @@
 
-[TestFocusCmd/focus_to_a_window_by_mark_-_`aerospace-marks_focus_mark1` - 1]
-[]string{"focus", "mark1"}
-result:
+[TestFocusCmd/validate_missing_identifier - 1]
+aerospace-marks focus
 
-Focus moved to window ID 1
+No identifier provided to focus
 ---
 
 [TestFocusCmd/focus_to_a_window_by_mark_-_`marks_focus_mark1` - 1]
-[]string{"focus", "mark1"}
-result:
+aerospace-marks focus mark1
 
 Focus moved to window ID 1
----
 
-[TestFocusCmd/validate_missing_identifier - 1]
-[]string{"focus"}
-result:
-
-Error: no identifier provided to focus
 ---

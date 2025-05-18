@@ -28,7 +28,7 @@ Moves focus to the first window marked with the specified identifier.
 		defer markClient.Close()
 
 		if len(args) < 1 {
-			return fmt.Errorf("Error: no identifier provided to focus")
+			return fmt.Errorf("No identifier provided to focus")
 		}
 
 		mark := args[0]
@@ -56,14 +56,4 @@ Moves focus to the first window marked with the specified identifier.
 
 func init() {
 	rootCmd.AddCommand(focusCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// focusCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// focusCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

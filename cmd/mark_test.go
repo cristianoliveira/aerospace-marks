@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
@@ -14,6 +15,9 @@ import (
 
 func TestMarkCommand(t *testing.T) {
 	t.Run("marks the focused window - `marks mark mark1`", func(t *testing.T) {
+		command := "mark"
+		args := []string{command, "mark1"}
+
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -57,17 +61,19 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		args := []string{"mark", "mark1"}
 		out, err := testutils.CmdExecute(rootCmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(out)
-		snaps.MatchSnapshot(t,windows, args, "result:\n", result)
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, windows, cmdAsString, out)
 	})
 
-	t.Run("marks the focused window - `marks mark mark1 --window-id 2`", func(t *testing.T) {
+	t.Run("marks window by id - `marks mark mark1 --window-id 2`", func(t *testing.T) {
+		command := "mark"
+		args := []string{command, "mark1", "--window-id", "2"}
+
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -116,17 +122,19 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		args := []string{"mark", "mark1", "--window-id", "2"}
 		out, err := testutils.CmdExecute(rootCmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(out)
-		snaps.MatchSnapshot(t,windows, args, "result:\n", result)
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, windows, cmdAsString, out)
 	})
 
 	t.Run("marks the focused window - `marks mark --add`", func(t *testing.T) {
+		command := "mark"
+		args := []string{command, "mark2", "--add"}
+
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -166,13 +174,33 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		args := []string{"mark", "mark2", "--add"}
 		out, err := testutils.CmdExecute(rootCmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(out)
-		snaps.MatchSnapshot(t,windows, args, "result:\n", result)
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, windows, cmdAsString, out)
+	})
+
+	t.Run("validates missing identifier - `marks mark`", func(t *testing.T) {
+		command := "mark"
+		args := []string{command} // Missing identifier
+
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		logger.SetDefaultLogger(&logger.EmptyLogger{})
+
+		out, err := testutils.CmdExecute(rootCmd, args...)
+		if err == nil {
+			t.Fatal(err)
+		}
+		if out != "" {
+			t.Fatal("output should be empty", out)
+		}
+
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, cmdAsString, err.Error())
 	})
 }

@@ -37,7 +37,14 @@ func popWindow(windows []aerospacecli.Window, windowID string) (*aerospacecli.Wi
 var listCmd = &cobra.Command{
 	Use:     "list",
 	Aliases: []string{"ls"},
-	Short:   "List all windows marked",
+	Short:   "List all marked windows",
+	Long: `List all marked windows
+
+This command lists all marked windows with their respective marks.
+Display in the following format:
+
+<mark>|<window-id>|<window-title>|<window-app>
+`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		markClient, err := storage.NewMarkClient()
 		if err != nil {
@@ -84,14 +91,4 @@ var listCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(listCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

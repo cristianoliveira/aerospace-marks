@@ -3,21 +3,21 @@
 []aerospacecli.Window{
     {WindowID:1, WindowTitle:"title1", AppName:"app1"},
 }
-[]string{"mark", "mark1"}
-result:
+aerospace-marks mark mark1
 
 Replaced all marks with 'mark1'
+
 ---
 
-[TestMarkCommand/marks_the_focused_window_-_`marks_mark_mark1_--window-id_2` - 1]
+[TestMarkCommand/marks_window_by_id_-_`marks_mark_mark1_--window-id_2` - 1]
 []aerospacecli.Window{
     {WindowID:1, WindowTitle:"title1", AppName:"app1"},
     {WindowID:2, WindowTitle:"title2", AppName:"app2"},
 }
-[]string{"mark", "mark1", "--window-id", "2"}
-result:
+aerospace-marks mark mark1 --window-id 2
 
 Replaced all marks with 'mark1'
+
 ---
 
 [TestMarkCommand/marks_the_focused_window_-_`marks_mark_--add` - 1]
@@ -25,8 +25,14 @@ Replaced all marks with 'mark1'
     {WindowID:1, WindowTitle:"title1", AppName:"app1"},
     {WindowID:2, WindowTitle:"title2", AppName:"app2"},
 }
-[]string{"mark", "mark2", "--add"}
-result:
+aerospace-marks mark mark2 --add
 
 Added mark: mark2
+
+---
+
+[TestMarkCommand/validates_missing_identifier_-_`marks_mark` - 1]
+aerospace-marks mark
+
+No identifier provided to mark
 ---

@@ -26,8 +26,8 @@ func TestFocusCmd(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(err.Error())
-		snaps.MatchSnapshot(t, args, "result:\n", result)
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, cmdAsString, err.Error())
 	})
 
 	t.Run("focus to a window by mark - `marks focus mark1`", func(t *testing.T) {
@@ -64,7 +64,7 @@ func TestFocusCmd(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(out)
-		snaps.MatchSnapshot(t, args, "result:\n", result)
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, cmdAsString, out)
 	})
 }
