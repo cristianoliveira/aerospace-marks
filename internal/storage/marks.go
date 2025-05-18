@@ -16,11 +16,15 @@ type MarkStorage interface {
 	// GetWindowIDByMark returns the window ID for a given mark
 	GetWindowIDByMark(mark string) (string, error)
 	// ReplaceAllMarks replaces all marks for a window with a new mark
-	ReplaceAllMarks(id string, mark string) (bool, error)
+	ReplaceAllMarks(id string, mark string) (int64, error)
 	// ToggleMark toggles a mark for a window
 	ToggleMark(id string, mark string) error
-	// DeleteMark deletes a mark from the database
-	// DeleteMark(id string, mark string) error
+	// DeleteByMark removes a mark from the database
+	DeleteByMark(mark string) (int64, error)
+	// DeleteByMark removes a mark from the database
+	DeleteByWindow(windowId int) (int64, error)
+	// DeleteAllMarks removes all marks from the database
+	DeleteAllMarks() (int64, error)
 	// Close closes the database connection
 	Close() error
 }
@@ -29,7 +33,7 @@ type MarkStorageClient struct {
 	storage StorageDbClient
 }
 
-func NewMarkClient() (*MarkStorageClient, error) {
+func NewMarkClient() (MarkStorage, error) {
 	storageClient, err := DefaultConnector.Connect()
 	if err != nil {
 		return nil, err
@@ -87,26 +91,6 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 	return markedWindow.WindowID, nil
 }
 
-// DeleteMark deletes a mark from the database
-// This function will delete the mark from the database
-func (c *MarkStorageClient) DeleteByMark(mark string) (int64, error) {
-	query := strings.TrimSpace(`
-	DELETE FROM marks WHERE mark = ?
-	`)
-
-	res, err := c.storage.Execute(query, mark)
-	if err != nil {
-		return 0, err
-	}
-
-	rowsAffected, err := res.RowsAffected()
-	if err != nil {
-		return 0, err
-	}
-
-	return rowsAffected, nil
-}
-
 // ReplaceAllMarks replaces all marks for a window with a new mark
 // This function will delete all marks for the specified window ID and
 // then add the new mark
@@ -152,3 +136,50 @@ func (c *MarkStorageClient) ToggleMark(id string, mark string) error {
 	return nil
 }
 
+// DeleteAllMarks removes all marks from the database
+func (c *MarkStorageClient) DeleteAllMarks() (int64, error) {
+	query := "DELETE FROM marks"
+	res, err := c.storage.Execute(query)
+	if err != nil {
+		return 0, err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+	return rowsAffected, nil
+}
+
+// DeleteByMark deletes a mark from the database
+// This function will delete the mark from the database
+func (c *MarkStorageClient) DeleteByMark(mark string) (int64, error) {
+	query := strings.TrimSpace(`
+	DELETE FROM marks WHERE mark = ?
+	`)
+
+	res, err := c.storage.Execute(query, mark)
+	if err != nil {
+		return 0, err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return rowsAffected, nil
+}
+
+// DeleteByWindow deletes a mark from the database
+// This function will delete the mark from the database
+func (c *MarkStorageClient) DeleteByWindow(windowId int) (int64, error) {
+	query := strings.TrimSpace(`DELETE FROM marks WHERE window_id = ?`)
+	res, err := c.storage.Execute(query, windowId)
+	if err != nil {
+		return 0, err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	return rowsAffected, err
+}

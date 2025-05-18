@@ -1,7 +1,5 @@
 # Command: `mark`
 
-USAGE: `aerospace-marks mark [--add|--replace] [--toggle] <identifier>`
-
 ## Description
 
 This extension is heavily base in `sway mark` see in `man sway(1)` for more information.
@@ -14,6 +12,26 @@ Marks are arbitrary labels that can be used to identify certain windows and then
 
 - Each window may have one or more marks. (list of strings)
 - When no flag is specified, it behaves like `--replace` and replaces all marks on the window with the new one.
+
+## Usage
+```bash
+aerospace-marks mark [--add|--replace] [--toggle] <identifier>
+
+aerospace-marks mark foo
+# Will mark the current focused window with the identifier "foo"
+
+aerospace-marks mark --add foo
+# Will add the identifier "foo" to the current focused window
+
+aerospace-marks mark bar
+# Will replace the current mark with "bar" on the current focused window
+# Same as `--replace` flag
+
+aerospace-marks mark --toggle foo
+# Will toggle the mark "foo" on the current focused window
+# If the mark "foo" exists, it will be removed
+# If the mark "foo" does not exist, it will be added
+```
 
 ## Options
 

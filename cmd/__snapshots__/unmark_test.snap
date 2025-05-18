@@ -1,0 +1,31 @@
+
+[TestUnmarkCommand/unmarks_a_mark_from_a_window_-_`marks_unmark_mark1` - 1]
+aerospace-marks unmark mark1
+
+Removed 1 marks
+
+---
+
+[TestUnmarkCommand/unmarks_all_marks_from_a_window_-_`marks_unmark` - 1]
+aerospace-marks unmark
+
+Removed 2 marks
+
+---
+
+[TestUnmarkCommand/unmarks_--help - 1]
+aerospace-marks unmark --help
+
+Unmark one or more windows by identifier.
+
+unmark [<identifier>]
+
+unmark cmd will remove identifier from the list of current marks on a window. If identifier is omitted, all marks are removed.
+
+Usage:
+  aerospace-marks unmark [flags]
+
+Flags:
+  -h, --help   help for unmark
+
+---

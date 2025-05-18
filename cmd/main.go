@@ -22,6 +22,7 @@ This CLI is heavily inspired by the marks feature of i3 and sway window managers
 
 	// Required new Mark Cmd because of leaking context
 	newRootCmd.AddCommand(MarkCmd())
+	newRootCmd.AddCommand(UnmarkCmd())
 	newRootCmd.AddCommand(FocusCmd())
 	newRootCmd.AddCommand(ListCmd())
 	newRootCmd.AddCommand(ConfigCmd())
