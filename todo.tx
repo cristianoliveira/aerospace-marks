@@ -1,4 +1,5 @@
 # IDEA: create a way to prompt for a dynamic mark input
+--
 similar to i3-input
 eg.
 `i3-input -F 'mark %s'` # prompt for a mark name
@@ -6,3 +7,18 @@ and then use it to focus
 `i3-input -F 'mark %s' -o 'focus mark %s'` # prompt for a mark name and focus it
 ---
 
+# ALIGN: in sway when the window is closed, the mark is gone we need to checkit
+---
+need to check
+---
+
+# FIX/ALIGN: Sway marks are uniq
+---
+Each identifier can only be 
+set on a single window at a time since they act as a unique identifier
+---
+
+# FEAT: adds logger for debugging
+---
+It must be configurable or /tmp/aerospace-marks.log
+---
