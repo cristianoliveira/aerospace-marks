@@ -15,7 +15,7 @@ import (
 
 func TestMarkCommand(t *testing.T) {
 	t.Run("marks the focused window - `marks mark mark1`", func(t *testing.T) {
-		t.Skip("Skipping")
+		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, "mark1"}
 
@@ -72,7 +72,7 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("marks window by id - `marks mark mark1 --window-id 2`", func(t *testing.T) {
-		t.Skip("Skipping")
+		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, "mark1", "--window-id", "2"}
 
@@ -134,7 +134,7 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("marks the focused window - `marks mark --add`", func(t *testing.T) {
-		t.Skip("Skipping")
+		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, "mark2", "--add"}
 
@@ -146,7 +146,7 @@ func TestMarkCommand(t *testing.T) {
 			storageDbClient.EXPECT().
 				Execute(strings.TrimSpace(`
 					INSERT INTO marks (window_id, mark) VALUES (?, ?)
-				`), "2", "mark2").
+				`), "1", "mark2").
 				Times(1),
 		)
 
@@ -157,18 +157,13 @@ func TestMarkCommand(t *testing.T) {
 				WindowTitle: "title1",
 				AppName:     "app1",
 			},
-			{
-				WindowID:    2,
-				WindowTitle: "title2",
-				AppName:     "app2",
-			},
 		}
 		jsonData, err := json.Marshal(windows)
 		if err != nil {
 			t.Fatal(err)
 		}
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--all", "--json"}).
+			SendCommand("list-windows", []string{"--focused", "--json"}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
@@ -187,7 +182,7 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("validates missing identifier - `marks mark`", func(t *testing.T) {
-		t.Skip("Skipping")
+		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command} // Missing identifier
 

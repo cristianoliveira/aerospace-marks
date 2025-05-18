@@ -23,7 +23,6 @@ Replaced all marks with 'mark1'
 [TestMarkCommand/marks_the_focused_window_-_`marks_mark_--add` - 1]
 []aerospacecli.Window{
     {WindowID:1, WindowTitle:"title1", AppName:"app1"},
-    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
 }
 aerospace-marks mark mark2 --add
 
