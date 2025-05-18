@@ -27,7 +27,7 @@ mark --add|--replace [--toggle] <identifier>
 See: man 5 sway
 `,
 	Version: VERSION,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		configHelp, _ := cmd.Flags().GetBool("help-config")
 		if configHelp {
 			cmd.Println(`Aerospace Marks CLI - Configuration
@@ -38,10 +38,14 @@ AEROSPACE_MARKS_LOGS_LEVEL - Log level [debug|info|warn|error] (default: disable
 AROSPACE_MARKS_LOGS_PATH   - Path to the logs file (default: /tmp/aerospace-marks.log)
 			`)
 
-			return
+			return nil
 		}
 
-		cmd.Run(cmd, args)
+		if len(args) < 1 {
+			return cmd.Help()
+		}
+
+		return nil
 	},
 }
 
