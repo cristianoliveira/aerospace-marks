@@ -30,6 +30,8 @@ if [ -z "$VERSION" ]; then
             GIT_TAG="v$GIT_TAG-$(date +%Y%m%d)-$(git rev-parse --short HEAD)"
         fi
 
+        # Remove var VERSION line if it exists  
+        sed -i '/var VERSION = /d' $VERSION_FILE
         echo "var VERSION = \"$GIT_TAG\"" >> $VERSION_FILE
         echo "Added version $GIT_TAG to cmd/main.go"
     else

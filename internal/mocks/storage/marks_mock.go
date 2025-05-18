@@ -127,3 +127,17 @@ func (mr *MockMarkStorageMockRecorder) ReplaceAllMarks(id, mark any) *gomock.Cal
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReplaceAllMarks", reflect.TypeOf((*MockMarkStorage)(nil).ReplaceAllMarks), id, mark)
 }
+
+// ToggleMark mocks base method.
+func (m *MockMarkStorage) ToggleMark(id, mark string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ToggleMark", id, mark)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ToggleMark indicates an expected call of ToggleMark.
+func (mr *MockMarkStorageMockRecorder) ToggleMark(id, mark any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ToggleMark", reflect.TypeOf((*MockMarkStorage)(nil).ToggleMark), id, mark)
+}
