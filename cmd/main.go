@@ -6,10 +6,11 @@ package cmd
 import (
 	"os"
 
+	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
 )
 
-func NewRootCmd() *cobra.Command {
+func NewRootCmd(storage storage.MarkStorage) *cobra.Command {
 	newRootCmd := &cobra.Command{
 		Use:   "aerospace-marks [cmd] [flags] <identifier>",
 		Short: "AeroSpace marks - Marks for Aerospace WM",
@@ -21,24 +22,22 @@ This CLI is heavily inspired by the marks feature of i3 and sway window managers
 	}
 
 	// Required new Mark Cmd because of leaking context
-	newRootCmd.AddCommand(MarkCmd())
-	newRootCmd.AddCommand(UnmarkCmd())
-	newRootCmd.AddCommand(FocusCmd())
-	newRootCmd.AddCommand(ListCmd())
+	newRootCmd.AddCommand(MarkCmd(storage))
+	newRootCmd.AddCommand(UnmarkCmd(storage))
+	newRootCmd.AddCommand(FocusCmd(storage))
+	newRootCmd.AddCommand(ListCmd(storage))
 	newRootCmd.AddCommand(ConfigCmd())
 
 	return newRootCmd
 }
-
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = NewRootCmd()
 
 func init() {
 	// NOTE: add here global flags
 	// rootCmd.Flags().BoolP("version", "v", false, "Print version information")
 }
 
-func Run() {
+func Run(storage storage.MarkStorage) {
+	rootCmd := NewRootCmd(storage)
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)

@@ -43,11 +43,7 @@ func TestMarksStorageClient(t *testing.T) {
 	logger.SetDefaultLogger(&logger.EmptyLogger{})
 
 	t.Run("Test NewMarkClient", func(t *testing.T) {
-		DefaultConnector = &MockConnector{
-			Client: &MockMarkStorage{},
-		}
-
-		client, err := NewMarkClient()
+		client, err := NewMarkClient(&MockMarkStorage{})
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -61,7 +57,7 @@ func TestMarksStorageClient(t *testing.T) {
 			Client: &MockMarkStorage{},
 		}
 
-		client, err := NewMarkClient()
+		client, err := NewMarkClient(&MockMarkStorage{})
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -72,25 +68,21 @@ func TestMarksStorageClient(t *testing.T) {
 			t.Fatalf("expected no error, got %v", err)
 		}
 
-		if len(client.(*MarkStorageClient).storage.(*MockMarkStorage).RecordArgs) != 1 {
-			t.Fatalf("expected 1 query, got %d", len(client.(*MarkStorageClient).storage.(*MockMarkStorage).RecordArgs))
+		if len(client.storage.(*MockMarkStorage).RecordArgs) != 1 {
+			t.Fatalf("expected 1 query, got %d", len(client.storage.(*MockMarkStorage).RecordArgs))
 		}
 		expectedQuery := "INSERT INTO marks (window_id, mark) VALUES (?, ?)"
-		if client.(*MarkStorageClient).storage.(*MockMarkStorage).RecordArgs[0] != expectedQuery {
-			t.Fatalf("expected query %s, got %s", expectedQuery, client.(*MarkStorageClient).storage.(*MockMarkStorage).RecordArgs[0])
+		if client.storage.(*MockMarkStorage).RecordArgs[0] != expectedQuery {
+			t.Fatalf("expected query %s, got %s", expectedQuery, client.storage.(*MockMarkStorage).RecordArgs[0])
 		}
 	})
 
 	t.Run("Test GetMarks", func(t *testing.T) {
-		DefaultConnector = &MockConnector{
-			Client: &MockMarkStorage{
+		client, err := NewMarkClient(&MockMarkStorage{
 				Marks: []Mark{
 					{WindowID: "window1", Mark: "mark1"},
 				},
-			},
-		}
-
-		client, err := NewMarkClient()
+			})
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -104,12 +96,12 @@ func TestMarksStorageClient(t *testing.T) {
 			t.Fatal("expected marks to be non-nil")
 		}
 
-		if len(client.(*MarkStorageClient).storage.(*MockMarkStorage).RecordArgs) != 1 {
-			t.Fatalf("expected 1 query, got %d", len(client.(*MarkStorageClient).storage.(*MockMarkStorage).RecordArgs))
+		if len(client.storage.(*MockMarkStorage).RecordArgs) != 1 {
+			t.Fatalf("expected 1 query, got %d", len(client.storage.(*MockMarkStorage).RecordArgs))
 		}
 		expectedQuery := "SELECT window_id, mark FROM marks"
-		if client.(*MarkStorageClient).storage.(*MockMarkStorage).RecordArgs[0] != expectedQuery {
-			t.Fatalf("expected query %s, got %s", expectedQuery, client.(*MarkStorageClient).storage.(*MockMarkStorage).RecordArgs[0])
+		if client.storage.(*MockMarkStorage).RecordArgs[0] != expectedQuery {
+			t.Fatalf("expected query %s, got %s", expectedQuery, client.storage.(*MockMarkStorage).RecordArgs[0])
 		}
 	})
 }

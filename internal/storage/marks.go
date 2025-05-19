@@ -34,12 +34,7 @@ type MarkStorageClient struct {
 	storage StorageDbClient
 }
 
-func NewMarkClient() (MarkStorage, error) {
-	storageClient, err := DefaultConnector.Connect()
-	if err != nil {
-		return nil, err
-	}
-
+func NewMarkClient(storageClient StorageDbClient) (*MarkStorageClient, error) {
 	client := &MarkStorageClient{
 		storage: storageClient,
 	}

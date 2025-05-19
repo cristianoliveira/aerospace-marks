@@ -34,7 +34,7 @@ func popWindow(windows []aerospacecli.Window, windowID string) (*aerospacecli.Wi
 }
 
 // listCmd represents the list command
-func ListCmd() *cobra.Command {
+func ListCmd(storageClient storage.MarkStorage) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",
 		Aliases: []string{"ls"},
@@ -47,13 +47,7 @@ Display in the following format:
 <mark>|<window-id>|<window-title>|<window-app>
 	`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			markClient, err := storage.NewMarkClient()
-			if err != nil {
-				return stdout.ErrorAndExit(err)
-			}
-			defer markClient.Close()
-
-			marks, err := markClient.GetMarks()
+			marks, err := storageClient.GetMarks()
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}

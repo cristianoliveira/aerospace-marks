@@ -19,7 +19,7 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		storageDbClient.EXPECT().
 			QueryAll(gomock.Any()).
 			Return(
@@ -67,7 +67,7 @@ func TestListCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(rootCmd, "list")
+		out, err := testutils.CmdExecute(NewRootCmd(strg), "list")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -85,7 +85,7 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		storageDbClient.EXPECT().
 			QueryAll(gomock.Any()).
 			Return(
@@ -133,7 +133,7 @@ func TestListCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(rootCmd, "list")
+		out, err := testutils.CmdExecute(NewRootCmd(strg), "list")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -146,12 +146,12 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		storageDbClient.EXPECT().
 			QueryAll(gomock.Any()).
 			Return([]storage.Mark{}, nil)
 
-		out, err := testutils.CmdExecute(rootCmd, "list")
+		out, err := testutils.CmdExecute(NewRootCmd(strg), "list")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -169,7 +169,7 @@ func TestListCommand(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		storageDbClient.EXPECT().
 			QueryAll(gomock.Any()).
 			Return(marks, nil)
@@ -191,7 +191,7 @@ func TestListCommand(t *testing.T) {
 				ExitCode:      0,
 			}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(rootCmd, "list")
+		out, err := testutils.CmdExecute(NewRootCmd(strg), "list")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -205,7 +205,17 @@ func TestListCommand(t *testing.T) {
 		command := "ls"
 		args := []string{command, "--help"}
 
-		out, err := testutils.CmdExecute(NewRootCmd(), args...)
+		connector := storage.MarksDatabaseConnector{}
+		conn, err := connector.Connect()
+		if err != nil {
+			t.Fatal(err)
+		}
+		strg, err := storage.NewMarkClient(conn)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}

@@ -18,8 +18,18 @@ func TestFocusCmd(t *testing.T) {
 	t.Run("validate missing identifier", func(t *testing.T) {
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
+		connector := storage.MarksDatabaseConnector{}
+		conn, err := connector.Connect()
+		if err != nil {
+			t.Fatal(err)
+		}
+		strg, err := storage.NewMarkClient(conn)
+		if err != nil {
+			t.Fatal(err)
+		}
+
 		args := []string{"focus"}
-		out, err := testutils.CmdExecute(rootCmd, args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if out != "" {
 			t.Fatal("output should be empty", out)
 		}
@@ -35,7 +45,7 @@ func TestFocusCmd(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, markStorage := mocks.MockStorageDbClient(ctrl)
 		gomock.InOrder(
 			storageDbClient.EXPECT().
 				QueryOne(strings.TrimSpace(`
@@ -60,7 +70,7 @@ func TestFocusCmd(t *testing.T) {
 				}, nil).Times(1)
 
 		args := []string{"focus", "mark1"}
-		out, err := testutils.CmdExecute(NewRootCmd(), args...)
+		out, err := testutils.CmdExecute(NewRootCmd(markStorage), args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -75,7 +85,7 @@ func TestFocusCmd(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		gomock.InOrder(
 			storageDbClient.EXPECT().
 				QueryOne(strings.TrimSpace(`
@@ -86,7 +96,7 @@ func TestFocusCmd(t *testing.T) {
 		)
 
 		stdout.ShuldExit = false
-		out, err := testutils.CmdExecute(rootCmd, args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}

@@ -14,16 +14,15 @@ import (
 // This module contains a set of mock helpers for mocking AeroSpace socket connections
 // and storage, easily used in unit tests.
 
-func MockStorageDbClient(ctrl *gomock.Controller) (*storage_mock.MockStorageDbClient, *storage_mock.MockDatabaseConnector) {
+func MockStorageDbClient(ctrl *gomock.Controller) (*storage_mock.MockStorageDbClient, storage.MarkStorage) {
 	storageDbClient := storage_mock.NewMockStorageDbClient(ctrl)
-	storageDbClient.EXPECT().Close().Return(nil).Times(1)
 
-	mockStorage := storage_mock.NewMockDatabaseConnector(ctrl)
-	mockStorage.EXPECT().Connect().Return(storageDbClient, nil).Times(1)
+	newStorage, err := storage.NewMarkClient(storageDbClient)
+	if err != nil {
+		panic(err)
+	}
 
-	storage.DefaultConnector = mockStorage
-
-	return storageDbClient, mockStorage
+	return storageDbClient, newStorage
 }
 
 func MockAerospaceConnection(ctrl *gomock.Controller) (*aerospacecli_mock.MockAeroSpaceSocketConn, *aerospacecli_mock.MockAeroSpaceConnector) {

@@ -12,7 +12,7 @@ import (
 )
 
 // unmarkCmd represents the unmark command
-func UnmarkCmd() *cobra.Command {
+func UnmarkCmd(storageClient storage.MarkStorage) *cobra.Command {
 	unmarkCmd := &cobra.Command{
 		Use:   "unmark",
 		Short: "Unmark one or more windows by identifier",
@@ -24,14 +24,8 @@ unmark cmd will remove identifier from the list of current marks on a window. If
 	`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			markClient, err := storage.NewMarkClient()
-			if err != nil {
-				return err
-			}
-			defer markClient.Close()
-
 			if len(args) == 0 {
-				rowsEffected, err := markClient.DeleteAllMarks()
+				rowsEffected, err := storageClient.DeleteAllMarks()
 				if err != nil {
 					return err
 				}
@@ -43,7 +37,7 @@ unmark cmd will remove identifier from the list of current marks on a window. If
 
 			var count int
 			for _, identifier := range args {
-				if _, err := markClient.DeleteByMark(identifier); err != nil {
+				if _, err := storageClient.DeleteByMark(identifier); err != nil {
 					return err
 				}
 				count++

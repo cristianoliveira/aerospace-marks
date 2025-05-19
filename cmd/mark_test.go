@@ -7,6 +7,7 @@ import (
 
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
+	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
 	"github.com/gkampitakis/go-snaps/snaps"
@@ -22,7 +23,7 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{1}[0])
 		gomock.InOrder(
 			storageDbClient.EXPECT().
@@ -62,7 +63,7 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(rootCmd, args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -79,7 +80,7 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{1}[0])
 		gomock.InOrder(
 			storageDbClient.EXPECT().
@@ -124,7 +125,7 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(), args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -141,7 +142,7 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		gomock.InOrder(
 			storageDbClient.EXPECT().
 				Execute(strings.TrimSpace(`
@@ -172,7 +173,7 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(rootCmd, args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -186,12 +187,20 @@ func TestMarkCommand(t *testing.T) {
 		command := "mark"
 		args := []string{command} // Missing identifier
 
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
+		connector := storage.MarksDatabaseConnector{}
+		conn, err := connector.Connect()
+		if err != nil {
+			t.Fatal(err)
+		}
+		strg, err := storage.NewMarkClient(conn)
+		if err != nil {
+			t.Fatalf("expected no error, got %v", err)
+		}
+		defer strg.Close()
 
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
-		out, err := testutils.CmdExecute(rootCmd, args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err == nil {
 			t.Fatal(err)
 		}
@@ -211,7 +220,7 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{1}[0])
 		gomock.InOrder(
 			storageDbClient.EXPECT().
@@ -250,7 +259,7 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(), args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -267,7 +276,7 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{0}[0])
 		gomock.InOrder(
 			storageDbClient.EXPECT().
@@ -306,7 +315,7 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(), args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}

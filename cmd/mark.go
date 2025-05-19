@@ -13,9 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var markClient *storage.StorageClient
-
-func MarkCmd() *cobra.Command {
+func MarkCmd(storageClient storage.MarkStorage) *cobra.Command {
 	newMarkCmd := &cobra.Command{
 		// aerospace mark
 		Use:   "mark <identifier> [flags]",
@@ -45,12 +43,6 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			}
 			identifier := args[0]
 
-			markClient, err := storage.NewMarkClient()
-			if err != nil {
-				return stdout.ErrorAndExit(err)
-			}
-			defer markClient.Close()
-
 			add, _ := cmd.Flags().GetBool("add")
 			replace, _ := cmd.Flags().GetBool("replace")
 			winArgID, _ := cmd.Flags().GetString("window-id")
@@ -73,7 +65,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 
 			// Manage marks using MarkClient
 			if add && !replace {
-				err = markClient.AddMark(windowID, identifier)
+				err := storageClient.AddMark(windowID, identifier)
 				if err != nil {
 					return stdout.ErrorAndExit(err)
 				}
@@ -87,7 +79,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 					return stdout.ErrorAndExit(err)
 				}
 
-				err := markClient.ToggleMark(windowID, identifier)
+				err := storageClient.ToggleMark(windowID, identifier)
 				if err != nil {
 					return stdout.ErrorAndExit(err)
 				}
@@ -97,7 +89,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 				return nil
 			}
 
-			hasBeenDeleted, err := markClient.ReplaceAllMarks(windowID, identifier)
+			hasBeenDeleted, err := storageClient.ReplaceAllMarks(windowID, identifier)
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}

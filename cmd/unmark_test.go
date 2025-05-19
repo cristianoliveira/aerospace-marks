@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
+	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
@@ -19,7 +20,7 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{1}[0])
 		gomock.InOrder(
 			storageDbClient.EXPECT().
@@ -31,7 +32,7 @@ func TestUnmarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-		out, err := testutils.CmdExecute(rootCmd, args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -48,7 +49,7 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{2}[0])
 		gomock.InOrder(
 			storageDbClient.EXPECT().
@@ -57,7 +58,7 @@ func TestUnmarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-		out, err := testutils.CmdExecute(rootCmd, args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -70,8 +71,17 @@ func TestUnmarkCommand(t *testing.T) {
 		// t.Skip("Skipping")
 		command := "unmark"
 		args := []string{command, "--help"}
+		connector := storage.MarksDatabaseConnector{}
+		conn, err := connector.Connect()
+		if err != nil {
+			t.Fatal(err)
+		}
+		strg, err := storage.NewMarkClient(conn)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-		out, err := testutils.CmdExecute(rootCmd, args...)
+		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
 		if err != nil {
 			t.Fatal(err)
 		}

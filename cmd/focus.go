@@ -13,7 +13,7 @@ import (
 )
 
 // focusCmd represents the focus command
-func FocusCmd() *cobra.Command {
+func FocusCmd(storageClient storage.MarkStorage) *cobra.Command {
 	return &cobra.Command{
 		Use:   "focus <identifier> [flags]",
 		Short: "Move focus to a window by mark (identifier)",
@@ -22,12 +22,6 @@ func FocusCmd() *cobra.Command {
 Moves focus to the first window marked with the specified identifier.
 	`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			markClient, err := storage.NewMarkClient()
-			if err != nil {
-				return stdout.ErrorAndExit(err)
-			}
-			defer markClient.Close()
-
 			if len(args) < 1 {
 				return fmt.Errorf("No identifier provided to focus")
 			}
@@ -35,7 +29,7 @@ Moves focus to the first window marked with the specified identifier.
 			mark := args[0]
 
 			// Get window ID by mark
-			windowID, err := markClient.GetWindowIDByMark(mark)
+			windowID, err := storageClient.GetWindowIDByMark(mark)
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}
