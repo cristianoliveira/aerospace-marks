@@ -17,7 +17,8 @@ remove identifier if it is already marked.
 
 ## Command: `mark`
 
-Mark a window with the given identifier.
+Mark the current focused window with the given identifier. 
+You may specify the window with `--window-id <id>` option.
 
 USAGE: `aerospace-marks mark [--add|--replace] [--toggle] <identifier>`
 
@@ -46,6 +47,8 @@ USAGE: `aerospace-marks unmark [<identifier>]`
 ## Command: `config`
 
 Show the current configurations and other info related
+
+----
 
 # Implemantation details
 

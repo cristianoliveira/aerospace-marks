@@ -27,7 +27,7 @@ Sometimes my "video" context means YouTube, sometimes it’s a video player, som
 
 ## Usage
 
-Allow one to mark a window with the given identifier. 
+Allow one to mark the current focused window with the given identifier. 
 ```text
 aerospace-marks mark [--add|--replace] [--toggle] <identifier>
 ```
