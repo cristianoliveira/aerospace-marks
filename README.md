@@ -96,6 +96,24 @@ go install github.com/cristianoliveira/aerospace-marks@latest
 
 This will download and install the latest version of `aerospace-marks` to your `$GOPATH/bin`.
 
+#### Post installation
+
+After installing, you may need to include aerospace-marks in aerospace context.
+
+Check where the binary is installed, run:
+```bash
+echo $(which aerospace-marks) | sed 's/\/aerospace-marks//g'
+```
+
+And in your config add:
+```toml
+[exec]
+    inherit-env-vars = true
+[exec.env-vars]
+    # Replace 'aerospace-marks/install/path' with the actual path from the above command
+    PATH = 'aerospace-marks/install/path/bin:${PATH}'
+```
+
 ### Building from Source
 
 To build from source, ensure you have Go installed. Then, clone the repository and run:
