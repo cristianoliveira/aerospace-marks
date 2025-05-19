@@ -56,10 +56,7 @@ func (c *MarkStorageClient) AddMark(id string, mark string) error {
 }
 
 func (c *MarkStorageClient) GetMarks() ([]Mark, error) {
-	query := `
-	SELECT window_id, mark
-	FROM marks
-	`
+	query := `SELECT window_id, mark FROM marks`
 	marks, err := c.storage.QueryAll(query)
 	return marks, err
 }
