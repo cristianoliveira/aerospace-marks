@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+
+	"github.com/cristianoliveira/aerospace-marks/internal/constants"
 )
 
 
@@ -107,7 +109,7 @@ func (l *EmptyLogger) AsJson(data any) string {
 // It accepts a path to a file where logs will be written
 // and a boolean indicating whether to log to stdout as well
 func NewLogger() (Logger, error) {
-  path := os.Getenv("AEROSPACE_MARKS_LOGS_PATH")
+  path := os.Getenv(constants.EnvAeroSpaceMarksLogsPath)
   if path == "" {
     path = "/tmp/aerospace-marks.log"
   }
@@ -117,7 +119,7 @@ func NewLogger() (Logger, error) {
       return nil, fmt.Errorf("failed to open log file: %v", err)
   }
 
-  configLogLevel := os.Getenv("AEROSPACE_MARKS_LOGS_LEVEL")
+  configLogLevel := os.Getenv(constants.EnvAeroSpaceMarksLogsLevel)
   if configLogLevel == "" {
     return &EmptyLogger{}, nil
   }

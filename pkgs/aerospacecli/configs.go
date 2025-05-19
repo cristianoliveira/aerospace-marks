@@ -3,6 +3,8 @@ package aerospacecli
 import (
 	"fmt"
 	"os"
+
+	"github.com/cristianoliveira/aerospace-marks/internal/constants"
 )
 
 // GetSocketPath returns the socket path
@@ -11,8 +13,8 @@ import (
 // See: https://github.com/nikitabobko/AeroSpace/blob/f12ee6c9d914f7b561ff7d5c64909882c67061cd/Sources/Cli/_main.swift#L47
 func GetSocketPath() (string, error) {
 	socketPath := fmt.Sprintf("/tmp/bobko.%s-%s.sock", "aerospace", os.Getenv("USER"))
-	if os.Getenv("AEROSPACESOCK") != "" {
-		socketPath = os.Getenv("AEROSPACESOCK")
+	if os.Getenv(constants.EnvAeroSpaceSock) != "" {
+		socketPath = os.Getenv(constants.EnvAeroSpaceSock)
 	} else {
 		socketPath = fmt.Sprintf("/tmp/bobko.%s-%s.sock", "aerospace", os.Getenv("USER"))
 	}

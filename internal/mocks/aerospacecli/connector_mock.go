@@ -54,6 +54,21 @@ func (mr *MockAeroSpaceSocketConnMockRecorder) CloseConnection() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CloseConnection", reflect.TypeOf((*MockAeroSpaceSocketConn)(nil).CloseConnection))
 }
 
+// GetSocketPath mocks base method.
+func (m *MockAeroSpaceSocketConn) GetSocketPath() (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSocketPath")
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSocketPath indicates an expected call of GetSocketPath.
+func (mr *MockAeroSpaceSocketConnMockRecorder) GetSocketPath() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSocketPath", reflect.TypeOf((*MockAeroSpaceSocketConn)(nil).GetSocketPath))
+}
+
 // SendCommand mocks base method.
 func (m *MockAeroSpaceSocketConn) SendCommand(command string, args []string) (*aerospacecli.Response, error) {
 	m.ctrl.T.Helper()

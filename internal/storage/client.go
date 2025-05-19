@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
+	"github.com/cristianoliveira/aerospace-marks/internal/constants"
 )
 
 type Mark struct {
@@ -168,7 +169,7 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 func GetDatabaseConfig() StorageConfig {
 	dbDir := fmt.Sprintf("%s/.local/state/aerospace-marks", os.Getenv("HOME"))
 
-	configDbPath := os.Getenv("AEROSPACE_MARKS_DB_PATH")
+	configDbPath := os.Getenv(constants.EnvAeroSpaceMarksDbPath)
 	if configDbPath != "" {
 		dbDir = fmt.Sprintf("%s", configDbPath)
 	} 

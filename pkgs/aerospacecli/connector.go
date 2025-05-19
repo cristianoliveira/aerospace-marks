@@ -29,12 +29,24 @@ type AeroSpaceSocketConn interface {
 
 	// SendCommand sends a command to the AeroSpace socket and returns the response.
 	SendCommand(command string, args []string) (*Response, error)
+
+	// GetSocketPath returns the socket path for the AeroSpace connection.
+	GetSocketPath() (string, error)
 }
 
 type AeroSpaceSocketConnection struct {
 	SocketPath          string
 	MinAerospaceVersion string
 	Conn                *net.Conn
+	socketPath          string
+}
+
+func (c *AeroSpaceSocketConnection) GetSocketPath() (string, error) {
+	if c.SocketPath != "" {
+		return "", fmt.Errorf("missing socket path")
+	}
+
+	return c.socketPath, nil
 }
 
 func (c *AeroSpaceSocketConnection) CloseConnection() error {
@@ -115,6 +127,7 @@ func (c *AeroSpaceDefaultConnector) Connect() (AeroSpaceSocketConn, error) {
 	client := &AeroSpaceSocketConnection{
 		MinAerospaceVersion: "0.15.2-Beta",
 		Conn:                &conn,
+		socketPath:          socketPath,
 	}
 
 	return client, nil
