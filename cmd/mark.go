@@ -13,7 +13,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func MarkCmd(storageClient storage.MarkStorage) *cobra.Command {
+func MarkCmd(
+	storageClient storage.MarkStorage,
+	aerospaceClient aerospace.AerosSpaceMarkWindows,
+) *cobra.Command {
 	newMarkCmd := &cobra.Command{
 		// aerospace mark
 		Use:   "mark <identifier> [flags]",
@@ -50,13 +53,13 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			// Get the window ID from the command line argument
 			windowID := strings.TrimSpace(winArgID)
 			if winArgID == "" {
-				window, err := aerospace.GetFocusedWindowID()
+				window, err := aerospaceClient.Client().GetFocusedWindow()
 				if err != nil {
 					return stdout.ErrorAndExit(err)
 				}
 				windowID = fmt.Sprintf("%d", window.WindowID)
 			} else {
-				window, err := aerospace.GetWindowByID(windowID)
+				window, err := aerospaceClient.GetWindowByID(windowID)
 				if err != nil {
 					return stdout.ErrorAndExit(err)
 				}

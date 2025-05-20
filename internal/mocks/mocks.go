@@ -2,8 +2,10 @@ package mocks
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 
+	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	aerospacecli_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"
 	storage_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
@@ -25,15 +27,23 @@ func MockStorageDbClient(ctrl *gomock.Controller) (*storage_mock.MockStorageDbCl
 	return storageDbClient, newStorage
 }
 
-func MockAerospaceConnection(ctrl *gomock.Controller) (*aerospacecli_mock.MockAeroSpaceSocketConn, *aerospacecli_mock.MockAeroSpaceConnector) {
+func MockAerospaceConnection(ctrl *gomock.Controller) (
+	*aerospacecli_mock.MockAeroSpaceSocketConn,
+	aerospace.AerosSpaceMarkWindows,
+) {
 	mockAeroSpaceConnection := aerospacecli_mock.NewMockAeroSpaceSocketConn(ctrl)
 	mockAeroSpaceConnetor := aerospacecli_mock.NewMockAeroSpaceConnector(ctrl)
 	mockAeroSpaceConnetor.EXPECT().Connect().Return(mockAeroSpaceConnection, nil).Times(1)
-	mockAeroSpaceConnection.EXPECT().CloseConnection().Return(nil).Times(1)
+	// mockAeroSpaceConnection.EXPECT().CloseConnection().Return(nil).Times(1)
 
 	aerospacecli.DefaultConnector = mockAeroSpaceConnetor
 
-	return mockAeroSpaceConnection, mockAeroSpaceConnetor
+	aerospaceClient, err := aerospace.NewAeroSpaceClient()
+	if err != nil {
+		panic(fmt.Errorf("failed to create aerospace client: %w", err))
+	}
+
+	return mockAeroSpaceConnection, aerospaceClient
 }
 
 func MockStorageDbResult(ctrl *gomock.Controller, lastInsertId *int64, rowsAffected *int64) (*storage_mock.MockDbResult) {

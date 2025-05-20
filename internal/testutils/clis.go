@@ -7,9 +7,11 @@ package testutils
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 
+	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
 	"github.com/spf13/cobra"
 )
 
@@ -47,4 +49,14 @@ func CaptureStdOut(f func() error) (string, error) {
 	// Read output
 	io.Copy(&buf, r)
 	return buf.String(), nil
+}
+
+type MockEmptyAerspaceMarkWindows struct {}
+func (d *MockEmptyAerspaceMarkWindows) Client() (*aerospacecli.AeroSpaceWM) {
+	return &aerospacecli.AeroSpaceWM{}
+}
+
+func (d *MockEmptyAerspaceMarkWindows) GetWindowByID(windowID string) (*aerospacecli.Window, error) {
+	fmt.Println("Mocked GetWindowByID called with windowID:", windowID)
+	return &aerospacecli.Window{}, nil
 }

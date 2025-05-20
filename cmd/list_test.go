@@ -35,7 +35,7 @@ func TestListCommand(t *testing.T) {
 				}, nil,
 			)
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
 			{
 				WindowID:    1,
@@ -67,7 +67,9 @@ func TestListCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), "list")
+		args := []string{"list"}
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -101,7 +103,7 @@ func TestListCommand(t *testing.T) {
 				}, nil,
 			)
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
 			{
 				WindowID:    111,
@@ -133,7 +135,9 @@ func TestListCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), "list")
+		args := []string{"list"}
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -151,7 +155,11 @@ func TestListCommand(t *testing.T) {
 			QueryAll(gomock.Any()).
 			Return([]storage.Mark{}, nil)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), "list")
+		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+
+		args := []string{"list"}
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -181,7 +189,7 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		mockAeroSpaceConnection.EXPECT().
 			SendCommand("list-windows", []string{"--all", "--json"}).
 			Return(&aerospacecli.Response{
@@ -191,7 +199,9 @@ func TestListCommand(t *testing.T) {
 				ExitCode:      0,
 			}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), "list")
+		args := []string{"list"}
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -205,6 +215,9 @@ func TestListCommand(t *testing.T) {
 		command := "ls"
 		args := []string{command, "--help"}
 
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
 		connector := storage.MarksDatabaseConnector{}
 		conn, err := connector.Connect()
 		if err != nil {
@@ -215,7 +228,10 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}

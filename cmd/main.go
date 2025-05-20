@@ -7,10 +7,11 @@ import (
 	"os"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
+	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/spf13/cobra"
 )
 
-func NewRootCmd(storage storage.MarkStorage) *cobra.Command {
+func NewRootCmd(storage storage.MarkStorage, aerospaceClient aerospace.AerosSpaceMarkWindows) *cobra.Command {
 	newRootCmd := &cobra.Command{
 		Use:   "aerospace-marks [cmd] [flags] <identifier>",
 		Short: "AeroSpace marks - Marks for Aerospace WM",
@@ -22,10 +23,10 @@ This CLI is heavily inspired by the marks feature of i3 and sway window managers
 	}
 
 	// Required new Mark Cmd because of leaking context
-	newRootCmd.AddCommand(MarkCmd(storage))
+	newRootCmd.AddCommand(MarkCmd(storage, aerospaceClient))
 	newRootCmd.AddCommand(UnmarkCmd(storage))
-	newRootCmd.AddCommand(FocusCmd(storage))
-	newRootCmd.AddCommand(ListCmd(storage))
+	newRootCmd.AddCommand(FocusCmd(storage, aerospaceClient))
+	newRootCmd.AddCommand(ListCmd(storage, aerospaceClient))
 	newRootCmd.AddCommand(ConfigCmd())
 
 	return newRootCmd
@@ -36,8 +37,8 @@ func init() {
 	// rootCmd.Flags().BoolP("version", "v", false, "Print version information")
 }
 
-func Run(storage storage.MarkStorage) {
-	rootCmd := NewRootCmd(storage)
+func Run(storage storage.MarkStorage, aerospaceClient aerospace.AerosSpaceMarkWindows) {
+	rootCmd := NewRootCmd(storage, aerospaceClient)
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
