@@ -13,6 +13,12 @@ type AeroSpaceClient interface {
 	// Same as `aerospace list-windows --all --json`
 	GetAllWindows() ([]Window, error)
 
+	// GetAllWindowsByWorkspace returns all windows by workspace
+	//
+	// Returns all windows from AeroSpaceWM by workspace
+	// Same as `aerospace list-windows --workspace <workspace> --json`
+	GetAllWindowsByWorkspace(workspaceName string) ([]Window, error)
+
 	// GetFocusedWindow returns the focused window
 	//
 	// Returns the focused window from AeroSpaceWM

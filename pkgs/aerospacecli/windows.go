@@ -37,6 +37,20 @@ func (c *AeroSpaceWM) GetAllWindows() ([]Window, error) {
 	return windows, nil
 }
 
+func (c *AeroSpaceWM) GetAllWindowsByWorkspace(workspaceName string) ([]Window, error) {
+	response, err := c.Conn.SendCommand("list-windows", []string{"--workspace", workspaceName, "--json"})
+	if err != nil {
+		return nil, err
+	}
+
+	var windows []Window
+	err = json.Unmarshal([]byte(response.StdOut), &windows)
+	if err != nil {
+		return nil, err
+	}
+	return windows, nil
+}
+
 func (c *AeroSpaceWM) GetFocusedWindow() (*Window, error) {
 	response, err := c.Conn.SendCommand("list-windows", []string{"--focused", "--json"})
 	if err != nil {
