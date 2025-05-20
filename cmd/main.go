@@ -28,6 +28,7 @@ This CLI is heavily inspired by the marks feature of i3 and sway window managers
 	newRootCmd.AddCommand(FocusCmd(storage, aerospaceClient))
 	newRootCmd.AddCommand(ListCmd(storage, aerospaceClient))
 	newRootCmd.AddCommand(ConfigCmd())
+	newRootCmd.AddCommand(SummonCmd(storage, aerospaceClient))
 
 	return newRootCmd
 }
