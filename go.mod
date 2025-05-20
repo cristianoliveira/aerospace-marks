@@ -3,6 +3,7 @@ module github.com/cristianoliveira/aerospace-marks
 go 1.24.2
 
 require (
+	github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli v0.0.0-20250520180619-c5bb6a2f1e95 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gkampitakis/ciinfo v0.3.1 // indirect
 	github.com/gkampitakis/go-diff v1.3.2 // indirect
