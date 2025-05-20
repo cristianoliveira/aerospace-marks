@@ -55,7 +55,7 @@ Configure with ENV variables:
 				dbConfig.DbPath,
 				logConfig.Path,
 				logConfig.Level,
-			  constants.EnvAeroSpaceSock,
+			  aerospacecli.EnvAeroSpaceSock,
 				constants.EnvAeroSpaceMarksDbPath,
 				constants.EnvAeroSpaceMarksLogsLevel,
 				constants.EnvAeroSpaceMarksLogsPath,

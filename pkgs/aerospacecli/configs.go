@@ -3,8 +3,14 @@ package aerospacecli
 import (
 	"fmt"
 	"os"
+)
 
-	"github.com/cristianoliveira/aerospace-marks/internal/constants"
+const (
+  // Environment variables
+
+  // EnvAeroSpaceSock is the environment variable for the AeroSpace socket path
+  // default: `/tmp/bobko.aerospace-$USER.sock`
+  EnvAeroSpaceSock string = "AEROSPACESOCK"
 )
 
 // GetSocketPath returns the socket path
@@ -13,8 +19,8 @@ import (
 // See: https://github.com/nikitabobko/AeroSpace/blob/f12ee6c9d914f7b561ff7d5c64909882c67061cd/Sources/Cli/_main.swift#L47
 func GetSocketPath() (string, error) {
 	socketPath := fmt.Sprintf("/tmp/bobko.%s-%s.sock", "aerospace", os.Getenv("USER"))
-	if os.Getenv(constants.EnvAeroSpaceSock) != "" {
-		socketPath = os.Getenv(constants.EnvAeroSpaceSock)
+	if os.Getenv(EnvAeroSpaceSock) != "" {
+		socketPath = os.Getenv(EnvAeroSpaceSock)
 	} else {
 		socketPath = fmt.Sprintf("/tmp/bobko.%s-%s.sock", "aerospace", os.Getenv("USER"))
 	}
