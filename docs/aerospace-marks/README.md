@@ -44,6 +44,12 @@ USAGE: `aerospace-marks unmark [<identifier>]`
 
 [read more](/docs/aerospace-marks/CMD_UNMARK.md)
 
+## Command: `summon`
+
+summon will bring the marked window to the current workspace.
+
+USAGE: `aerospace-marks summon [<identifier>]`
+
 ## Command: `config`
 
 Show the current configurations and other info related

@@ -25,7 +25,7 @@ I wanted something more granular than workspaces — I want to jump to a specifi
 
 Sometimes my "video" context means YouTube, sometimes it’s a video player, sometimes a browser. I want to be able to jump to the right window, regardless of which workspace it's on.
 
-## Usage
+## Basic Usage
 
 Allow one to mark the current focused window with the given identifier. 
 ```text
@@ -35,6 +35,10 @@ And then focus to a window with the given mark.
 ```text
 aerospace-marks focus <identifier>
 ```
+
+## Advanced Usage
+
+See more in [documentation](docs/aerospace-marks)
 
 ### Config Usage
 
@@ -57,8 +61,6 @@ cmd-ctrl-l = ["exec-and-forget aerospace-marks focus l"]
 
 cmd-ctrl-b = ["exec-and-forget aerospace-marks focus browser", "mode main"]
 ```
-
-See more in [documentation](docs/aerospace-marks)
 
 ## Installation
 
