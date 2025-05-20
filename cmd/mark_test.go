@@ -41,7 +41,7 @@ func TestMarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
 			{
 				WindowID:    1,
@@ -63,7 +63,8 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -98,7 +99,7 @@ func TestMarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
 			{
 				WindowID:    1,
@@ -125,7 +126,8 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -151,7 +153,7 @@ func TestMarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
 			{
 				WindowID:    1,
@@ -173,7 +175,8 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -200,7 +203,12 @@ func TestMarkCommand(t *testing.T) {
 
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err == nil {
 			t.Fatal(err)
 		}
@@ -237,7 +245,7 @@ func TestMarkCommand(t *testing.T) {
 				Times(0),
 		)
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
 			{
 				WindowID:    2,
@@ -259,7 +267,8 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -293,7 +302,7 @@ func TestMarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
 			{
 				WindowID:    2,
@@ -315,7 +324,8 @@ func TestMarkCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}

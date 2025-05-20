@@ -4,6 +4,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
@@ -27,9 +28,16 @@ func TestFocusCmd(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		defer strg.Close()
+
+		aerospaceClient, err := aerospace.NewAeroSpaceClient()
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		args := []string{"focus"}
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if out != "" {
 			t.Fatal("output should be empty", out)
 		}
@@ -45,7 +53,7 @@ func TestFocusCmd(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, markStorage := mocks.MockStorageDbClient(ctrl)
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
 		gomock.InOrder(
 			storageDbClient.EXPECT().
 				QueryOne(strings.TrimSpace(`
@@ -58,7 +66,7 @@ func TestFocusCmd(t *testing.T) {
 				Times(1),
 		)
 
-		mockAeroSpaceConnection, _ := mocks.MockAerospaceConnection(ctrl)
+		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		mockAeroSpaceConnection.EXPECT().
 			SendCommand("focus", []string{"--window-id", "1"}).
 			Return(
@@ -70,7 +78,8 @@ func TestFocusCmd(t *testing.T) {
 				}, nil).Times(1)
 
 		args := []string{"focus", "mark1"}
-		out, err := testutils.CmdExecute(NewRootCmd(markStorage), args...)
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -82,10 +91,11 @@ func TestFocusCmd(t *testing.T) {
 	t.Run("focus using mark that does not exist", func(t *testing.T) {
 		command := "focus"
 		args := []string{command, "nonexistent-mark"}
+
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-
 		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
+
 		gomock.InOrder(
 			storageDbClient.EXPECT().
 				QueryOne(strings.TrimSpace(`
@@ -94,9 +104,11 @@ func TestFocusCmd(t *testing.T) {
 				Return(nil, nil).
 				Times(1),
 		)
-
+		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		stdout.ShuldExit = false
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}

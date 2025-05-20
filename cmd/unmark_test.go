@@ -32,7 +32,10 @@ func TestUnmarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+	  _, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -58,7 +61,10 @@ func TestUnmarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+	  aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -81,7 +87,10 @@ func TestUnmarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		out, err := testutils.CmdExecute(NewRootCmd(strg), args...)
+	  aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}

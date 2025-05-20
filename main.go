@@ -5,6 +5,7 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
+	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 )
 
 func main() {
@@ -27,5 +28,10 @@ func main() {
 	}
 	defer markClient.Close()
 
-	cmd.Run(markClient)
+	aerospaceMarkClient, err := aerospace.NewAeroSpaceClient()
+	if err != nil {
+		stdout.ErrorAndExit(err)
+	}
+
+	cmd.Run(markClient, aerospaceMarkClient)
 }

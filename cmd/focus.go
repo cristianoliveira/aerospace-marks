@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
@@ -13,7 +14,10 @@ import (
 )
 
 // focusCmd represents the focus command
-func FocusCmd(storageClient storage.MarkStorage) *cobra.Command {
+func FocusCmd(
+	storageClient storage.MarkStorage,
+	aerospaceClient aerospace.AerosSpaceMarkWindows,
+) *cobra.Command {
 	return &cobra.Command{
 		Use:   "focus <identifier> [flags]",
 		Short: "Move focus to a window by mark (identifier)",
@@ -38,7 +42,11 @@ Moves focus to the first window marked with the specified identifier.
 			}
 
 			// Focus to window by ID
-			err = aerospace.SetFocusToWindowId(windowID)
+			intWindowID, err := strconv.Atoi(windowID)
+			if err != nil {
+				return stdout.ErrorAndExitf("invalid window ID '%s'", windowID)
+			}
+			err = aerospaceClient.Client().SetFocusByWindowID(intWindowID)
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}

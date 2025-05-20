@@ -34,7 +34,10 @@ func popWindow(windows []aerospacecli.Window, windowID string) (*aerospacecli.Wi
 }
 
 // listCmd represents the list command
-func ListCmd(storageClient storage.MarkStorage) *cobra.Command {
+func ListCmd(
+	storageClient storage.MarkStorage,
+	aerospaceClient aerospace.AerosSpaceMarkWindows,
+) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",
 		Aliases: []string{"ls"},
@@ -56,7 +59,7 @@ Display in the following format:
 				return nil
 			}
 
-			windows, err := aerospace.GetAllWindows()
+			windows, err := aerospaceClient.Client().GetAllWindows()
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}
