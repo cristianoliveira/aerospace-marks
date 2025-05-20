@@ -4,12 +4,6 @@ package constants
 
 
 const (
-  // Environment variables
-
-  // EnvAeroSpaceSock is the environment variable for the AeroSpace socket path
-  // default: `/tmp/bobko.aerospace-$USER.sock`
-  EnvAeroSpaceSock string = "AEROSPACESOCK"
-
   // EnvAeroSpaceMarksDbPath is the environment variable for the AeroSpace marks database path
   // default: `$HOME/.local/state/aerospace-marks`
   EnvAeroSpaceMarksDbPath string = "AEROSPACE_MARKS_DB_PATH"
