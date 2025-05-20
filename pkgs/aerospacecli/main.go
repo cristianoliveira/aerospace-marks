@@ -25,6 +25,23 @@ type AeroSpaceClient interface {
 	// Same as `aerospace focus --window-id <window-id>`
 	SetFocusByWindowID(windowID int) error
 
+	// GetFocusedWorkspace returns the current workspace
+	//
+	// Returns the current workspace from AeroSpaceWM
+	// Same as:
+	//
+	// aerospace list-workspaces --focused --json
+	GetFocusedWorkspace() (*Workspace, error)
+
+
+	// MoveWindowToWorkspace moves the window to the workspace
+	//
+	// Moves the window to the workspace from AeroSpaceWM
+	// Similar to:
+	//
+	// aerospace move-node-to-workspace <workspace> --window-id <window-id>
+	MoveWindowToWorkspace(windowID int, workspaceName string) error
+
 	// Connection Methods
 	
 	// CloseConnection
