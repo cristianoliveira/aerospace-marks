@@ -14,6 +14,8 @@ type MarkStorage interface {
 	GetMarks() ([]Mark, error)
 	// GetMarksByWindowID returns all marks for a given window ID
 	GetMarksByWindowID(id string) ([]Mark, error)
+	// GetWindowByMark returns the window for a given mark
+	GetWindowByMark(mark string) (*Mark, error)
 	// GetWindowIDByMark returns the window ID for a given mark
 	GetWindowIDByMark(mark string) (string, error)
 	// ReplaceAllMarks replaces all marks for a window with a new mark
@@ -67,6 +69,24 @@ func (c *MarkStorageClient) GetMarksByWindowID(id string) ([]Mark, error) {
 		return nil, err
 	}
 	return marks, nil
+}
+
+// GetWindowByMark returns the window for a given mark
+//
+// This function will return the first window that matches the mark
+// If multiple windows match the mark, it will error
+func (c *MarkStorageClient) GetWindowByMark(mark string) (*Mark, error) {
+	query := "SELECT * FROM marks WHERE mark = ?"
+	markedWindow, err := c.storage.QueryOne(query, mark)
+	if err != nil {
+		return nil, err
+	}
+
+	if markedWindow == nil {
+		return nil, fmt.Errorf("no window found for mark %s", mark)
+	}
+
+	return markedWindow, nil
 }
 
 // Get window ID by mark

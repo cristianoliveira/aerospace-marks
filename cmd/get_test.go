@@ -29,8 +29,8 @@ func TestGetCommand(t *testing.T) {
 		}
 
 		storageMock.EXPECT().
-			QueryAll(gomock.Any(), gomock.Any()).
-			Return(marks, nil)
+			QueryOne("SELECT * FROM marks WHERE mark = ?", "mark1").
+			Return(&marks[0], nil)
 
 		connectionMock, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
@@ -90,8 +90,8 @@ func TestGetCommand(t *testing.T) {
 		}
 
 		storageMock.EXPECT().
-			QueryAll(gomock.Any(), gomock.Any()).
-			Return(marks, nil)
+			QueryOne("SELECT * FROM marks WHERE mark = ?", "mark1").
+			Return(&marks[0], nil)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{
@@ -138,8 +138,8 @@ func TestGetCommand(t *testing.T) {
 		}
 
 		storageMock.EXPECT().
-			QueryAll(gomock.Any(), gomock.Any()).
-			Return(marks, nil)
+			QueryOne("SELECT * FROM marks WHERE mark = ?", "mark1").
+			Return(&marks[0], nil)
 
 		connectionMock, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospacecli.Window{

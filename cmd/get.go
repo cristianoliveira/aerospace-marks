@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
@@ -30,19 +31,20 @@ This command retrieves a window by its mark (identifier). Print in the following
 				return fmt.Errorf("missing mark (identifier)")
 			}
 
-			mark := args[0]
+			mark := strings.TrimSpace(args[0])
+			if mark == "" {
+				return fmt.Errorf("mark (identifier) cannot be empty")
+			}
 
-			// Get window ID by mark
-			windows, err := storageClient.GetMarksByWindowID(mark)
+			markedWindow, err := storageClient.GetWindowByMark(mark)
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}
-			if len(windows) == 0 {
-				err = fmt.Errorf("no window found for mark %s", mark)
-				return stdout.ErrorAndExit(err)
-			}
 
-			windowID := windows[0].WindowID
+			windowID := markedWindow.WindowID
+			if windowID == "" {
+				return stdout.ErrorAndExit(fmt.Errorf("no window found for mark %s", mark))
+			}
 
 			getWinId, _ := cmd.Flags().GetBool("window-id")
 			if getWinId {
