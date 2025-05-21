@@ -1,0 +1,42 @@
+
+[TestGetCommand/shows_only_the_marked_windows - 1]
+[]storage.Mark{
+    {WindowID:"1", Mark:"mark1"},
+}
+[]aerospacecli.Window{
+    {WindowID:1, WindowTitle:"title1", AppName:"app1"},
+    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
+    {WindowID:3, WindowTitle:"title3", AppName:"app3"},
+}
+aerospace-marks get mark1
+
+1 | app1 | title1
+---
+
+[TestGetCommand/shows_only_the_marked_windows_id - 1]
+[]storage.Mark{
+    {WindowID:"1", Mark:"mark1"},
+}
+[]aerospacecli.Window{
+    {WindowID:1, WindowTitle:"title1", AppName:"app1"},
+    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
+    {WindowID:3, WindowTitle:"title3", AppName:"app3"},
+}
+aerospace-marks get mark1 --window-id
+
+1
+---
+
+[TestGetCommand/shows_only_the_marked_windows_app-name - 1]
+[]storage.Mark{
+    {WindowID:"1", Mark:"mark1"},
+}
+[]aerospacecli.Window{
+    {WindowID:1, WindowTitle:"title1", AppName:"app1"},
+    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
+    {WindowID:3, WindowTitle:"title3", AppName:"app3"},
+}
+aerospace-marks get mark1 -a
+
+app1
+---

@@ -1,5 +1,5 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 Cristian Oliveira licence@cristianoliveira.dev
 */
 package cmd
 
@@ -33,14 +33,16 @@ This command retrieves a window by its mark (identifier). Print in the following
 			mark := args[0]
 
 			// Get window ID by mark
-			windowID, err := storageClient.GetWindowIDByMark(mark)
+			windows, err := storageClient.GetMarksByWindowID(mark)
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}
-			if windowID == "" {
+			if len(windows) == 0 {
 				err = fmt.Errorf("no window found for mark %s", mark)
 				return stdout.ErrorAndExit(err)
 			}
+
+			windowID := windows[0].WindowID
 
 			getWinId, _ := cmd.Flags().GetBool("window-id")
 			if getWinId {
