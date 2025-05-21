@@ -11,7 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewRootCmd(storage storage.MarkStorage, aerospaceClient aerospace.AerosSpaceMarkWindows) *cobra.Command {
+func NewRootCmd(
+	storage storage.MarkStorage, 
+	aerospaceClient aerospace.AerosSpaceMarkWindows,
+) *cobra.Command {
 	newRootCmd := &cobra.Command{
 		Use:   "aerospace-marks [cmd] [flags] <identifier>",
 		Short: "AeroSpace marks - Marks for Aerospace WM",
@@ -29,6 +32,7 @@ This CLI is heavily inspired by the marks feature of i3 and sway window managers
 	newRootCmd.AddCommand(ListCmd(storage, aerospaceClient))
 	newRootCmd.AddCommand(ConfigCmd())
 	newRootCmd.AddCommand(SummonCmd(storage, aerospaceClient))
+	newRootCmd.AddCommand(GetCmd(storage, aerospaceClient))
 
 	return newRootCmd
 }
