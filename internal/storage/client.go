@@ -4,14 +4,29 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"strconv"
 
-	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/constants"
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 )
 
 type Mark struct {
 	WindowID string `json:"window_id"`
 	Mark     string `json:"mark"`
+}
+
+func (m *Mark) GetWindowID() (int, error) {
+	if m == nil {
+		return 0, fmt.Errorf("mark is nil")
+	}
+	if m.WindowID == "" {
+		return 0, fmt.Errorf("window ID is empty")
+	}
+	id, err := strconv.Atoi(m.WindowID)
+	if err != nil {
+		return 0, fmt.Errorf("invalid window ID: %s", m.WindowID)
+	}
+	return id, nil
 }
 
 type DbResult interface {
