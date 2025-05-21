@@ -35,6 +35,10 @@ And then focus to a window with the given mark.
 ```text
 aerospace-marks focus <identifier>
 ```
+Or summon a marked window to the current workspace.
+```text
+aerospace-marks summon <identifier>
+```
 
 ## Advanced Usage
 

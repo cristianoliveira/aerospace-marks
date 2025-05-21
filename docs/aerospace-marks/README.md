@@ -50,6 +50,12 @@ summon will bring the marked window to the current workspace.
 
 USAGE: `aerospace-marks summon [<identifier>]`
 
+## Command: `get`
+
+Get a window by its mark (identifier) and prints the details in the following format:
+
+USAGE: `aerospace-marks get <identifier> [flags]`
+
 ## Command: `config`
 
 Show the current configurations and other info related

@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
+	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
 )
@@ -19,47 +20,63 @@ func GetCmd(
 		Use:   "get <identifier>",
 		Short: "Get a window by mark (identifier)",
 		Long: `Get a window by mark (identifier)
+
+This command retrieves a window by its mark (identifier). Print in the following format:
+
+<window_id> | <window_title> | <app_name>
 `,
-		Args: cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return fmt.Errorf("missing mark (identifier)")
+			}
+
 			mark := args[0]
 
 			// Get window ID by mark
 			windowID, err := storageClient.GetWindowIDByMark(mark)
 			if err != nil {
-				return
+				return stdout.ErrorAndExit(err)
 			}
 			if windowID == "" {
-				return
+				err = fmt.Errorf("no window found for mark %s", mark)
+				return stdout.ErrorAndExit(err)
 			}
 
 			getWinId, _ := cmd.Flags().GetBool("window-id")
 			if getWinId {
 				fmt.Print(windowID)
-				return
+				return nil
 			}
 
 			getWinTitle, _ := cmd.Flags().GetBool("window-title")
-			getWinApp, _ := cmd.Flags().GetBool("window-app")
+			getWinApp, _ := cmd.Flags().GetBool("app-name")
 
 			window, err := aerospaceClient.GetWindowByID(windowID)
+			if err != nil {
+				return stdout.ErrorAndExit(err)
+			}
+			if window == nil {
+				return stdout.ErrorAndExit(fmt.Errorf("no window found for ID %s", windowID))
+			}
+
 			if getWinTitle {
 				fmt.Print(window.WindowTitle)
-				return
+				return nil
 			}
 
 			if getWinApp {
 				fmt.Print(window.AppName)
-				return
+				return nil
 			}
 
 			fmt.Print(window.String())
+			return nil
 		},
 	}
 
-	getCmd.Flags().BoolP("window-id", "i", false, "Window ID to get")
-	getCmd.Flags().BoolP("window-title", "t", false, "Window title to get")
-	getCmd.Flags().BoolP("window-app", "a", false, "Window app to get")
+	getCmd.Flags().BoolP("window-id", "i", false, "Get only window [i]D")
+	getCmd.Flags().BoolP("window-title", "t", false, "Get only window [t]itle")
+	getCmd.Flags().BoolP("app-name", "a", false, "Get only window [a]pp name")
 
 	return getCmd
 }
