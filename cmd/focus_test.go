@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
@@ -17,6 +16,9 @@ import (
 
 func TestFocusCmd(t *testing.T) {
 	t.Run("validate missing identifier", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
 		connector := storage.MarksDatabaseConnector{}
@@ -30,10 +32,7 @@ func TestFocusCmd(t *testing.T) {
 		}
 		defer strg.Close()
 
-		aerospaceClient, err := aerospace.NewAeroSpaceClient()
-		if err != nil {
-			t.Fatal(err)
-		}
+		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
 		args := []string{"focus"}
 		cmd := NewRootCmd(strg, aerospaceClient)
