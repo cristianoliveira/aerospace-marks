@@ -1,6 +1,7 @@
 # aerospace-marks
 
-An extension to manage marks on windows in [AeroSpace WM](https://github.com/nikitabobko/AeroSpace).
+An window marks extension for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace) add
+custom marks to windows and use them to set focus or summon to the current workspace.
 
 **Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
 
@@ -49,7 +50,7 @@ See more in [documentation](docs/aerospace-marks)
 ```toml
 # ~/.config/aerospace/config.toml
 [mode.main.binding] 
-# Mark 
+# Mark current window with a given identifier
 cmd-shift-h = ["exec-and-forget aerospace-marks mark h"]
 cmd-shift-j = ["exec-and-forget aerospace-marks mark j"]
 cmd-shift-k = ["exec-and-forget aerospace-marks mark k"]
@@ -57,7 +58,7 @@ cmd-shift-l = ["exec-and-forget aerospace-marks mark l"]
 
 cmd-shift-b = ["exec-and-forget aerospace-marks mark browser", "mode main"]
 
-# Focus
+# Focus to a window with the given identifier
 cmd-ctrl-h = ["exec-and-forget aerospace-marks focus h"]
 cmd-ctrl-j = ["exec-and-forget aerospace-marks focus j"]
 cmd-ctrl-k = ["exec-and-forget aerospace-marks focus k"]

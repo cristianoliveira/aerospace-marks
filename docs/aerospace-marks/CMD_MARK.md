@@ -39,6 +39,7 @@ aerospace-marks mark --toggle foo
 - `--replace` - Replace the current mark with the new one.
 - `--toggle` - Toggle the mark on the window. If the mark is already set, it will be removed.
 - `--window-id` - The id of the window to mark. If not specified, it will use the current focused window.
+- `--silent` - Suppress output messages. This is useful for scripting or when you don't want to pipe the output.
 
 ## Examples
 

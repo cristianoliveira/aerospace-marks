@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
+	"github.com/cristianoliveira/aerospace-marks/internal/cli"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
@@ -25,6 +26,10 @@ func FocusCmd(
 
 Moves focus to the first window marked with the specified identifier.
 	`,
+		Args: cobra.MatchAll(
+			cobra.ExactArgs(1),
+			cli.ValidateArgIsNotEmpty,
+		),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return fmt.Errorf("No identifier provided to focus")

@@ -6,8 +6,10 @@ package cmd
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
+	"github.com/cristianoliveira/aerospace-marks/internal/cli"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
@@ -25,12 +27,15 @@ func SummonCmd(
 
 Similar to 'aerospace summon-workspace' but for marked windows to current workspace.
 `,
+		Args:	cobra.MatchAll(
+			cobra.ExactArgs(1),
+			cli.ValidateArgIsNotEmpty,
+		),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return fmt.Errorf("No identifier provided to focus")
-			}
-
 			mark := args[0]
+			if strings.TrimSpace(mark) == "" {
+				return fmt.Errorf("Identifier cannot be empty")
+			}
 
 			// Get window ID by mark
 			windowID, err := storageClient.GetWindowIDByMark(mark)

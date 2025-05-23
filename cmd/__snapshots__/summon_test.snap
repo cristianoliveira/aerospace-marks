@@ -1,0 +1,14 @@
+
+[TestSummonCmd/validate_missing_identifier - 1]
+aerospace-marks summon
+
+Error
+accepts 1 arg(s), received 0
+---
+
+[TestSummonCmd/validate_empty_identifier - 1]
+aerospace-marks summon  
+
+Error
+argument cannot be empty or whitespace
+---

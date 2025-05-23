@@ -33,7 +33,7 @@ Added mark: mark2
 [TestMarkCommand/validates_missing_identifier_-_`marks_mark` - 1]
 aerospace-marks mark
 
-No identifier provided to mark
+accepts 1 arg(s), received 0
 ---
 
 [TestMarkCommand/marks_toggles_mark_(remove)_-_`marks_foobar_--toggle` - 1]
@@ -54,4 +54,14 @@ aerospace-marks mark foobar --toggle
 
 Toggling mark: foobar
 
+---
+
+[TestMarkCommand/fails_when_empty_identifier_-_`marks_''` - 1]
+[]aerospacecli.Window{
+    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
+}
+aerospace-marks mark 
+
+Error
+argument cannot be empty or whitespace
 ---
