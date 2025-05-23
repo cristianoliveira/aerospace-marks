@@ -48,6 +48,16 @@ type AeroSpaceClient interface {
 	// aerospace move-node-to-workspace <workspace> --window-id <window-id>
 	MoveWindowToWorkspace(windowID int, workspaceName string) error
 
+
+	// Layout Methods
+	// SetLayout sets the layout for a window
+	//
+	// Sets the layout for a window from AeroSpaceWM 
+	// Similar to:
+	//
+	// aerospace layout <floating|tiled> --window-id <window-id>
+	SetLayout(windowID int, layout string) error
+
 	// Connection Methods
 
 	// Client returns the AeroSpaceWM client
