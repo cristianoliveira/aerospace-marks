@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
+	"github.com/cristianoliveira/aerospace-marks/internal/cli"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
@@ -26,15 +26,12 @@ This command retrieves a window by its mark (identifier). Print in the following
 
 <window_id> | <window_title> | <app_name>
 `,
+		Args: cobra.MatchAll(
+			cobra.ExactArgs(1),
+			cli.ValidateArgIsNotEmpty,
+		),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return fmt.Errorf("missing mark (identifier)")
-			}
-
-			mark := strings.TrimSpace(args[0])
-			if mark == "" {
-				return fmt.Errorf("mark (identifier) cannot be empty")
-			}
+			mark := args[0]
 
 			markedWindow, err := storageClient.GetWindowByMark(mark)
 			if err != nil {

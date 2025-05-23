@@ -333,4 +333,35 @@ func TestMarkCommand(t *testing.T) {
 		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
 		snaps.MatchSnapshot(t, windows, cmdAsString, out)
 	})
+
+	t.Run("fails when empty identifier - `marks ''`", func(t *testing.T) {
+		// t.Skip("Skipping")
+		command := "mark"
+		args := []string{command, ""}
+
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+		windows := []aerospacecli.Window{
+			{
+				WindowID:    2,
+				WindowTitle: "title2",
+				AppName:     "app2",
+			},
+		}
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
+		if out != "" {
+			t.Fatal("output should be empty", out)
+		}
+		if err == nil {
+			t.Fatal("expected error, got nil")
+		}
+
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, windows, cmdAsString, "Error", err.Error())
+	})
 }
