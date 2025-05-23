@@ -26,3 +26,7 @@ Allows to configure the path to the database file (default is ~/.local/state/aer
 # TEST: create a way to test failed commands (exit 1)
 
 # FEAT: mark stores window id and window name. Allow to focus by name as fallback
+
+# FIX(list): cmd doesnt print multiple marks when window has more than one mark
+
+# FEAT: Evaluate how to version the database file, and how to migrate it in case of a change
