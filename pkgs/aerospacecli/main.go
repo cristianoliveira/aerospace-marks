@@ -49,6 +49,11 @@ type AeroSpaceClient interface {
 	MoveWindowToWorkspace(windowID int, workspaceName string) error
 
 	// Connection Methods
+
+	// Client returns the AeroSpaceWM client
+	//
+	// Returns the AeroSpaceWM client
+	Client() AeroSpaceSocketConn
 	
 	// CloseConnection
 	// Closes the AeroSpaceWM connection and releases the resources
@@ -58,6 +63,14 @@ type AeroSpaceClient interface {
 type AeroSpaceWM struct {
 	MinAerospaceVersion string
 	Conn                AeroSpaceSocketConn
+}
+
+func (a *AeroSpaceWM) Client() (AeroSpaceSocketConn) {
+	if a.Conn == nil {
+		panic("ASSERTION: AeroSpaceWM client is not initialized")
+	}
+
+	return a.Conn
 }
 
 func (a *AeroSpaceWM) CloseConnection() error {
