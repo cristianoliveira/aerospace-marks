@@ -10,6 +10,8 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 )
 
+var DATABASE_VERSION = 1
+
 type Mark struct {
 	WindowID string `json:"window_id"`
 	Mark     string `json:"mark"`
@@ -143,7 +145,49 @@ func (c *StorageClient) createTableIfNotExists() error {
 	);
 	`
 	_, err := c.db.Exec(query)
-	return err
+	if err != nil {
+		logger.GetDefaultLogger().LogError("failed to create marks table", err)
+		return err
+	}
+	// Create the version table if it doesn't exist
+	// Version table is used to track the database schema version
+	query = `
+	CREATE TABLE IF NOT EXISTS version (
+		version INTEGER NOT NULL DEFAULT 1,
+		PRIMARY KEY (version)
+	);
+	`
+	_, err = c.db.Exec(query)
+	if err != nil {
+		logger.GetDefaultLogger().LogError("failed to create version table", err)
+		return err
+	}
+
+	initVersionQuery := `
+	INSERT OR IGNORE INTO version (version) VALUES (?);
+	`
+	_, err = c.db.Exec(initVersionQuery, DATABASE_VERSION)
+
+	return nil
+}
+
+func (c *StorageClient) GetVersion() (int, error) {
+	log := logger.GetDefaultLogger()
+	query := "SELECT version FROM version LIMIT 1"
+	row := c.db.QueryRow(query)
+
+	var version int
+	if err := row.Scan(&version); err != nil {
+		if err == sql.ErrNoRows {
+			// If no version is found, we assume it's the first version
+			return 1, nil
+		}
+		log.LogError("failed to get database version", err)
+		return 0, err
+	}
+
+	log.LogInfo("database version", version)
+	return version, nil
 }
 
 // --CONNECTOR--
@@ -165,6 +209,14 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 	}
 
 	dbPath := fmt.Sprintf("%s/storage.db", dbConfig.DbPath)
+	// check if the database file exists if so check version
+	var shouldCheckVersion bool
+	var shouldCreateTable bool
+	if _, err := os.Stat(dbPath); err == nil {
+		shouldCheckVersion = true
+	} else {
+		shouldCreateTable = true
+	}
 
 	log.LogInfo("connecting to database", dbPath)
 	db, err := sql.Open("sqlite3", dbPath)
@@ -173,9 +225,26 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 	}
 
 	client := &StorageClient{db: db}
-	if err := client.createTableIfNotExists(); err != nil {
-		log.LogError("failed to create table", err)
-		return nil, err
+
+	if shouldCreateTable {
+		if err := client.createTableIfNotExists(); err != nil {
+			log.LogError("failed to create table", err)
+			return nil, err
+		}
+	}
+
+	if shouldCheckVersion {
+		getVersion, err := client.GetVersion()
+		if err != nil {
+			log.LogError("failed to get database version", err)
+			return nil, err
+		}
+
+		if getVersion != DATABASE_VERSION { 
+			fmt.Printf("Database verions is %d, but expected %d\n", getVersion, DATABASE_VERSION)
+			fmt.Println("Plase visit: https://github.com/cristianoliveira/aerospace-marks for instructions")
+			return nil, fmt.Errorf("database upgrade needed from version %d to %d", getVersion, DATABASE_VERSION)
+		}
 	}
 
 	return client, nil
