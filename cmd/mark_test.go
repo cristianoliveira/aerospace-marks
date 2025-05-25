@@ -7,7 +7,6 @@ import (
 
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
-	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
 	"github.com/gkampitakis/go-snaps/snaps"
@@ -190,21 +189,12 @@ func TestMarkCommand(t *testing.T) {
 		command := "mark"
 		args := []string{command} // Missing identifier
 
-		connector := storage.MarksDatabaseConnector{}
-		conn, err := connector.Connect()
-		if err != nil {
-			t.Fatal(err)
-		}
-		strg, err := storage.NewMarkClient(conn)
-		if err != nil {
-			t.Fatalf("expected no error, got %v", err)
-		}
-		defer strg.Close()
-
-		logger.SetDefaultLogger(&logger.EmptyLogger{})
-
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
+
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		logger.SetDefaultLogger(&logger.EmptyLogger{})
+
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
 		cmd := NewRootCmd(strg, aerospaceClient)

@@ -21,16 +21,11 @@ func TestFocusCmd(t *testing.T) {
 
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
-		connector := storage.MarksDatabaseConnector{}
-		conn, err := connector.Connect()
+		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		strg, err := storage.NewMarkClient(storageDbClient)
 		if err != nil {
 			t.Fatal(err)
 		}
-		strg, err := storage.NewMarkClient(conn)
-		if err != nil {
-			t.Fatal(err)
-		}
-		defer strg.Close()
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 

@@ -218,12 +218,8 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		connector := storage.MarksDatabaseConnector{}
-		conn, err := connector.Connect()
-		if err != nil {
-			t.Fatal(err)
-		}
-		strg, err := storage.NewMarkClient(conn)
+		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		strg, err := storage.NewMarkClient(storageDbClient)
 		if err != nil {
 			t.Fatal(err)
 		}

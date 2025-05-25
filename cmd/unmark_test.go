@@ -77,12 +77,11 @@ func TestUnmarkCommand(t *testing.T) {
 		// t.Skip("Skipping")
 		command := "unmark"
 		args := []string{command, "--help"}
-		connector := storage.MarksDatabaseConnector{}
-		conn, err := connector.Connect()
-		if err != nil {
-			t.Fatal(err)
-		}
-		strg, err := storage.NewMarkClient(conn)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
+		strg, err := storage.NewMarkClient(storageDbClient)
 		if err != nil {
 			t.Fatal(err)
 		}
