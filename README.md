@@ -116,6 +116,9 @@ And in your config add:
 ```toml
 [exec]
     inherit-env-vars = true
+
+# OR
+
 [exec.env-vars]
     # Replace 'aerospace-marks/install/path' with the actual path from the above command
     PATH = 'aerospace-marks/install/path/bin:${PATH}'
