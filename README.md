@@ -138,4 +138,4 @@ This will create an executable named `aerospace-marks` in the current directory.
 
 ### Packages
 
-- AeroSpace Socket Client - [aerospacecli](pkgs/aerospacecli)
+- AeroSpace Socket IPC - [aerospacecli](https://github.com/cristianoliveira/aerospace-ipc)
