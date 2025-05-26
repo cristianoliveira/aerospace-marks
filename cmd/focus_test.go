@@ -9,7 +9,7 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
-	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
 )

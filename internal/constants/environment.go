@@ -15,4 +15,7 @@ const (
   // EnvAeroSpaceMarksLogsLevel is the environment variable for the AeroSpace marks logs level
   // default: `DISABLED`
   EnvAeroSpaceMarksLogsLevel string = "AEROSPACE_MARKS_LOGS_LEVEL"
+
+  // EnvAeroSpaceSock is the environment variable for the AeroSpace IPC socket path
+  EnvAeroSpaceSock string = "AEROSPACESOCK"
 )

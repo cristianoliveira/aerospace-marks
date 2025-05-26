@@ -12,7 +12,7 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
-	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"github.com/spf13/cobra"
 )
 

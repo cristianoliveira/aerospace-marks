@@ -9,7 +9,7 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/constants"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
-	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"github.com/spf13/cobra"
 )
 
@@ -55,7 +55,7 @@ Configure with ENV variables:
 				dbConfig.DbPath,
 				logConfig.Path,
 				logConfig.Level,
-			  aerospacecli.EnvAeroSpaceSock,
+			  constants.EnvAeroSpaceSock,
 				constants.EnvAeroSpaceMarksDbPath,
 				constants.EnvAeroSpaceMarksLogsLevel,
 				constants.EnvAeroSpaceMarksLogsPath,

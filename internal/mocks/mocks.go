@@ -9,7 +9,7 @@ import (
 	aerospacecli_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"
 	storage_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
-	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"go.uber.org/mock/gomock"
 )
 
@@ -36,7 +36,7 @@ func MockAerospaceConnection(ctrl *gomock.Controller) (
 	mockAeroSpaceConnetor.EXPECT().Connect().Return(mockAeroSpaceConnection, nil).Times(1)
 	// mockAeroSpaceConnection.EXPECT().CloseConnection().Return(nil).Times(1)
 
-	aerospacecli.DefaultConnector = mockAeroSpaceConnetor
+	aerospacecli.SetDefaultConnector(mockAeroSpaceConnetor)
 
 	aerospaceClient, err := aerospace.NewAeroSpaceClient()
 	if err != nil {

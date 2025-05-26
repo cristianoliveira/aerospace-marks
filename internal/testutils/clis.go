@@ -11,7 +11,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"github.com/spf13/cobra"
 )
 

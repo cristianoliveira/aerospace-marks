@@ -8,7 +8,8 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
-	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
+	aerospace "github.com/cristianoliveira/aerospace-ipc"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
@@ -36,7 +37,7 @@ func TestListCommand(t *testing.T) {
 			)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		windows := []aerospacecli.Window{
+		windows := []aerospace.Window{
 			{
 				WindowID:    1,
 				WindowTitle: "title1",
@@ -104,7 +105,7 @@ func TestListCommand(t *testing.T) {
 			)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		windows := []aerospacecli.Window{
+		windows := []aerospace.Window{
 			{
 				WindowID:    111,
 				WindowTitle: "title1",

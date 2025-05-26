@@ -8,7 +8,8 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
-	"github.com/cristianoliveira/aerospace-marks/pkgs/aerospacecli"
+	aerospace "github.com/cristianoliveira/aerospace-ipc"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
 )
@@ -41,7 +42,7 @@ func TestMarkCommand(t *testing.T) {
 		)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		windows := []aerospacecli.Window{
+		windows := []aerospace.Window{
 			{
 				WindowID:    1,
 				WindowTitle: "title1",
@@ -99,7 +100,7 @@ func TestMarkCommand(t *testing.T) {
 		)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		windows := []aerospacecli.Window{
+		windows := []aerospace.Window{
 			{
 				WindowID:    1,
 				WindowTitle: "title1",
@@ -153,7 +154,7 @@ func TestMarkCommand(t *testing.T) {
 		)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		windows := []aerospacecli.Window{
+		windows := []aerospace.Window{
 			{
 				WindowID:    1,
 				WindowTitle: "title1",
@@ -236,7 +237,7 @@ func TestMarkCommand(t *testing.T) {
 		)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		windows := []aerospacecli.Window{
+		windows := []aerospace.Window{
 			{
 				WindowID:    2,
 				WindowTitle: "title2",
@@ -293,7 +294,7 @@ func TestMarkCommand(t *testing.T) {
 		)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		windows := []aerospacecli.Window{
+		windows := []aerospace.Window{
 			{
 				WindowID:    2,
 				WindowTitle: "title2",
@@ -334,7 +335,7 @@ func TestMarkCommand(t *testing.T) {
 
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		windows := []aerospacecli.Window{
+		windows := []aerospace.Window{
 			{
 				WindowID:    2,
 				WindowTitle: "title2",
