@@ -29,3 +29,11 @@ Flags:
   -h, --help   help for unmark
 
 ---
+
+[TestUnmarkCommand/fails_when_mark_not_found - 1]
+aerospace-marks unmark unkown
+
+Error
+mark 'unkown' not found
+
+---

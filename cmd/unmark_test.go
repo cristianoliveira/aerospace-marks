@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -96,5 +97,38 @@ func TestUnmarkCommand(t *testing.T) {
 
 		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
 		snaps.MatchSnapshot(t, cmdAsString, out)
+	})
+
+	t.Run("fails when mark not found", func(t *testing.T) {
+		// t.Skip("Skipping")
+		command := "unmark"
+		args := []string{command, "unkown"}
+
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
+		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{0}[0])
+		gomock.InOrder(
+			storageDbClient.EXPECT().
+				Execute(strings.TrimSpace(`
+					DELETE FROM marks WHERE mark = ?
+				`),
+				"unkown").
+				Return(dbResult, nil).
+				Times(1),
+		)
+
+	  _, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
+		if err == nil {
+			t.Fatal(err)
+		}
+
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		expectedError := fmt.Sprintf("Error\n%+v", err)
+		snaps.MatchSnapshot(t, cmdAsString, expectedError, out)
 	})
 }

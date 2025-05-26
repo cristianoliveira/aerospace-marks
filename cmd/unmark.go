@@ -37,10 +37,14 @@ unmark cmd will remove identifier from the list of current marks on a window. If
 
 			var count int
 			for _, identifier := range args {
-				if _, err := storageClient.DeleteByMark(identifier); err != nil {
+				rowsAffected, err := storageClient.DeleteByMark(identifier); 
+				if err != nil {
 					return err
 				}
-				count++
+				if rowsAffected == 0 {
+					return fmt.Errorf("mark '%s' not found", identifier)
+				}
+				count += int(rowsAffected)
 			}
 
 			fmt.Printf("Removed %d marks\n", count)
