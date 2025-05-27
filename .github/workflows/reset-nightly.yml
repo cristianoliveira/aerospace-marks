@@ -1,0 +1,33 @@
+name: Reset Nightly Branch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: reset nightly branch
+        uses: nicksnell/action-reset-repo@master
+        with:
+          base_branch: main
+          reset_branch: nightly
+
+      - uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate new hashes
+        run: |
+          bash scripts/update-nix-hash.sh nix/package-nightly.nix ".#nightly"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore(nix): bump nightly hashes and version"
+          title: "chore(nix): bump nightly hashes and version"
