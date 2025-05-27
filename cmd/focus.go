@@ -37,16 +37,14 @@ Moves focus to the first window marked with the specified identifier.
 
 			mark := args[0]
 
-			// Get window ID by mark
 			windowID, err := storageClient.GetWindowIDByMark(mark)
 			if err != nil {
 				return stdout.ErrorAndExit(err)
 			}
 			if windowID == "" {
-				return stdout.ErrorAndExitf("no window found for mark '%s'", mark)
+				return stdout.ErrorAndExitf("empty window id for mark '%s'", mark)
 			}
 
-			// Focus to window by ID
 			intWindowID, err := strconv.Atoi(windowID)
 			if err != nil {
 				return stdout.ErrorAndExitf("invalid window ID '%s'", windowID)

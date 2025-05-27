@@ -31,7 +31,6 @@ unmark cmd will remove identifier from the list of current marks on a window. If
 				}
 
 				fmt.Printf("Removed %d marks\n", rowsEffected)
-
 				return nil
 			}
 

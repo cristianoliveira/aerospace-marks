@@ -29,6 +29,5 @@ func ErrorAndExitf(format string, a ...any) error {
 		os.Exit(1)
 	}
 
-	fmt.Println(errorMessage)
 	return nil
 }
