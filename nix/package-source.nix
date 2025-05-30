@@ -4,6 +4,8 @@
     name = "aerospace-marks";
     version = "source";
 
+    go = pkgs.go_1_24;
+
     # sources that will be used for our derivation.
     src = ../.;
 

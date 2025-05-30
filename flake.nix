@@ -13,7 +13,7 @@
       in {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            go
+            go_1_24
 
             # To create new subcommands, run:
             # cobra-cli add <subcommand-name>
