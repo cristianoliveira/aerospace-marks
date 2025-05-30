@@ -57,7 +57,7 @@ jobs:
         run: |
           version=$(git describe --tags --abbrev=0)
           sed -i 's#version = ".*";#version = "'"$version"'";#' nix/package-default.nix
-          sed -i 's#VERSION =.*#VERSION = "'"$version"'"/' cmd/root.go
+          sed -i 's#VERSION =.*#VERSION = "'"$version"'"#' cmd/main.go
           bash scripts/update-nix-hash.sh nix/package-default.nix ".#default"
 
       - name: Create Pull Request
