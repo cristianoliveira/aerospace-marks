@@ -36,7 +36,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
-          binary_name: aerospace-scratchpad
+          binary_name: aerospace-marks
           project_path: ./
           extra_files: LICENSE README.md
           compress_assets: true
