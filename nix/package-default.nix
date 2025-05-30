@@ -1,10 +1,7 @@
 { pkgs, ... }:
   pkgs.buildGoModule rec {
-    # name of our derivation
     name = "aerospace-marks";
-    # FIXME: once we have the first release, we can use the version
-    # version = "v0.0.2";
-    version = "ee2d3df";
+    version = "v0.0.2";
 
     # sources that will be used for our derivation.
     src = pkgs.fetchFromGitHub {
@@ -18,7 +15,7 @@
 
     ldflags = [
       "-s" "-w"
-      "-X main.VERSION=${version}"
+      "-X github.com/cristianoliveira/aerospace-marks/cmd.VERSION=${version}"
     ];
 
     meta = with pkgs.lib; {

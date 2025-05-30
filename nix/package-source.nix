@@ -11,7 +11,7 @@
 
     ldflags = [
       "-s" "-w"
-      "-X main.VERSION=${version}"
+      "-X github.com/cristianoliveira/aerospace-marks/cmd.VERSION=${version}"
     ];
 
     meta = with pkgs.lib; {
