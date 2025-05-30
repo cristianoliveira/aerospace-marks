@@ -1,12 +1,10 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 Cristian Oliveira license@cristianoliveira.dev
 */
 package cmd
 
 import (
-	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
@@ -21,7 +19,7 @@ func SummonCmd(
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
 ) *cobra.Command {
 	summonCmd := &cobra.Command{
-		Use:   "summon",
+		Use:   "summon <identifier> [flags]",
 		Short: "Summon a marked window to current workspace",
 		Long: `Summon a marked window to current workspace.
 
@@ -33,8 +31,10 @@ Similar to 'aerospace summon-workspace' but for marked windows to current worksp
 		),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			mark := args[0]
-			if strings.TrimSpace(mark) == "" {
-				return fmt.Errorf("Identifier cannot be empty")
+
+			shouldFocus, err := cmd.Flags().GetBool("focus")
+			if err != nil {
+				return stdout.ErrorAndExit(err)
 			}
 
 			// Get window ID by mark
@@ -63,9 +63,15 @@ Similar to 'aerospace summon-workspace' but for marked windows to current worksp
 				return stdout.ErrorAndExit(err)
 			}
 
+			if shouldFocus {
+				aerospaceClient.Client().SetFocusByWindowID(intWindowID)
+			}
+
 			return nil
 		},
 	}
+
+	summonCmd.Flags().BoolP("focus", "f", false, "Focus the window after summoning")
 
 	return summonCmd
 }
