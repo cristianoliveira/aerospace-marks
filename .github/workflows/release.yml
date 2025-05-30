@@ -3,6 +3,7 @@ name: Release Go Binaries
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -20,20 +21,48 @@ jobs:
             goos: windows
     steps:
       - uses: actions/checkout@v4
+        if: github.event_name == 'release'
 
       - name: Set up Go
+        if: github.event_name == 'release'
         uses: actions/setup-go@v4
         with:
           go-version: '1.24'  # Specify your Go version
 
       - name: Build and Release
+        if: github.event_name == 'release'
         uses: wangyoucao577/go-release-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
-          binary_name: aerospace-marks
+          binary_name: aerospace-scratchpad
           project_path: ./
           extra_files: LICENSE README.md
           compress_assets: true
           overwrite: true
+
+  nix-release:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate new hashes
+        run: |
+          version=$(git describe --tags --abbrev=0)
+          sed -i 's#version = ".*";#version = "'"$version"'";#' nix/package-default.nix
+          sed -i 's#VERSION =.*#VERSION = "'"$version"'"/' cmd/root.go
+          bash scripts/update-nix-hash.sh nix/package-default.nix ".#default"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore(nix): bump nix hashes and version"
+          title: "chore(nix): bump nix hashes and version"
+          base: main
