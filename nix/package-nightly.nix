@@ -4,6 +4,8 @@
     name = "aerospace-marks";
     version = "nightly"; # Branch 
 
+    go = pkgs.go;
+
     # sources that will be used for our derivation.
     src = pkgs.fetchFromGitHub {
       owner = "cristianoliveira";
