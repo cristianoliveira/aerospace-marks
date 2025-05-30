@@ -1,9 +1,7 @@
 { pkgs, ... }:
-  pkgs.buildGoModule rec {
+  pkgs.buildGo124Module rec {
     name = "aerospace-marks";
     version = "v0.1.0";
-
-    go = pkgs.go;
 
     # sources that will be used for our derivation.
     src = pkgs.fetchFromGitHub {
