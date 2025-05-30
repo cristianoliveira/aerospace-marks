@@ -25,10 +25,8 @@
           ];
         };
 
-        packages = {
-          default = pkgs.callPackage ./nix/package-default.nix {};
-          nightly = pkgs.callPackage ./nix/package-nightly.nix {};
-          source = pkgs.callPackage ./nix/package-source.nix {};
+        packages = import ./default.nix {
+          inherit pkgs;
         };
     });
 }
