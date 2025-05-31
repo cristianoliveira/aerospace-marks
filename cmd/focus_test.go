@@ -99,15 +99,18 @@ func TestFocusCmd(t *testing.T) {
 				Times(1),
 		)
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		stdout.ShuldExit = false
+		stdout.ShouldExit = false
 
 		cmd := NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
-		if err != nil {
+		if err == nil {
 			t.Fatal(err)
+		}
+		if out != "" {
+			t.Fatal("output should be empty", out)
 		}
 
 		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, out)
+		snaps.MatchSnapshot(t, cmdAsString, err.Error())
 	})
 }
