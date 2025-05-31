@@ -1,11 +1,11 @@
 # aerospace-marks
 
-An window marks extension for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace) add
+[Vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace) add
 custom marks to windows and use them to set focus or summon to the current workspace.
 
 **Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
 
-It’s heavily inspired by [sway marks](https://man.archlinux.org/man/sway.5.en), but follows the `aerospace` style of commands:
+It’s heavily inspired by [sway marks](https://man.archlinux.org/man/sway.5.en), but follows the `aerospace` style of commands
 ```text
 mark --add|--replace [--toggle] <identifier>
 
