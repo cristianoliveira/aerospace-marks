@@ -16,7 +16,6 @@ import (
 
 func TestMarkCommand(t *testing.T) {
 	t.Run("marks the focused window - `marks mark mark1`", func(t *testing.T) {
-		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, "mark1"}
 
@@ -74,7 +73,6 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("marks window by id - `marks mark mark1 --window-id 2`", func(t *testing.T) {
-		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, "mark1", "--window-id", "2"}
 
@@ -137,7 +135,6 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("marks the focused window - `marks mark --add`", func(t *testing.T) {
-		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, "mark2", "--add"}
 
@@ -186,7 +183,6 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("validates missing identifier - `marks mark`", func(t *testing.T) {
-		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command} // Missing identifier
 
@@ -212,7 +208,6 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("marks toggles mark (remove) - `marks foobar --toggle`", func(t *testing.T) {
-		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, "foobar", "--toggle"}
 
@@ -269,7 +264,6 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("marks toggles mark (adding) - `marks foobar --toggle`", func(t *testing.T) {
-		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, "foobar", "--toggle"}
 
@@ -326,7 +320,6 @@ func TestMarkCommand(t *testing.T) {
 	})
 
 	t.Run("fails when empty identifier - `marks ''`", func(t *testing.T) {
-		// t.Skip("Skipping")
 		command := "mark"
 		args := []string{command, ""}
 

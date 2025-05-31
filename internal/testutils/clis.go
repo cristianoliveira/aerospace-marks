@@ -15,6 +15,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// CmdExecuteWithStdin executes a Cobra command with the provided arguments and stdin input.
+func CmdExecuteWithStdin(cmd *cobra.Command, stdinInput string, args ...string) (string, error) {
+	cmd.SetArgs(args)
+	cmd.SetIn(bytes.NewBufferString(stdinInput))
+	stdOut, err := CaptureStdOut(func() error {
+		return cmd.Execute()
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(stdOut), nil
+}
+
 func CmdExecute(cmd *cobra.Command, args ...string) (string, error) {
 	cmd.SetArgs(args)
 	stdOut, err := CaptureStdOut(func() error {
@@ -29,13 +44,19 @@ func CmdExecute(cmd *cobra.Command, args ...string) (string, error) {
 }
 
 func CaptureStdOut(f func() error) (string, error) {
-	var buf bytes.Buffer
-	// Save original stdout
 	old := os.Stdout
-	// Redirect stdout
+	defer func() {
+		os.Stdout = old
+	}()
+	errOld := os.Stderr
+	defer func() {
+		os.Stdout = errOld
+	}()
+
 	r, w, _ := os.Pipe()
+	rErr, wErr, _ := os.Pipe()
 	os.Stdout = w
-	// os.Stderr = w // Redirect stderr as well
+	os.Stderr = wErr // Redirect stderr as well
 
 	// Run the function that prints to stdout
 	err := f()
@@ -48,14 +69,35 @@ func CaptureStdOut(f func() error) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	os.Stdout = old
 
-	// Read output
-	_, err = io.Copy(&buf, r)
+	err = wErr.Close()
 	if err != nil {
 		return "", err
 	}
-	return buf.String(), nil
+
+	// Read output
+	stdString, err := readFileToString(r)
+	if err != nil {
+		return "", err
+	}
+	stdErrString, err := readFileToString(rErr)
+	if err != nil {
+		return "", err
+	}
+
+	if stdErrString != "" {
+		return "", fmt.Errorf("error: %s", stdErrString)
+	}
+
+	return stdString, nil
+}
+
+func readFileToString(f *os.File) (string, error) {
+	bytes, err := io.ReadAll(f)
+	if err != nil {
+		return "", err
+	}
+	return string(bytes), nil
 }
 
 type MockEmptyAerspaceMarkWindows struct{}

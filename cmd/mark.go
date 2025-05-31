@@ -40,11 +40,11 @@ Example:
 aerospace-marks mark first # Will set the mark first on the current window [first]
 aerospace-marks mark --add sec # Will add the mark sec to the current window [first sec]
 `,
-
 		Args: cobra.MatchAll(
 			cobra.ExactArgs(1),
 			cli.ValidateArgIsNotEmpty,
 		),
+
 		Run: func(cmd *cobra.Command, args []string) {
 			identifier := args[0]
 
