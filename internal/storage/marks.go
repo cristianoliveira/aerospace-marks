@@ -114,10 +114,10 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (int64, error) {
 	// Delete all marks for the window
 	query := strings.TrimSpace(`
-	DELETE FROM marks WHERE mark = ?
+	DELETE FROM marks WHERE window_id = ? OR mark = ?
 	`)
 
-	res, err := c.storage.Execute(query, mark)
+	res, err := c.storage.Execute(query, id, mark)
 	if err != nil {
 		return 0, err
 	}
@@ -125,8 +125,13 @@ func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (int64, erro
 	if err != nil {
 		return 0, err
 	}
-	// Add the new mark
-	return rowsAffected, c.AddMark(id, mark)
+
+	err = c.AddMark(id, mark)
+	if err != nil {
+		return rowsAffected, err
+	}
+
+	return rowsAffected, nil
 }
 
 func (c *MarkStorageClient) Close() error {

@@ -28,9 +28,9 @@ func TestMarkCommand(t *testing.T) {
 		gomock.InOrder(
 			storageDbClient.EXPECT().
 				Execute(strings.TrimSpace(`
-					DELETE FROM marks WHERE mark = ?
+					DELETE FROM marks WHERE window_id = ? OR mark = ?
 				`),
-					"mark1").
+					"1", "mark1").
 				Return(dbResult, nil).
 				Times(1),
 			storageDbClient.EXPECT().
@@ -86,9 +86,9 @@ func TestMarkCommand(t *testing.T) {
 		gomock.InOrder(
 			storageDbClient.EXPECT().
 				Execute(strings.TrimSpace(`
-					DELETE FROM marks WHERE mark = ?
+					DELETE FROM marks WHERE window_id = ? OR mark = ?
 				`),
-					"mark1").
+					"2", "mark1").
 				Return(dbResult, nil).
 				Times(1),
 			storageDbClient.EXPECT().

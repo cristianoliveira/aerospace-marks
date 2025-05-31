@@ -144,9 +144,8 @@ func (c *StorageClient) createTableIfNotExists() error {
 	// but one window may have multiple marks
 	query := `
 	CREATE TABLE IF NOT EXISTS marks (
-		window_id TEXT,
-		mark TEXT,
-		constraint marks_pk PRIMARY KEY (window_id, mark)
+		window_id INTEGER NOT NULL,
+    mark TEXT NOT NULL UNIQUE
 	);
 	`
 	_, err := c.db.Exec(query)
@@ -251,7 +250,8 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 
 		if getVersion != DATABASE_VERSION {
 			fmt.Printf("Database verions is %d, but expected %d\n", getVersion, DATABASE_VERSION)
-			fmt.Println("Plase visit: https://github.com/cristianoliveira/aerospace-marks for instructions")
+			fmt.Println("Please visit: https://github.com/cristianoliveira/aerospace-marks for instructions")
+			fmt.Printf("Or if you don't care about migrating, rm %s", dbPath)
 			return nil, fmt.Errorf("database upgrade needed from version %d to %d", getVersion, DATABASE_VERSION)
 		}
 	}
