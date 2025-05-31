@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"os"
 
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	aerospacecli_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"
 	storage_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"go.uber.org/mock/gomock"
 )
 
@@ -46,7 +46,7 @@ func MockAerospaceConnection(ctrl *gomock.Controller) (
 	return mockAeroSpaceConnection, aerospaceClient
 }
 
-func MockStorageDbResult(ctrl *gomock.Controller, lastInsertId *int64, rowsAffected *int64) (*storage_mock.MockDbResult) {
+func MockStorageDbResult(ctrl *gomock.Controller, lastInsertId *int64, rowsAffected *int64) *storage_mock.MockDbResult {
 	dbResult := storage_mock.NewMockDbResult(ctrl)
 	if lastInsertId != nil {
 		dbResult.EXPECT().

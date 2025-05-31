@@ -18,14 +18,14 @@ type AerosSpaceMarkWindows interface {
 	//
 	// Returns the AeroSpaceWM client
 	// or panics if the client is not initialized
-	Client() (*aerospacecli.AeroSpaceWM)
+	Client() *aerospacecli.AeroSpaceWM
 }
 
 type DefaultAeroSpaceWindows struct {
 	client *aerospacecli.AeroSpaceWM
 }
 
-func (d *DefaultAeroSpaceWindows) Client() (*aerospacecli.AeroSpaceWM) {
+func (d *DefaultAeroSpaceWindows) Client() *aerospacecli.AeroSpaceWM {
 	if d.client == nil {
 		panic("ASSERTION: AeroSpaceWM client is not initialized")
 	}

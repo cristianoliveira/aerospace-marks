@@ -149,6 +149,9 @@ func (c *MarkStorageClient) ToggleMark(id string, mark string) error {
 
 	// Mark was not deleted, so add it
 	err = c.AddMark(id, mark)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

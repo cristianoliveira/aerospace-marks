@@ -10,14 +10,15 @@ import (
 type MockConnector struct {
 	Client StorageDbClient
 }
+
 func (t *MockConnector) Connect() (StorageDbClient, error) {
 	return t.Client, nil
 }
 
-// Map string, any 
+// Map string, any
 type MockMarkStorage struct {
 	RecordArgs []string
-	Marks		   []Mark
+	Marks      []Mark
 	Mark       *Mark
 	DbResult   DbResult
 }
@@ -32,7 +33,7 @@ func (m *MockMarkStorage) QueryOne(query string, args ...any) (*Mark, error) {
 }
 func (m *MockMarkStorage) Execute(query string, args ...any) (DbResult, error) {
 	m.RecordArgs = append(m.RecordArgs, query)
-	return m.DbResult, nil 
+	return m.DbResult, nil
 }
 func (m *MockMarkStorage) Close() error {
 	m.RecordArgs = append(m.RecordArgs, "close")
@@ -61,7 +62,12 @@ func TestMarksStorageClient(t *testing.T) {
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
-		defer client.Close()
+		defer func() {
+			err := client.Close()
+			if err != nil {
+				t.Fatalf("expected no error on close, got %v", err)
+			}
+		}()
 
 		err = client.AddMark("window1", "mark1")
 		if err != nil {
@@ -79,14 +85,19 @@ func TestMarksStorageClient(t *testing.T) {
 
 	t.Run("Test GetMarks", func(t *testing.T) {
 		client, err := NewMarkClient(&MockMarkStorage{
-				Marks: []Mark{
-					{WindowID: "window1", Mark: "mark1"},
-				},
-			})
+			Marks: []Mark{
+				{WindowID: "window1", Mark: "mark1"},
+			},
+		})
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
-		defer client.Close()
+		defer func() {
+			err := client.Close()
+			if err != nil {
+				t.Fatalf("expected no error on close, got %v", err)
+			}
+		}()
 
 		marks, err := client.GetMarks()
 		if err != nil {

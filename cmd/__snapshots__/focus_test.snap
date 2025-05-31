@@ -15,6 +15,6 @@ Focus moved to window ID 1
 [TestFocusCmd/focus_using_mark_that_does_not_exist - 1]
 aerospace-marks focus nonexistent-mark
 
-Error: no window found for mark nonexistent-mark
+error: no window found for mark nonexistent-mark
 
 ---

@@ -8,12 +8,13 @@ import (
 	"strconv"
 	"strings"
 
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"github.com/spf13/cobra"
+	"slices"
 )
 
 func popWindow(windows []aerospacecli.Window, windowID string) (*aerospacecli.Window, error) {
@@ -25,7 +26,8 @@ func popWindow(windows []aerospacecli.Window, windowID string) (*aerospacecli.Wi
 		winId = strings.TrimSpace(winId)
 		if windowID == winId {
 			// Remove the window from the list
-			windows = append(windows[:i], windows[i+1:]...)
+			//nolint:staticcheck,ineffassign
+			windows = slices.Delete(windows, i, i+1)
 			return &window, nil
 		}
 	}
@@ -49,19 +51,21 @@ Display in the following format:
 
 <mark>|<window-id>|<window-title>|<window-app>
 	`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Run: func(cmd *cobra.Command, args []string) {
 			marks, err := storageClient.GetMarks()
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 			if len(marks) == 0 {
 				fmt.Println("No marks found")
-				return nil
+				return
 			}
 
 			windows, err := aerospaceClient.Client().GetAllWindows()
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 
 			lines := make([]string, 0)
@@ -77,13 +81,11 @@ Display in the following format:
 
 			if len(lines) == 0 {
 				fmt.Println("No marked window found")
-				return nil
+				return
 			}
 
 			formattedOutput := format.FormatTableList(lines)
 			fmt.Println(formattedOutput)
-
-			return nil
 		},
 	}
 }

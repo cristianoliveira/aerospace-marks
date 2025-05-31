@@ -10,19 +10,19 @@ import (
 
 // FormatTableList formats a list of Mark objects into a string
 // Receive a | separated list of strings and make sure that
-// the columns are aligned with the same width 
+// the columns are aligned with the same width
 //
 // Example:
-// 
-//  Input
-//  1 | app1 | title1
-//  2 | app2 super long | title2
-//  3 | app3 | title3
 //
-//  Output
-//  1 | app1             | title1 
-//  2 | app2 super long  | title2
-//  3 | app3             | title3
+//	Input
+//	1 | app1 | title1
+//	2 | app2 super long | title2
+//	3 | app3 | title3
+//
+//	Output
+//	1 | app1             | title1
+//	2 | app2 super long  | title2
+//	3 | app3             | title3
 func FormatTableList(list []string) string {
 	var rows [][]string
 	var colWidths []int

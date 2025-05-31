@@ -81,7 +81,12 @@ func (c *StorageClient) QueryAll(query string, args ...any) ([]Mark, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			log.LogError("failed to close rows", err)
+		}
+	}()
 
 	var marks []Mark
 	for rows.Next() {
@@ -167,6 +172,10 @@ func (c *StorageClient) createTableIfNotExists() error {
 	INSERT OR IGNORE INTO version (version) VALUES (?);
 	`
 	_, err = c.db.Exec(initVersionQuery, DATABASE_VERSION)
+	if err != nil {
+		logger.GetDefaultLogger().LogError("failed to insert initial version", err)
+		return err
+	}
 
 	return nil
 }
@@ -240,7 +249,7 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 			return nil, err
 		}
 
-		if getVersion != DATABASE_VERSION { 
+		if getVersion != DATABASE_VERSION {
 			fmt.Printf("Database verions is %d, but expected %d\n", getVersion, DATABASE_VERSION)
 			fmt.Println("Plase visit: https://github.com/cristianoliveira/aerospace-marks for instructions")
 			return nil, fmt.Errorf("database upgrade needed from version %d to %d", getVersion, DATABASE_VERSION)
@@ -255,8 +264,8 @@ func GetDatabaseConfig() StorageConfig {
 
 	configDbPath := os.Getenv(constants.EnvAeroSpaceMarksDbPath)
 	if configDbPath != "" {
-		dbDir = fmt.Sprintf("%s", configDbPath)
-	} 
+		dbDir = configDbPath
+	}
 
 	return StorageConfig{
 		DbPath: dbDir,

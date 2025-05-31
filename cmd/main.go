@@ -6,13 +6,13 @@ package cmd
 import (
 	"os"
 
-	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
+	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
 )
 
 func NewRootCmd(
-	storage storage.MarkStorage, 
+	storage storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
 ) *cobra.Command {
 	newRootCmd := &cobra.Command{
@@ -51,6 +51,6 @@ func Run(storage storage.MarkStorage, aerospaceClient aerospace.AerosSpaceMarkWi
 }
 
 // THIS IS GENERATED DON'T EDIT
-// NOTE: to update VERSION to empty string 
+// NOTE: to update VERSION to empty string
 // and then run scripts/validate-version.sh
 var VERSION = "v0.1.0"
