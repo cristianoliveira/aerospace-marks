@@ -45,19 +45,21 @@ aerospace-marks summon <identifier>
 
 See more in [documentation](docs/aerospace-marks)
 
+Check [vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for a more advanced usage.
+
 ### Config Usage
 ```toml
 # ~/.config/aerospace/config.toml
 [mode.main.binding] 
 
-# Vim's like marks
+# Vim's like marks, similar to i3-input
 cmd-ctrl-m = """
-    exec-and-forget aerospace-marks mark \
-        $(osascript -e 'text returned of (display dialog "mark" default answer "")')
+exec-and-forget aerospace-marks mark \
+    $(osascript -e 'text returned of (display dialog "mark" default answer "")')
 """
 cmd-ctrl-quote = """
-    exec-and-forget aerospace-marks focus \
-        $(osascript -e 'text returned of (display dialog "focus" default answer "")')
+exec-and-forget aerospace-marks focus \
+    $(osascript -e 'text returned of (display dialog "focus" default answer "")')
 """
 
 # Mark current window with a given identifier
