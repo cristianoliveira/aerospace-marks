@@ -46,10 +46,20 @@ aerospace-marks summon <identifier>
 See more in [documentation](docs/aerospace-marks)
 
 ### Config Usage
-
 ```toml
 # ~/.config/aerospace/config.toml
 [mode.main.binding] 
+
+# Vim's like marks
+cmd-ctrl-m = """
+    exec-and-forget aerospace-marks mark \
+        $(osascript -e 'text returned of (display dialog "mark" default answer "")')
+"""
+cmd-ctrl-quote = """
+    exec-and-forget aerospace-marks focus \
+        $(osascript -e 'text returned of (display dialog "focus" default answer "")')
+"""
+
 # Mark current window with a given identifier
 cmd-shift-h = ["exec-and-forget aerospace-marks mark h"]
 cmd-shift-j = ["exec-and-forget aerospace-marks mark j"]
