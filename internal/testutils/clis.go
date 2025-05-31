@@ -44,16 +44,23 @@ func CaptureStdOut(f func() error) (string, error) {
 	}
 
 	// Close writer and restore stdout
-	w.Close()
+	err = w.Close()
+	if err != nil {
+		return "", err
+	}
 	os.Stdout = old
 
 	// Read output
-	io.Copy(&buf, r)
+	_, err = io.Copy(&buf, r)
+	if err != nil {
+		return "", err
+	}
 	return buf.String(), nil
 }
 
-type MockEmptyAerspaceMarkWindows struct {}
-func (d *MockEmptyAerspaceMarkWindows) Client() (*aerospacecli.AeroSpaceWM) {
+type MockEmptyAerspaceMarkWindows struct{}
+
+func (d *MockEmptyAerspaceMarkWindows) Client() *aerospacecli.AeroSpaceWM {
 	return &aerospacecli.AeroSpaceWM{}
 }
 

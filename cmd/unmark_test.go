@@ -28,12 +28,12 @@ func TestUnmarkCommand(t *testing.T) {
 				Execute(strings.TrimSpace(`
 					DELETE FROM marks WHERE mark = ?
 				`),
-				"mark1").
+					"mark1").
 				Return(dbResult, nil).
 				Times(1),
 		)
 
-	  _, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
 		cmd := NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
@@ -62,7 +62,7 @@ func TestUnmarkCommand(t *testing.T) {
 				Times(1),
 		)
 
-	  aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
+		aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
 
 		cmd := NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
@@ -87,7 +87,7 @@ func TestUnmarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-	  aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
+		aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
 
 		cmd := NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
@@ -114,12 +114,12 @@ func TestUnmarkCommand(t *testing.T) {
 				Execute(strings.TrimSpace(`
 					DELETE FROM marks WHERE mark = ?
 				`),
-				"unkown").
+					"unkown").
 				Return(dbResult, nil).
 				Times(1),
 		)
 
-	  _, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
 		cmd := NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)

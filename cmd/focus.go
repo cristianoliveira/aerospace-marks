@@ -30,33 +30,31 @@ Moves focus to the first window marked with the specified identifier.
 			cobra.ExactArgs(1),
 			cli.ValidateArgIsNotEmpty,
 		),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return fmt.Errorf("No identifier provided to focus")
-			}
-
+		Run: func(cmd *cobra.Command, args []string) {
 			mark := args[0]
 
 			windowID, err := storageClient.GetWindowIDByMark(mark)
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 			if windowID == "" {
-				return stdout.ErrorAndExitf("empty window id for mark '%s'", mark)
+				stdout.ErrorAndExitf("empty window id for mark '%s'", mark)
+				return
 			}
 
 			intWindowID, err := strconv.Atoi(windowID)
 			if err != nil {
-				return stdout.ErrorAndExitf("invalid window ID '%s'", windowID)
+				stdout.ErrorAndExitf("invalid window ID '%s'", windowID)
+				return
 			}
 			err = aerospaceClient.Client().SetFocusByWindowID(intWindowID)
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 
 			fmt.Printf("Focus moved to window ID %s\n", windowID)
-
-			return nil
 		},
 	}
 }

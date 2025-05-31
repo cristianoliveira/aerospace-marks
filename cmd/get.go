@@ -30,23 +30,25 @@ This command retrieves a window by its mark (identifier). Print in the following
 			cobra.ExactArgs(1),
 			cli.ValidateArgIsNotEmpty,
 		),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Run: func(cmd *cobra.Command, args []string) {
 			mark := args[0]
 
 			markedWindow, err := storageClient.GetWindowByMark(mark)
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 
 			windowID := markedWindow.WindowID
 			if windowID == "" {
-				return stdout.ErrorAndExit(fmt.Errorf("no window found for mark %s", mark))
+				stdout.ErrorAndExit(fmt.Errorf("no window found for mark %s", mark))
+				return
 			}
 
 			getWinId, _ := cmd.Flags().GetBool("window-id")
 			if getWinId {
 				fmt.Print(windowID)
-				return nil
+				return
 			}
 
 			getWinTitle, _ := cmd.Flags().GetBool("window-title")
@@ -54,24 +56,25 @@ This command retrieves a window by its mark (identifier). Print in the following
 
 			window, err := aerospaceClient.GetWindowByID(windowID)
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 			if window == nil {
-				return stdout.ErrorAndExit(fmt.Errorf("no window found for ID %s", windowID))
+				stdout.ErrorAndExit(fmt.Errorf("no window found for ID %s", windowID))
+				return
 			}
 
 			if getWinTitle {
 				fmt.Print(window.WindowTitle)
-				return nil
+				return
 			}
 
 			if getWinApp {
 				fmt.Print(window.AppName)
-				return nil
+				return
 			}
 
 			fmt.Print(window.String())
-			return nil
 		},
 	}
 

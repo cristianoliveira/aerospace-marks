@@ -5,11 +5,11 @@ import (
 	"strings"
 	"testing"
 
+	aerospace "github.com/cristianoliveira/aerospace-ipc"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
-	aerospace "github.com/cristianoliveira/aerospace-ipc"
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
@@ -208,7 +208,7 @@ func TestListCommand(t *testing.T) {
 		}
 
 		result := strings.TrimSpace(out)
-		snaps.MatchSnapshot(t,windows, marks, "result:\n", result)
+		snaps.MatchSnapshot(t, windows, marks, "result:\n", result)
 	})
 
 	t.Run("print all marked windows", func(t *testing.T) {

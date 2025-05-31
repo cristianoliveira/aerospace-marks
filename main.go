@@ -2,18 +2,23 @@ package main
 
 import (
 	"github.com/cristianoliveira/aerospace-marks/cmd"
+	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
-	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 )
 
 func main() {
 	defaultLogger, err := logger.NewLogger()
 	if err != nil {
-		panic(err)
+		stdout.ErrorAndExit(err)
+		return
 	}
-	defer defaultLogger.Close()
+	defer func() {
+		if err := defaultLogger.Close(); err != nil {
+			stdout.ErrorAndExit(err)
+		}
+	}()
 	logger.SetDefaultLogger(defaultLogger)
 	defaultLogger.LogInfo("Starting Aerospace Marks CLI")
 
@@ -26,7 +31,11 @@ func main() {
 	if err != nil {
 		stdout.ErrorAndExit(err)
 	}
-	defer markClient.Close()
+	defer func() {
+		if err := conn.Close(); err != nil {
+			stdout.ErrorAndExit(err)
+		}
+	}()
 
 	aerospaceMarkClient, err := aerospace.NewAeroSpaceClient()
 	if err != nil {

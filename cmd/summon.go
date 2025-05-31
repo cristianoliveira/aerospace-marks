@@ -25,49 +25,57 @@ func SummonCmd(
 
 Similar to 'aerospace summon-workspace' but for marked windows to current workspace.
 `,
-		Args:	cobra.MatchAll(
+		Args: cobra.MatchAll(
 			cobra.ExactArgs(1),
 			cli.ValidateArgIsNotEmpty,
 		),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Run: func(cmd *cobra.Command, args []string) {
 			mark := args[0]
 
 			shouldFocus, err := cmd.Flags().GetBool("focus")
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 
 			// Get window ID by mark
 			windowID, err := storageClient.GetWindowIDByMark(mark)
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 			if windowID == "" {
-				return stdout.ErrorAndExitf("no window found for mark '%s'", mark)
+				stdout.ErrorAndExitf("no window found for mark '%s'", mark)
+				return
 			}
 
 			workspace, err := aerospaceClient.Client().GetFocusedWorkspace()
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 
 			// FIXME: windowsID as number
 			intWindowID, err := strconv.Atoi(windowID)
 			if err != nil {
-				return stdout.ErrorAndExitf("invalid window ID '%s'", windowID)
+				stdout.ErrorAndExitf("invalid window ID '%s'", windowID)
+				return
 			}
 
 			// focus to window by ID
 			err = aerospaceClient.Client().MoveWindowToWorkspace(intWindowID, workspace.Workspace)
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 
 			if shouldFocus {
-				aerospaceClient.Client().SetFocusByWindowID(intWindowID)
+				err := aerospaceClient.Client().SetFocusByWindowID(intWindowID)
+				if err != nil {
+					stdout.ErrorAndExit(err)
+					return
+				}
 			}
-
-			return nil
 		},
 	}
 

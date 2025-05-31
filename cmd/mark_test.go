@@ -5,11 +5,11 @@ import (
 	"strings"
 	"testing"
 
+	aerospace "github.com/cristianoliveira/aerospace-ipc"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
-	aerospace "github.com/cristianoliveira/aerospace-ipc"
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
 )
@@ -30,7 +30,7 @@ func TestMarkCommand(t *testing.T) {
 				Execute(strings.TrimSpace(`
 					DELETE FROM marks WHERE mark = ?
 				`),
-				"mark1").
+					"mark1").
 				Return(dbResult, nil).
 				Times(1),
 			storageDbClient.EXPECT().
@@ -88,7 +88,7 @@ func TestMarkCommand(t *testing.T) {
 				Execute(strings.TrimSpace(`
 					DELETE FROM marks WHERE mark = ?
 				`),
-				"mark1").
+					"mark1").
 				Return(dbResult, nil).
 				Times(1),
 			storageDbClient.EXPECT().

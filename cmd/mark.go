@@ -45,7 +45,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			cobra.ExactArgs(1),
 			cli.ValidateArgIsNotEmpty,
 		),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Run: func(cmd *cobra.Command, args []string) {
 			identifier := args[0]
 
 			add, _ := cmd.Flags().GetBool("add")
@@ -58,13 +58,15 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			if winArgID == "" {
 				window, err := aerospaceClient.Client().GetFocusedWindow()
 				if err != nil {
-					return stdout.ErrorAndExit(err)
+					stdout.ErrorAndExit(err)
+					return
 				}
 				windowID = fmt.Sprintf("%d", window.WindowID)
 			} else {
 				window, err := aerospaceClient.GetWindowByID(windowID)
 				if err != nil {
-					return stdout.ErrorAndExit(err)
+					stdout.ErrorAndExit(err)
+					return
 				}
 				windowID = fmt.Sprintf("%d", window.WindowID)
 			}
@@ -73,42 +75,45 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			if add && !replace {
 				err := storageClient.AddMark(windowID, identifier)
 				if err != nil {
-					return stdout.ErrorAndExit(err)
+					stdout.ErrorAndExit(err)
+					return
 				}
 				if silent {
-					return nil
+					return
 				}
 
 				fmt.Printf("Added mark: %s\n", identifier)
-				return nil
+				return
 			}
 
 			if toggle, err := cmd.Flags().GetBool("toggle"); toggle {
 				if err != nil {
-					return stdout.ErrorAndExit(err)
+					stdout.ErrorAndExit(err)
+					return
 				}
 
 				err := storageClient.ToggleMark(windowID, identifier)
 				if err != nil {
-					return stdout.ErrorAndExit(err)
+					stdout.ErrorAndExit(err)
+					return
 				}
 
 				if silent {
-					return nil
+					return
 				}
 
 				fmt.Printf("Toggling mark: %s\n", identifier)
-
-				return nil
+				return
 			}
 
 			hasBeenDeleted, err := storageClient.ReplaceAllMarks(windowID, identifier)
 			if err != nil {
-				return stdout.ErrorAndExit(err)
+				stdout.ErrorAndExit(err)
+				return
 			}
 
 			if silent {
-				return nil
+				return
 			}
 
 			if hasBeenDeleted > 0 {
@@ -116,8 +121,6 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			} else {
 				fmt.Printf("Marked window with '%s'\n", identifier)
 			}
-
-			return nil
 		},
 	}
 
