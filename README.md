@@ -17,6 +17,9 @@ mark on a window. --add will instead add identifier to the list
 of current marks for that window. If --toggle is specified mark will
 remove identifier if it is already marked.
 ```
+## Demo
+
+https://github.com/user-attachments/assets/cfd84749-c436-465d-8f66-486eb2303e30
 
 ### Why not use named workspaces?
 
