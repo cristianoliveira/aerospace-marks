@@ -16,6 +16,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var focusDelay = 100 * time.Millisecond // Default delay to wait for the window to be ready
+
 // focusCmd represents the focus command
 func FocusCmd(
 	storageClient storage.MarkStorage,
@@ -56,9 +58,8 @@ Moves focus to the first window marked with the specified identifier.
 			}
 
 			// The program is too fast, what a problem to have!
-			// Sleep for half a second to ensure the window is ready
-			time.Sleep(100 * time.Millisecond)
-
+			// Delay setting focus to ensure the window is ready
+			time.Sleep(focusDelay)
 			err = aerospaceClient.Client().SetFocusByWindowID(intWindowID)
 			if err != nil {
 				stdout.ErrorAndExit(err)
