@@ -17,6 +17,7 @@ mark on a window. --add will instead add identifier to the list
 of current marks for that window. If --toggle is specified mark will
 remove identifier if it is already marked.
 ```
+
 ## Demo
 
 https://github.com/user-attachments/assets/cfd84749-c436-465d-8f66-486eb2303e30
@@ -151,6 +152,36 @@ go build -o aerospace-marks
 
 This will create an executable named `aerospace-marks` in the current directory.
 
+## Troubleshooting
+
+If you encounter issues while using `aerospace-marks`, you can use the following environment variables to help diagnose the problem:
+
+- `AEROSPACE_MARKS_DB_PATH`: This variable sets the path for the AeroSpace marks database. By default, it is set to `$HOME/.local/state/aerospace-marks`. (You can connect with sqlite client)
+
+- `AEROSPACE_MARKS_LOGS_PATH`: This variable specifies the path for the AeroSpace marks logs. The default path is `/tmp/aerospace-marks.log`. (use `tail -f <path>`)
+
+- `AEROSPACE_MARKS_LOGS_LEVEL`: This variable determines the logging level for AeroSpace marks. The default level is `DISABLED`.
+
+These environment variables can be set directly in the AeroSpace configuration file to ensure they are available whenever AeroSpace is running. Add the following to your [AeroSpace config](https://nikitabobko.github.io/AeroSpace/guide#config-location)
+
+```toml
+[exec.env-vars]
+# Path for the AeroSpace marks database
+AEROSPACE_MARKS_DB_PATH = "$HOME/.local/state/aerospace-marks"
+
+# Path for the AeroSpace marks logs
+AEROSPACE_MARKS_LOGS_PATH = "/tmp/aerospace-marks.log"
+
+# Logging level for AeroSpace marks
+AEROSPACE_MARKS_LOGS_LEVEL = "DEBUG"
+```
+
+Replace the paths and values with your desired settings.
+
 ### Packages
 
 - AeroSpace Socket IPC - [aerospace-ipc](https://github.com/cristianoliveira/aerospace-ipc)
+
+## License
+
+This project is licensed under the terms of the LICENSE file.
