@@ -11,7 +11,7 @@
       owner = "cristianoliveira";
       repo = "aerospace-marks";
       rev = version;
-      sha256 = "sha256-3sYuOjeZ9jWNGc9Gj6tO9T11UXEaXHCJDFRhP3iOBew=";
+      sha256 = "sha256-hyTRJLG9JLbtLALkLAZaWvfLpLoHMxW3Z8VymQI1OeY=";
     };
 
     vendorHash = "sha256-jBGebNPvSxjoru+CnqpgT3X3hgH8bTa55AhreJ0bqik=";
