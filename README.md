@@ -1,11 +1,19 @@
 # aerospace-marks
 
-[Vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace) add
-custom marks to windows and use them to set focus or summon to the current workspace.
+[Vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace)
 
 **Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
 
+## Demo
+
+https://github.com/user-attachments/assets/cfd84749-c436-465d-8f66-486eb2303e30
+
+## Description
+
+Allows you to add custom marks to windows and use them to set focus or summon to the current workspace.
+
 It’s heavily inspired by [sway marks](https://man.archlinux.org/man/sway.5.en), but follows the `aerospace` style of commands
+
 ```text
 mark --add|--replace [--toggle] <identifier>
 
@@ -18,17 +26,14 @@ of current marks for that window. If --toggle is specified mark will
 remove identifier if it is already marked.
 ```
 
-## Demo
-
-https://github.com/user-attachments/assets/cfd84749-c436-465d-8f66-486eb2303e30
-
 ### Why not use named workspaces?
 
 > TL;DR: Dynamic mappings to specific windows, not workspaces.
 
 I wanted something more granular than workspaces — I want to jump to a specific window, given a context.
-
 Sometimes my "video" context means YouTube, sometimes it’s a video player, sometimes a browser. I want to be able to jump to the right window, regardless of which workspace it's on.
+
+Also, by pairing with [aerospace-scratchpad](https://github.com/cristianoliveira/aerospace-scratchpad) allows me to send away windows, mark then with a key for later bring then back!
 
 ## Basic Usage
 
@@ -57,10 +62,12 @@ Check [vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for 
 [mode.main.binding] 
 
 # Vim's like marks, similar to i3-input
+# cmd + ctrl + m and <letter> -- mark a window with a given <letter>
 cmd-ctrl-m = """
 exec-and-forget aerospace-marks mark \
     $(osascript -e 'text returned of (display dialog "mark" default answer "")')
 """
+# cmd + ctrl + ' and <letter> -- set focus on the window marked with <letter>
 cmd-ctrl-quote = """
 exec-and-forget aerospace-marks focus \
     $(osascript -e 'text returned of (display dialog "focus" default answer "")')
