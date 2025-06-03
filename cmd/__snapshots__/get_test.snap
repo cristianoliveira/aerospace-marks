@@ -4,9 +4,9 @@
     {WindowID:"1", Mark:"mark1"},
 }
 []aerospace.Window{
-    {WindowID:1, WindowTitle:"title1", AppName:"app1"},
-    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
-    {WindowID:3, WindowTitle:"title3", AppName:"app3"},
+    {WindowID:1, WindowTitle:"title1", AppName:"app1", AppBundleID:"", Workspace:""},
+    {WindowID:2, WindowTitle:"title2", AppName:"app2", AppBundleID:"", Workspace:""},
+    {WindowID:3, WindowTitle:"title3", AppName:"app3", AppBundleID:"", Workspace:""},
 }
 aerospace-marks get mark1
 
@@ -18,9 +18,9 @@ aerospace-marks get mark1
     {WindowID:"1", Mark:"mark1"},
 }
 []aerospace.Window{
-    {WindowID:1, WindowTitle:"title1", AppName:"app1"},
-    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
-    {WindowID:3, WindowTitle:"title3", AppName:"app3"},
+    {WindowID:1, WindowTitle:"title1", AppName:"app1", AppBundleID:"", Workspace:""},
+    {WindowID:2, WindowTitle:"title2", AppName:"app2", AppBundleID:"", Workspace:""},
+    {WindowID:3, WindowTitle:"title3", AppName:"app3", AppBundleID:"", Workspace:""},
 }
 aerospace-marks get mark1 --window-id
 
@@ -32,9 +32,9 @@ aerospace-marks get mark1 --window-id
     {WindowID:"1", Mark:"mark1"},
 }
 []aerospace.Window{
-    {WindowID:1, WindowTitle:"title1", AppName:"app1"},
-    {WindowID:2, WindowTitle:"title2", AppName:"app2"},
-    {WindowID:3, WindowTitle:"title3", AppName:"app3"},
+    {WindowID:1, WindowTitle:"title1", AppName:"app1", AppBundleID:"", Workspace:""},
+    {WindowID:2, WindowTitle:"title2", AppName:"app2", AppBundleID:"", Workspace:""},
+    {WindowID:3, WindowTitle:"title3", AppName:"app3", AppBundleID:"", Workspace:""},
 }
 aerospace-marks get mark1 -a
 

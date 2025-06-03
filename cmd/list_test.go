@@ -59,7 +59,14 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--all", "--json"}).
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--all",
+					"--json",
+					"--format",
+					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
@@ -127,7 +134,14 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--all", "--json"}).
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--all",
+					"--json",
+					"--format",
+					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
@@ -192,7 +206,14 @@ func TestListCommand(t *testing.T) {
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--all", "--json"}).
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--all",
+					"--json",
+					"--format",
+					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
 			Return(&aerospacecli.Response{
 				ServerVersion: "1.0",
 				StdOut:        string(windows),

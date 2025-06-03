@@ -53,7 +53,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--focused", "--json"}).
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--focused",
+					"--json",
+					"--format",
+					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
@@ -115,7 +122,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--all", "--json"}).
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--all",
+					"--json",
+					"--format",
+					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
@@ -163,7 +177,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--focused", "--json"}).
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--focused",
+					"--json",
+					"--format",
+					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
@@ -244,7 +265,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--focused", "--json"}).
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--focused",
+					"--json",
+					"--format",
+					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
@@ -300,7 +328,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 		mockAeroSpaceConnection.EXPECT().
-			SendCommand("list-windows", []string{"--focused", "--json"}).
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--focused",
+					"--json",
+					"--format",
+					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
 			Return(
 				&aerospacecli.Response{
 					ServerVersion: "1.0",
