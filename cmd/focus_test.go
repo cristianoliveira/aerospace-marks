@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"

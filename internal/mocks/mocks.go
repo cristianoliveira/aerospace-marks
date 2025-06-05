@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
+	aerospaceipc "github.com/cristianoliveira/aerospace-ipc"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	aerospacecli_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"
 	storage_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/storage"
@@ -80,13 +81,13 @@ func LoadMarksFixture(jsonFilePath string) ([]storage.Mark, error) {
 	return marks, nil
 }
 
-func LoadAeroWindowsFixture(jsonFilePath string) ([]aerospacecli.Window, error) {
+func LoadAeroWindowsFixture(jsonFilePath string) ([]aerospaceipc.Window, error) {
 	file, err := os.ReadFile(jsonFilePath)
 	if err != nil {
 		return nil, err
 	}
 
-	var windows []aerospacecli.Window
+	var windows []aerospaceipc.Window
 	err = json.Unmarshal(file, &windows)
 	if err != nil {
 		return nil, err

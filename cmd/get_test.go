@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	aerospace "github.com/cristianoliveira/aerospace-ipc"
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/client"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
