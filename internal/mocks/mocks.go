@@ -29,10 +29,10 @@ func MockStorageDbClient(ctrl *gomock.Controller) (*storage_mock.MockStorageDbCl
 }
 
 func MockAerospaceConnection(ctrl *gomock.Controller) (
-	*aerospacecli_mock.MockAeroSpaceSocketConn,
+	*aerospacecli_mock.MockAeroSpaceConnection,
 	aerospace.AerosSpaceMarkWindows,
 ) {
-	mockAeroSpaceConnection := aerospacecli_mock.NewMockAeroSpaceSocketConn(ctrl)
+	mockAeroSpaceConnection := aerospacecli_mock.NewMockAeroSpaceConnection(ctrl)
 	mockAeroSpaceConnetor := aerospacecli_mock.NewMockAeroSpaceConnector(ctrl)
 	mockAeroSpaceConnetor.EXPECT().Connect().Return(mockAeroSpaceConnection, nil).Times(1)
 	// mockAeroSpaceConnection.EXPECT().CloseConnection().Return(nil).Times(1)
