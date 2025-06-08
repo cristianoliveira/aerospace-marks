@@ -56,7 +56,7 @@ Get a window by its mark (identifier) and prints the details in the following fo
 
 USAGE: `aerospace-marks get <identifier> [flags]`
 
-## Command: `config`
+## Command: `info`
 
 Show the current configurations and other info related
 
