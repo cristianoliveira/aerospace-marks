@@ -4,6 +4,8 @@ github.com/cristianoliveira/aerospace-ipc v0.0.1 h1:BwRsJu88ghE8Art6WoEVQE45tUQM
 github.com/cristianoliveira/aerospace-ipc v0.0.1/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
 github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250608182735-f8d5f30434b7 h1:7JFSZITbr5u5nNjFM7XgtRigAWKC6n4xowZP8j41W1c=
 github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250608182735-f8d5f30434b7/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
+github.com/cristianoliveira/aerospace-ipc v0.2.0 h1:DNifQfsdogX0CTS5wDgYcZmZWzctDFYxQmO9tMtxlW0=
+github.com/cristianoliveira/aerospace-ipc v0.2.0/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/gkampitakis/ciinfo v0.3.1 h1:lzjbemlGI4Q+XimPg64ss89x8Mf3xihJqy/0Mgagapo=
