@@ -41,10 +41,10 @@ func (m *MockAeroSpaceConnector) EXPECT() *MockAeroSpaceConnectorMockRecorder {
 }
 
 // Connect mocks base method.
-func (m *MockAeroSpaceConnector) Connect() (client.AeroSpaceSocketConn, error) {
+func (m *MockAeroSpaceConnector) Connect() (client.AeroSpaceConnection, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Connect")
-	ret0, _ := ret[0].(client.AeroSpaceSocketConn)
+	ret0, _ := ret[0].(client.AeroSpaceConnection)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

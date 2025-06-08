@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
+	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/constants"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
@@ -14,7 +14,9 @@ import (
 )
 
 // configCmd represents the config command
-func ConfigCmd() *cobra.Command {
+func ConfigCmd(
+	aerospaceClient aerospace.AerosSpaceMarkWindows,
+) *cobra.Command {
 	return &cobra.Command{
 		Use:   "config",
 		Short: "Displays aerospace-marks configuration",
@@ -26,7 +28,8 @@ It also displays help information about environment variables available.
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logConfig := logger.GetDefaultLogger().GetConfig()
 			dbConfig := storage.GetDatabaseConfig()
-			socketPath, err := aerospacecli.GetSocketPath()
+			client := aerospaceClient.Client().Connection()
+			socketPath, err := client.GetSocketPath()
 			if err != nil {
 				return fmt.Errorf("failed to get socket path: %w", err)
 			}
