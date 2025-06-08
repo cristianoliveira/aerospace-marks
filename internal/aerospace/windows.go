@@ -54,7 +54,7 @@ func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID string) (*aerospacecli.
 }
 
 func NewAeroSpaceClient() (*DefaultAeroSpaceWindows, error) {
-	cli, err := aerospacecli.NewAeroSpaceConnection()
+	cli, err := aerospacecli.NewAeroSpaceClient()
 	if err != nil {
 		return nil, err
 	}
