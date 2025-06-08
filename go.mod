@@ -5,7 +5,7 @@ go 1.24.2
 toolchain go1.24.3
 
 require (
-	github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250608141218-597757d60336 // indirect
+	github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250608182735-f8d5f30434b7 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gkampitakis/ciinfo v0.3.1 // indirect
 	github.com/gkampitakis/go-diff v1.3.2 // indirect

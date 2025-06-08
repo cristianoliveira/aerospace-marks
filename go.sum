@@ -2,12 +2,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6N
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/cristianoliveira/aerospace-ipc v0.0.1 h1:BwRsJu88ghE8Art6WoEVQE45tUQM/F8VaHWifle2UQ0=
 github.com/cristianoliveira/aerospace-ipc v0.0.1/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
-github.com/cristianoliveira/aerospace-ipc v0.1.1 h1:+myzs6+JYUh8VBpSM/mna22JM5nHc89Ll0kUNJA+JpA=
-github.com/cristianoliveira/aerospace-ipc v0.1.1/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
-github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250605203920-72dc50319aab h1:0QfRjOoWyK+j+8WLvV5tiCTR9i3J3Wv5ozyqg8RSNEo=
-github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250605203920-72dc50319aab/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
-github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250608141218-597757d60336 h1:vhzn2z7WCTD657VI7z4ta2zKKSHkuLP82LkseJJtQqA=
-github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250608141218-597757d60336/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
+github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250608182735-f8d5f30434b7 h1:7JFSZITbr5u5nNjFM7XgtRigAWKC6n4xowZP8j41W1c=
+github.com/cristianoliveira/aerospace-ipc v0.1.2-0.20250608182735-f8d5f30434b7/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/gkampitakis/ciinfo v0.3.1 h1:lzjbemlGI4Q+XimPg64ss89x8Mf3xihJqy/0Mgagapo=
