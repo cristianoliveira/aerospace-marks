@@ -14,13 +14,13 @@ import (
 )
 
 // configCmd represents the config command
-func ConfigCmd(
+func InfoCmd(
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
 ) *cobra.Command {
 	return &cobra.Command{
-		Use:   "config",
-		Short: "Displays aerospace-marks configuration",
-		Long: `Displays the configuration of aerospace-marks.
+		Use:   "info",
+		Short: "Displays aerospace-marks config information",
+		Long: `Displays the config information of aerospace-marks.
 
 This command allows you to view the current configurations for the aerospace-marks CLI.
 It also displays help information about environment variables available.
