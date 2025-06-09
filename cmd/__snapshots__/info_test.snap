@@ -1,0 +1,58 @@
+
+[TestInfoCmd/Happy_path_-_all_compatible - 1]
+aerospace-marks info
+Aerospace Marks CLI - Configuration
+
+[Socket]
+Path: /tmp/foo.sock
+Version: aerospace-ipc v0.1.0
+Status: Compatible.
+
+[Database]
+Name: storage.db
+Path: /Users/cristianoliveira/.local/state/aerospace-marks
+
+[Logging]
+Path: /tmp/aerospace-marks.log
+Level: DISABLED
+
+Configure with ENV variables:
+AEROSPACESOCK - Path to the socket file.
+AEROSPACE_MARKS_DB_PATH - Path to database directory.
+AEROSPACE_MARKS_LOGS_LEVEL - Log level [debug|info|warn|error] (default: disabled)
+AEROSPACE_MARKS_LOGS_PATH - Path to the logs file.
+
+---
+
+[TestInfoCmd/Happy_path_-_non_compatible - 1]
+aerospace-marks info
+Aerospace Marks CLI - Configuration
+
+[Socket]
+Path: /tmp/foo.sock
+Version: aerospace-ipc v3.1.0
+Status: Incompatible. Reason: incompatible version because reasons
+
+[Database]
+Name: storage.db
+Path: /Users/cristianoliveira/.local/state/aerospace-marks
+
+[Logging]
+Path: /tmp/aerospace-marks.log
+Level: DISABLED
+
+Configure with ENV variables:
+AEROSPACESOCK - Path to the socket file.
+AEROSPACE_MARKS_DB_PATH - Path to database directory.
+AEROSPACE_MARKS_LOGS_LEVEL - Log level [debug|info|warn|error] (default: disabled)
+AEROSPACE_MARKS_LOGS_PATH - Path to the logs file.
+
+---
+
+[TestInfoCmd/Failure_-_to_retrieve_socket_path - 1]
+aerospace-marks info
+Output
+
+Error
+failed to get socket path: missing socket path
+---

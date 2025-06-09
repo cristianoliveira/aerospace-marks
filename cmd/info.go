@@ -34,10 +34,23 @@ It also displays help information about environment variables available.
 				return fmt.Errorf("failed to get socket path: %w", err)
 			}
 
-			cmd.Println(fmt.Sprintf(`Aerospace Marks CLI - Configuration
+			var validationInfo string
+			if err = client.CheckServerVersion(); err != nil {
+				validationInfo = "Incompatible. Reason: " + err.Error()
+			} else {
+				validationInfo = "Compatible."
+			}
+			serverVersion, err := client.GetServerVersion()
+			if err != nil {
+				return fmt.Errorf("failed to get server version: %w", err)
+			}
+
+			fmt.Printf(`Aerospace Marks CLI - Configuration
 
 [Socket]
 Path: %s
+Version: %s
+Status: %s
 
 [Database]
 Name: %s
@@ -52,17 +65,25 @@ Configure with ENV variables:
 %s - Path to database directory.
 %s - Log level [debug|info|warn|error] (default: disabled)
 %s - Path to the logs file.
-			`,
+`,
 				socketPath,
+				serverVersion,
+				validationInfo,
+
+				// Database configuration
 				dbConfig.DbName,
 				dbConfig.DbPath,
+
+				// logging configuration
 				logConfig.Path,
 				logConfig.Level,
+
+				// Environment variables
 				constants.EnvAeroSpaceSock,
 				constants.EnvAeroSpaceMarksDbPath,
 				constants.EnvAeroSpaceMarksLogsLevel,
 				constants.EnvAeroSpaceMarksLogsPath,
-			))
+			)
 
 			return nil
 		},
