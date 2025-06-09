@@ -128,6 +128,20 @@ func (mr *MockStorageDbClientMockRecorder) Execute(query any, args ...any) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockStorageDbClient)(nil).Execute), varargs...)
 }
 
+// GetStorageConfig mocks base method.
+func (m *MockStorageDbClient) GetStorageConfig() storage.StorageConfig {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetStorageConfig")
+	ret0, _ := ret[0].(storage.StorageConfig)
+	return ret0
+}
+
+// GetStorageConfig indicates an expected call of GetStorageConfig.
+func (mr *MockStorageDbClientMockRecorder) GetStorageConfig() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStorageConfig", reflect.TypeOf((*MockStorageDbClient)(nil).GetStorageConfig))
+}
+
 // QueryAll mocks base method.
 func (m *MockStorageDbClient) QueryAll(query string, args ...any) ([]storage.Mark, error) {
 	m.ctrl.T.Helper()

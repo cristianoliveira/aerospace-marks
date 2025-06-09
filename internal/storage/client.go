@@ -67,10 +67,13 @@ type StorageDbClient interface {
 	Execute(query string, args ...any) (DbResult, error)
 	// Close the database connection
 	Close() error
+	// GetStorageConfig returns the storage configuration
+	GetStorageConfig() StorageConfig
 }
 
 type StorageClient struct {
-	db *sql.DB
+	dbConfig StorageConfig
+	db       *sql.DB
 }
 
 func (c *StorageClient) QueryAll(query string, args ...any) ([]Mark, error) {
@@ -198,6 +201,13 @@ func (c *StorageClient) GetVersion() (int, error) {
 	return version, nil
 }
 
+// GetStorageConfig returns the storage configuration
+func (c *StorageClient) GetStorageConfig() StorageConfig {
+	log := logger.GetDefaultLogger()
+	log.LogInfo("getting storage configuration", "config", c.dbConfig)
+	return c.dbConfig
+}
+
 // --CONNECTOR--
 
 type DatabaseConnector interface {
@@ -232,7 +242,10 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 		return nil, err
 	}
 
-	client := &StorageClient{db: db}
+	client := &StorageClient{
+		dbConfig: dbConfig,
+		db:       db,
+	}
 
 	if shouldCreateTable {
 		if err := client.createTableIfNotExists(); err != nil {

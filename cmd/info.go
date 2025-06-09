@@ -15,6 +15,7 @@ import (
 
 // configCmd represents the config command
 func InfoCmd(
+	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
 ) *cobra.Command {
 	return &cobra.Command{
@@ -27,7 +28,7 @@ It also displays help information about environment variables available.
 `,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			logConfig := logger.GetDefaultLogger().GetConfig()
-			dbConfig := storage.GetDatabaseConfig()
+			dbConfig := storageClient.Client().GetStorageConfig()
 			client := aerospaceClient.Client().Connection()
 			socketPath, err := client.GetSocketPath()
 			if err != nil {
