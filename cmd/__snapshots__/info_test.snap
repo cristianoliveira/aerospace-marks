@@ -9,8 +9,8 @@ Version: aerospace-ipc v0.1.0
 Status: Compatible.
 
 [Database]
-Name: storage.db
-Path: /Users/cristianoliveira/.local/state/aerospace-marks
+Name: foo.db
+Path: /tmp/database/
 
 [Logging]
 Path: /tmp/aerospace-marks.log
@@ -34,8 +34,8 @@ Version: aerospace-ipc v3.1.0
 Status: Incompatible. Reason: incompatible version because reasons
 
 [Database]
-Name: storage.db
-Path: /Users/cristianoliveira/.local/state/aerospace-marks
+Name: foo.db
+Path: /tmp/database/
 
 [Logging]
 Path: /tmp/aerospace-marks.log

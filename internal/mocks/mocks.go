@@ -22,7 +22,7 @@ func MockStorageDbClient(ctrl *gomock.Controller) (*storage_mock.MockStorageDbCl
 
 	newStorage, err := storage.NewMarkClient(storageDbClient)
 	if err != nil {
-		panic(err)
+		ctrl.T.Errorf("failed to create new storage client: %v", err)
 	}
 
 	return storageDbClient, newStorage

@@ -39,6 +39,9 @@ func (m *MockMarkStorage) Close() error {
 	m.RecordArgs = append(m.RecordArgs, "close")
 	return nil
 }
+func (m *MockMarkStorage) GetStorageConfig() StorageConfig {
+	return StorageConfig{}
+}
 
 func TestMarksStorageClient(t *testing.T) {
 	logger.SetDefaultLogger(&logger.EmptyLogger{})

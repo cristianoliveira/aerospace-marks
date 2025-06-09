@@ -30,6 +30,8 @@ type MarkStorage interface {
 	DeleteAllMarks() (int64, error)
 	// Close closes the database connection
 	Close() error
+	// Client returns the storage client
+	Client() StorageDbClient
 }
 
 type MarkStorageClient struct {
@@ -136,6 +138,11 @@ func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (int64, erro
 
 func (c *MarkStorageClient) Close() error {
 	return c.storage.Close()
+}
+
+// Client returns the storage client
+func (c *MarkStorageClient) Client() StorageDbClient {
+	return c.storage
 }
 
 // ToggleMark toggles a mark for a window

@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
+	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
@@ -17,6 +18,16 @@ func TestInfoCmd(t *testing.T) {
 		defer ctrl.Finish()
 
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
+
+		dbClient.
+			EXPECT().
+			GetStorageConfig().
+			Return(storage.StorageConfig{
+				DbPath: "/tmp/database/",
+				DbName: "foo.db",
+			}).
+			Times(1)
 
 		gomock.InOrder(
 			aerospaceConnection.
@@ -38,7 +49,10 @@ func TestInfoCmd(t *testing.T) {
 				Times(1),
 		)
 
-		cmd := InfoCmd(aerospaceClient)
+		cmd := InfoCmd(
+			storageClient,
+			aerospaceClient,
+		)
 		out, err := testutils.CmdExecute(cmd)
 		if err != nil {
 			tt.Fatal(err)
@@ -53,6 +67,16 @@ func TestInfoCmd(t *testing.T) {
 		defer ctrl.Finish()
 
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
+
+		dbClient.
+			EXPECT().
+			GetStorageConfig().
+			Return(storage.StorageConfig{
+				DbPath: "/tmp/database/",
+				DbName: "foo.db",
+			}).
+			Times(1)
 
 		gomock.InOrder(
 			aerospaceConnection.
@@ -74,7 +98,10 @@ func TestInfoCmd(t *testing.T) {
 				Times(1),
 		)
 
-		cmd := InfoCmd(aerospaceClient)
+		cmd := InfoCmd(
+			storageClient,
+			aerospaceClient,
+		)
 		out, err := testutils.CmdExecute(cmd)
 		if err != nil {
 			tt.Fatal(err)
@@ -89,6 +116,16 @@ func TestInfoCmd(t *testing.T) {
 		defer ctrl.Finish()
 
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
+
+		dbClient.
+			EXPECT().
+			GetStorageConfig().
+			Return(storage.StorageConfig{
+				DbPath: "/tmp/database/",
+				DbName: "foo.db",
+			}).
+			Times(1)
 
 		gomock.InOrder(
 			aerospaceConnection.
@@ -98,7 +135,10 @@ func TestInfoCmd(t *testing.T) {
 				Times(1),
 		)
 
-		cmd := InfoCmd(aerospaceClient)
+		cmd := InfoCmd(
+			storageClient,
+			aerospaceClient,
+		)
 		out, err := testutils.CmdExecute(cmd)
 		if err == nil {
 			tt.Fatal(err)
