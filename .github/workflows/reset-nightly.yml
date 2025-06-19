@@ -28,7 +28,11 @@ jobs:
       - name: Check for changes outside nix/
         id: changes_check
         run: |
-          bash scripts/git-has-changes.sh >> $GITHUB_ENV
+          if git diff --name-only HEAD^ HEAD | grep -v '^nix/'; then
+            echo "has_code_changes=true" >> $GITHUB_ENV
+          else
+            echo "has_code_changes=false" >> $GITHUB_ENV
+          fi
 
       - name: Generate new hashes
         if: env.has_code_changes == 'true'
