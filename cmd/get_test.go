@@ -62,7 +62,7 @@ func TestGetCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -178,7 +178,7 @@ func TestGetCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
 				}).
 			Return(
 				&aerospacecli.Response{
