@@ -59,7 +59,7 @@ func TestMarkCommand(t *testing.T) {
 					"--focused",
 					"--json",
 					"--format",
-					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -128,7 +128,7 @@ func TestMarkCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -182,8 +182,8 @@ func TestMarkCommand(t *testing.T) {
 				[]string{
 					"--focused",
 					"--json",
-					"--format",
-					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+					"--format", 
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -271,7 +271,7 @@ func TestMarkCommand(t *testing.T) {
 					"--focused",
 					"--json",
 					"--format",
-					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -334,7 +334,7 @@ func TestMarkCommand(t *testing.T) {
 					"--focused",
 					"--json",
 					"--format",
-					"%{window-id} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
 				}).
 			Return(
 				&aerospacecli.Response{
