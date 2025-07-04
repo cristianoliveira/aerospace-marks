@@ -9,7 +9,7 @@
     # sources that will be used for our derivation.
     src = ../.;
 
-    vendorHash = "sha256-0s4aCxaWRolYdLadouszxnrlT+9x+PpJiOaQ4pUPhAM=";
+    vendorHash = "sha256-9FNgpx4PtA9VCbeMdo+BQaED0MWGNmX8E0YjFNsSy04=";
 
     ldflags = [
       "-s" "-w"
