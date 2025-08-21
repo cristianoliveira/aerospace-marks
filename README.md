@@ -52,7 +52,7 @@ aerospace-marks summon <identifier>
 
 ## Advanced Usage
 
-See more in [documentation](docs/aerospace-marks)
+See more in [documentation](docs/)
 
 Check [vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for a more advanced usage.
 

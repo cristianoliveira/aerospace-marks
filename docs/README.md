@@ -22,7 +22,7 @@ You may specify the window with `--window-id <id>` option.
 
 USAGE: `aerospace-marks mark [--add|--replace] [--toggle] <identifier>`
 
-[read more](/docs/aerospace-marks/CMD_MARK.md)
+[read more](/docs/CMD_MARK.md)
 
 ## Command: `focus`
 
@@ -42,7 +42,7 @@ unmark will remove identifier from the list of current marks on a window. If ide
 
 USAGE: `aerospace-marks unmark [<identifier>]`
 
-[read more](/docs/aerospace-marks/CMD_UNMARK.md)
+[read more](/docs/CMD_UNMARK.md)
 
 ## Command: `summon`
 
