@@ -55,9 +55,6 @@ This command retrieves a window by its mark (identifier). Print in the following
 				return
 			}
 
-			getWinTitle, _ := cmd.Flags().GetBool("window-title")
-			getWinApp, _ := cmd.Flags().GetBool("app-name")
-
 			window, err := aerospaceClient.GetWindowByID(windowID)
 			logger.LogDebug(
 				"Get window by ID",
@@ -75,13 +72,21 @@ This command retrieves a window by its mark (identifier). Print in the following
 				return
 			}
 
+			getWinTitle, _ := cmd.Flags().GetBool("window-title")
 			if getWinTitle {
 				fmt.Print(window.WindowTitle)
 				return
 			}
 
+			getWinApp, _ := cmd.Flags().GetBool("app-name")
 			if getWinApp {
 				fmt.Print(window.AppName)
+				return
+			}
+
+			getWinAppBundleID, _ := cmd.Flags().GetBool("app-bundle-id")
+			if getWinAppBundleID {
+				fmt.Print(window.AppBundleID)
 				return
 			}
 
@@ -97,6 +102,7 @@ This command retrieves a window by its mark (identifier). Print in the following
 	getCmd.Flags().BoolP("window-id", "i", false, "Get only window [i]D")
 	getCmd.Flags().BoolP("window-title", "t", false, "Get only window [t]itle")
 	getCmd.Flags().BoolP("app-name", "a", false, "Get only window [a]pp name")
+	getCmd.Flags().BoolP("app-bundle-id", "b", false, "Get only window app [b]undle ID")
 
 	return getCmd
 }

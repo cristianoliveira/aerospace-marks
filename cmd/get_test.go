@@ -197,4 +197,75 @@ func TestGetCommand(t *testing.T) {
 		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
 		snaps.MatchSnapshot(t, marks, windows, cmdAsString, out)
 	})
+
+	t.Run("shows only the marked windows app-bundle-id", func(t *testing.T) {
+		// t.Skip("Skipping")
+		args := []string{"get", "mark1", "--app-bundle-id"}
+
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		storageMock, strg := mocks.MockStorageDbClient(ctrl)
+		marks := []storage.Mark{
+			{
+				WindowID: "1",
+				Mark:     "mark1",
+			},
+		}
+
+		storageMock.EXPECT().
+			QueryOne("SELECT * FROM marks WHERE mark = ?", "mark1").
+			Return(&marks[0], nil)
+
+		connectionMock, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+		windows := []aerospace.Window{
+			{
+				WindowID:    1,
+				WindowTitle: "title1",
+				AppName:     "app1",
+				AppBundleID: "bundle1",
+			},
+			{
+				WindowID:    2,
+				WindowTitle: "title2",
+				AppName:     "app2",
+				AppBundleID: "bundle2",
+			},
+			{
+				WindowID:    3,
+				WindowTitle: "title3",
+				AppName:     "app3",
+				AppBundleID: "bundle3",
+			},
+		}
+		jsonData, err := json.Marshal(windows)
+		if err != nil {
+			t.Fatal(err)
+		}
+		connectionMock.EXPECT().
+			SendCommand(
+				"list-windows",
+				[]string{
+					"--all",
+					"--json",
+					"--format",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+				}).
+			Return(
+				&aerospacecli.Response{
+					ServerVersion: "1.0",
+					StdOut:        string(jsonData),
+					StdErr:        "",
+					ExitCode:      0,
+				}, nil).Times(1)
+
+		cmd := NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(cmd, args...)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
+		snaps.MatchSnapshot(t, marks, windows, cmdAsString, out)
+	})
 }
