@@ -182,7 +182,7 @@ func TestMarkCommand(t *testing.T) {
 				[]string{
 					"--focused",
 					"--json",
-					"--format", 
+					"--format",
 					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
 				}).
 			Return(
