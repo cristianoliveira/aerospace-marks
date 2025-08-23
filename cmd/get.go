@@ -8,6 +8,7 @@ import (
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
@@ -31,7 +32,10 @@ This command retrieves a window by its mark (identifier). Print in the following
 			cli.ValidateArgIsNotEmpty,
 		),
 		Run: func(cmd *cobra.Command, args []string) {
+			logger := logger.GetDefaultLogger()
+
 			mark := args[0]
+			logger.LogDebug("Getting window by mark: %s", mark)
 
 			markedWindow, err := storageClient.GetWindowByMark(mark)
 			if err != nil {
@@ -55,6 +59,13 @@ This command retrieves a window by its mark (identifier). Print in the following
 			getWinApp, _ := cmd.Flags().GetBool("app-name")
 
 			window, err := aerospaceClient.GetWindowByID(windowID)
+			logger.LogDebug(
+				"Get window by ID",
+				"windowID", windowID,
+				"window", *window,
+				"windowTitle", window.WindowTitle,
+				"err", err,
+			)
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
@@ -74,7 +85,12 @@ This command retrieves a window by its mark (identifier). Print in the following
 				return
 			}
 
-			fmt.Print(window.String())
+			logger.LogInfo(
+				"Printing full window info",
+				"windowID", windowID,
+				"window", window,
+			)
+			fmt.Print(window)
 		},
 	}
 

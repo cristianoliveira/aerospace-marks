@@ -2,9 +2,11 @@ package aerospace
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 )
 
 type AerosSpaceMarkWindows interface {
@@ -27,17 +29,19 @@ type DefaultAeroSpaceWindows struct {
 
 func (d *DefaultAeroSpaceWindows) Client() *aerospacecli.AeroSpaceWM {
 	if d.client == nil {
-		panic("ASSERTION: AeroSpaceWM client is not initialized")
+		log.Fatal("ASSERT: AeroSpaceWM client is not initialized")
 	}
 
 	return d.client
 }
 
 func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID string) (*aerospacecli.Window, error) {
+	logger := logger.GetDefaultLogger()
 	windows, err := d.client.GetAllWindows()
 	if err != nil {
 		return nil, err
 	}
+	logger.LogDebug("Windows found: %d", len(windows))
 
 	intWindowID, err := strconv.Atoi(windowID)
 	if err != nil {
