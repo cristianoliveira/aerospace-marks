@@ -2,6 +2,10 @@ name: On demand Bump Version
 
 on:
   workflow_dispatch:
+  # Upon a new tag creation
+  push:
+    tags:
+      - 'v*.*.*'  # Adjust the pattern as needed
 
 permissions:
   contents: write
