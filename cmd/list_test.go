@@ -42,16 +42,22 @@ func TestListCommand(t *testing.T) {
 				WindowID:    1,
 				WindowTitle: "title1",
 				AppName:     "app1",
+				Workspace:   "",
+				AppBundleID: "",
 			},
 			{
 				WindowID:    2,
 				WindowTitle: "title2",
 				AppName:     "app2",
+				Workspace:   "",
+				AppBundleID: "",
 			},
 			{
 				WindowID:    3,
 				WindowTitle: "title3",
 				AppName:     "app3",
+				Workspace:   "",
+				AppBundleID: "",
 			},
 		}
 		jsonData, err := json.Marshal(windows)
@@ -86,8 +92,8 @@ func TestListCommand(t *testing.T) {
 		lines := strings.Split(result, "\n")
 		assert.Equal(t, 2, len(lines))
 		assert.Equal(t, lines, []string{
-			"mark1 | 1 | app1 | title1",
-			"mark2 | 2 | app2 | title2",
+			"mark1 | 1 | app1 | title1 | _ | _",
+			"mark2 | 2 | app2 | title2 | _ | _",
 		})
 	})
 
@@ -117,16 +123,22 @@ func TestListCommand(t *testing.T) {
 				WindowID:    111,
 				WindowTitle: "title1",
 				AppName:     "app1",
+				Workspace:   "",
+				AppBundleID: "",
 			},
 			{
 				WindowID:    222,
 				WindowTitle: "title2",
 				AppName:     "app2",
+				Workspace:   "",
+				AppBundleID: "",
 			},
 			{
 				WindowID:    333,
 				WindowTitle: "title3",
 				AppName:     "app3",
+				Workspace:   "",
+				AppBundleID: "",
 			},
 		}
 		jsonData, err := json.Marshal(windows)
