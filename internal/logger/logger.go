@@ -78,6 +78,15 @@ func (l *LoggerClient) Close() error {
 	return nil
 }
 
+// Goose Logger interface implementation
+func (l *LoggerClient) Fatalf(format string, v ...any) {
+	l.logger.Error(fmt.Sprintf(format, v...))
+	os.Exit(1)
+}
+func (l *LoggerClient) Printf(format string, v ...any) {
+	l.logger.Info(fmt.Sprintf(format, v...))
+}
+
 type EmptyLogger struct{}
 
 func (l *EmptyLogger) LogInfo(msg string, args ...any) {
