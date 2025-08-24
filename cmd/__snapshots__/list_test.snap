@@ -47,8 +47,8 @@
 }
 result:
 
-mark-1 | 1 | Alacritty     | Alacritty     
-mark-3 | 3 | Brave Browser | GitHub - Brave
+mark-1 | 1 | Alacritty     | Alacritty      | _ | _
+mark-3 | 3 | Brave Browser | GitHub - Brave | _ | _
 ---
 
 [TestListCommand/print_all_marked_windows#01 - 1]
@@ -59,7 +59,7 @@ List all marked windows
 This command lists all marked windows with their respective marks.
 Display in the following format:
 
-<mark>|<window-id>|<window-title>|<window-app>
+<mark>|<window-id>|<app-name>|<window-title>|<workspace>|<app-bundle-id>
 
 Usage:
   aerospace-marks list [flags]

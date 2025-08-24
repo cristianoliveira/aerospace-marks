@@ -45,7 +45,7 @@ func ListCmd(
 This command lists all marked windows with their respective marks.
 Display in the following format:
 
-<mark>|<window-id>|<window-title>|<window-app>
+<mark>|<window-id>|<app-name>|<window-title>|<workspace>|<app-bundle-id>
 	`,
 		Run: func(cmd *cobra.Command, args []string) {
 			marks, err := storageClient.GetMarks()
@@ -71,7 +71,27 @@ Display in the following format:
 					continue
 				}
 
-				line := fmt.Sprintf("%s|%s\r\n", mark.Mark, window)
+				// Format window fields, using "_" for empty fields
+				windowID := fmt.Sprintf("%d", window.WindowID)
+				appName := window.AppName
+				if appName == "" {
+					appName = "_"
+				}
+				windowTitle := window.WindowTitle
+				if windowTitle == "" {
+					windowTitle = "_"
+				}
+				workspace := window.Workspace
+				if workspace == "" {
+					workspace = "_"
+				}
+				appBundleID := window.AppBundleID
+				if appBundleID == "" {
+					appBundleID = "_"
+				}
+
+				line := fmt.Sprintf("%s|%s|%s|%s|%s|%s\r\n",
+					mark.Mark, windowID, appName, windowTitle, workspace, appBundleID)
 				lines = append(lines, line)
 			}
 
