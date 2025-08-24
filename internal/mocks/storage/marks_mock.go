@@ -13,6 +13,7 @@ import (
 	reflect "reflect"
 
 	storage "github.com/cristianoliveira/aerospace-marks/internal/storage"
+	queries "github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -54,6 +55,20 @@ func (mr *MockMarkStorageMockRecorder) AddMark(id, mark any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMark", reflect.TypeOf((*MockMarkStorage)(nil).AddMark), id, mark)
 }
 
+// Client mocks base method.
+func (m *MockMarkStorage) Client() storage.StorageDbClient {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Client")
+	ret0, _ := ret[0].(storage.StorageDbClient)
+	return ret0
+}
+
+// Client indicates an expected call of Client.
+func (mr *MockMarkStorageMockRecorder) Client() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Client", reflect.TypeOf((*MockMarkStorage)(nil).Client))
+}
+
 // Close mocks base method.
 func (m *MockMarkStorage) Close() error {
 	m.ctrl.T.Helper()
@@ -68,11 +83,56 @@ func (mr *MockMarkStorageMockRecorder) Close() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockMarkStorage)(nil).Close))
 }
 
+// DeleteAllMarks mocks base method.
+func (m *MockMarkStorage) DeleteAllMarks() (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteAllMarks")
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteAllMarks indicates an expected call of DeleteAllMarks.
+func (mr *MockMarkStorageMockRecorder) DeleteAllMarks() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAllMarks", reflect.TypeOf((*MockMarkStorage)(nil).DeleteAllMarks))
+}
+
+// DeleteByMark mocks base method.
+func (m *MockMarkStorage) DeleteByMark(mark string) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteByMark", mark)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteByMark indicates an expected call of DeleteByMark.
+func (mr *MockMarkStorageMockRecorder) DeleteByMark(mark any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByMark", reflect.TypeOf((*MockMarkStorage)(nil).DeleteByMark), mark)
+}
+
+// DeleteByWindow mocks base method.
+func (m *MockMarkStorage) DeleteByWindow(windowId int) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteByWindow", windowId)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteByWindow indicates an expected call of DeleteByWindow.
+func (mr *MockMarkStorageMockRecorder) DeleteByWindow(windowId any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByWindow", reflect.TypeOf((*MockMarkStorage)(nil).DeleteByWindow), windowId)
+}
+
 // GetMarks mocks base method.
-func (m *MockMarkStorage) GetMarks() ([]storage.Mark, error) {
+func (m *MockMarkStorage) GetMarks() ([]queries.Mark, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMarks")
-	ret0, _ := ret[0].([]storage.Mark)
+	ret0, _ := ret[0].([]queries.Mark)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -84,10 +144,10 @@ func (mr *MockMarkStorageMockRecorder) GetMarks() *gomock.Call {
 }
 
 // GetMarksByWindowID mocks base method.
-func (m *MockMarkStorage) GetMarksByWindowID(id string) ([]storage.Mark, error) {
+func (m *MockMarkStorage) GetMarksByWindowID(id string) ([]queries.Mark, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMarksByWindowID", id)
-	ret0, _ := ret[0].([]storage.Mark)
+	ret0, _ := ret[0].([]queries.Mark)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -96,6 +156,21 @@ func (m *MockMarkStorage) GetMarksByWindowID(id string) ([]storage.Mark, error) 
 func (mr *MockMarkStorageMockRecorder) GetMarksByWindowID(id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMarksByWindowID", reflect.TypeOf((*MockMarkStorage)(nil).GetMarksByWindowID), id)
+}
+
+// GetWindowByMark mocks base method.
+func (m *MockMarkStorage) GetWindowByMark(mark string) (*queries.Mark, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWindowByMark", mark)
+	ret0, _ := ret[0].(*queries.Mark)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWindowByMark indicates an expected call of GetWindowByMark.
+func (mr *MockMarkStorageMockRecorder) GetWindowByMark(mark any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWindowByMark", reflect.TypeOf((*MockMarkStorage)(nil).GetWindowByMark), mark)
 }
 
 // GetWindowIDByMark mocks base method.
@@ -114,10 +189,10 @@ func (mr *MockMarkStorageMockRecorder) GetWindowIDByMark(mark any) *gomock.Call 
 }
 
 // ReplaceAllMarks mocks base method.
-func (m *MockMarkStorage) ReplaceAllMarks(id, mark string) (bool, error) {
+func (m *MockMarkStorage) ReplaceAllMarks(id, mark string) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReplaceAllMarks", id, mark)
-	ret0, _ := ret[0].(bool)
+	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

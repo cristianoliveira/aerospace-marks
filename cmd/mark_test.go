@@ -22,23 +22,11 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{1}[0])
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					DELETE FROM marks WHERE window_id = ? OR mark = ?
-				`),
-					"1", "mark1").
-				Return(dbResult, nil).
-				Times(1),
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					INSERT INTO marks (window_id, mark) VALUES (?, ?)
-				`), "1", "mark1").
-				Return(dbResult, nil).
-				Times(1),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			ReplaceAllMarks("1", "mark1").
+			Return(int64(1), nil).
+			Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -86,23 +74,11 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{1}[0])
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					DELETE FROM marks WHERE window_id = ? OR mark = ?
-				`),
-					"2", "mark1").
-				Return(dbResult, nil).
-				Times(1),
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					INSERT INTO marks (window_id, mark) VALUES (?, ?)
-				`), "2", "mark1").
-				Return(dbResult, nil).
-				Times(1),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			ReplaceAllMarks("2", "mark1").
+			Return(int64(1), nil).
+			Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -155,14 +131,11 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					INSERT INTO marks (window_id, mark) VALUES (?, ?)
-				`), "1", "mark2").
-				Times(1),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			AddMark("1", "mark2").
+			Return(nil).
+			Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -235,22 +208,11 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{1}[0])
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					DELETE FROM marks WHERE mark = ?
-				`), "foobar").
-				Return(dbResult, nil).
-				Times(1),
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					INSERT INTO marks (window_id, mark) VALUES (?, ?)
-				`), "1", "mark1").
-				Return(dbResult, nil).
-				Times(0),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			ToggleMark("2", "foobar").
+			Return(nil).
+			Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -298,22 +260,11 @@ func TestMarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{0}[0])
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					DELETE FROM marks WHERE mark = ?
-				`), "foobar").
-				Return(dbResult, nil).
-				Times(1),
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					INSERT INTO marks (window_id, mark) VALUES (?, ?)
-				`), "2", "foobar").
-				Return(dbResult, nil).
-				Times(1),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			ToggleMark("2", "foobar").
+			Return(nil).
+			Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{

@@ -1,6 +1,6 @@
 
 [TestGetCommand/shows_only_the_marked_windows - 1]
-[]storage.Mark{
+[]struct { WindowID string "json:\"window_id\""; Mark string "json:\"mark\"" }{
     {WindowID:"1", Mark:"mark1"},
 }
 []aerospace.Window{
@@ -14,7 +14,7 @@ aerospace-marks get mark1
 ---
 
 [TestGetCommand/shows_only_the_marked_windows_id - 1]
-[]storage.Mark{
+[]struct { WindowID string "json:\"window_id\""; Mark string "json:\"mark\"" }{
     {WindowID:"1", Mark:"mark1"},
 }
 []aerospace.Window{
@@ -28,7 +28,7 @@ aerospace-marks get mark1 --window-id
 ---
 
 [TestGetCommand/shows_only_the_marked_windows_app-name - 1]
-[]storage.Mark{
+[]struct { WindowID string "json:\"window_id\""; Mark string "json:\"mark\"" }{
     {WindowID:"1", Mark:"mark1"},
 }
 []aerospace.Window{
@@ -42,7 +42,7 @@ app1
 ---
 
 [TestGetCommand/shows_only_the_marked_windows_app-bundle-id - 1]
-[]storage.Mark{
+[]struct { WindowID string "json:\"window_id\""; Mark string "json:\"mark\"" }{
     {WindowID:"1", Mark:"mark1"},
 }
 []aerospace.Window{

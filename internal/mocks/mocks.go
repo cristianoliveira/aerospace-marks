@@ -10,20 +10,19 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	aerospacecli_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"
 	storage_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/storage"
-	"github.com/cristianoliveira/aerospace-marks/internal/storage"
+	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	"go.uber.org/mock/gomock"
 )
 
 // This module contains a set of mock helpers for mocking AeroSpace socket connections
 // and storage, easily used in unit tests.
 
-func MockStorageDbClient(ctrl *gomock.Controller) (*storage_mock.MockStorageDbClient, storage.MarkStorage) {
+func MockStorageDbClient(ctrl *gomock.Controller) (
+	*storage_mock.MockStorageDbClient,
+	*storage_mock.MockMarkStorage,
+) {
 	storageDbClient := storage_mock.NewMockStorageDbClient(ctrl)
-
-	newStorage, err := storage.NewMarkClient(storageDbClient)
-	if err != nil {
-		ctrl.T.Errorf("failed to create new storage client: %v", err)
-	}
+	newStorage := storage_mock.NewMockMarkStorage(ctrl)
 
 	return storageDbClient, newStorage
 }
@@ -47,32 +46,13 @@ func MockAerospaceConnection(ctrl *gomock.Controller) (
 	return mockAeroSpaceConnection, aerospaceClient
 }
 
-func MockStorageDbResult(ctrl *gomock.Controller, lastInsertId *int64, rowsAffected *int64) *storage_mock.MockDbResult {
-	dbResult := storage_mock.NewMockDbResult(ctrl)
-	if lastInsertId != nil {
-		dbResult.EXPECT().
-			LastInsertId().
-			Return(*lastInsertId, nil).
-			Times(1)
-	}
-
-	if rowsAffected != nil {
-		dbResult.EXPECT().
-			RowsAffected().
-			Return(*rowsAffected, nil).
-			Times(1)
-	}
-
-	return dbResult
-}
-
-func LoadMarksFixture(jsonFilePath string) ([]storage.Mark, error) {
+func LoadMarksFixture(jsonFilePath string) ([]queries.Mark, error) {
 	file, err := os.ReadFile(jsonFilePath)
 	if err != nil {
 		return nil, err
 	}
 
-	var marks []storage.Mark
+	var marks []queries.Mark
 	err = json.Unmarshal(file, &marks)
 	if err != nil {
 		return nil, err

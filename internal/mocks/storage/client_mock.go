@@ -10,6 +10,7 @@
 package storage_mock
 
 import (
+	sql "database/sql"
 	reflect "reflect"
 
 	storage "github.com/cristianoliveira/aerospace-marks/internal/storage"
@@ -108,24 +109,18 @@ func (mr *MockStorageDbClientMockRecorder) Close() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockStorageDbClient)(nil).Close))
 }
 
-// Execute mocks base method.
-func (m *MockStorageDbClient) Execute(query string, args ...any) (storage.DbResult, error) {
+// GetDB mocks base method.
+func (m *MockStorageDbClient) GetDB() *sql.DB {
 	m.ctrl.T.Helper()
-	varargs := []any{query}
-	for _, a := range args {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "Execute", varargs...)
-	ret0, _ := ret[0].(storage.DbResult)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret := m.ctrl.Call(m, "GetDB")
+	ret0, _ := ret[0].(*sql.DB)
+	return ret0
 }
 
-// Execute indicates an expected call of Execute.
-func (mr *MockStorageDbClientMockRecorder) Execute(query any, args ...any) *gomock.Call {
+// GetDB indicates an expected call of GetDB.
+func (mr *MockStorageDbClientMockRecorder) GetDB() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{query}, args...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockStorageDbClient)(nil).Execute), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDB", reflect.TypeOf((*MockStorageDbClient)(nil).GetDB))
 }
 
 // GetStorageConfig mocks base method.
@@ -140,46 +135,6 @@ func (m *MockStorageDbClient) GetStorageConfig() storage.StorageConfig {
 func (mr *MockStorageDbClientMockRecorder) GetStorageConfig() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStorageConfig", reflect.TypeOf((*MockStorageDbClient)(nil).GetStorageConfig))
-}
-
-// QueryAll mocks base method.
-func (m *MockStorageDbClient) QueryAll(query string, args ...any) ([]storage.Mark, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{query}
-	for _, a := range args {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "QueryAll", varargs...)
-	ret0, _ := ret[0].([]storage.Mark)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// QueryAll indicates an expected call of QueryAll.
-func (mr *MockStorageDbClientMockRecorder) QueryAll(query any, args ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{query}, args...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryAll", reflect.TypeOf((*MockStorageDbClient)(nil).QueryAll), varargs...)
-}
-
-// QueryOne mocks base method.
-func (m *MockStorageDbClient) QueryOne(query string, args ...any) (*storage.Mark, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{query}
-	for _, a := range args {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "QueryOne", varargs...)
-	ret0, _ := ret[0].(*storage.Mark)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// QueryOne indicates an expected call of QueryOne.
-func (mr *MockStorageDbClientMockRecorder) QueryOne(query any, args ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{query}, args...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryOne", reflect.TypeOf((*MockStorageDbClient)(nil).QueryOne), varargs...)
 }
 
 // MockDatabaseConnector is a mock of DatabaseConnector interface.

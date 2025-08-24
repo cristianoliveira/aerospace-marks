@@ -38,7 +38,7 @@
   }
 ]
 
-[]storage.Mark{
+[]struct { WindowID string "json:\"window_id\""; Mark string "json:\"mark\"" }{
     {WindowID:"1", Mark:"mark-1"},
     {WindowID:"22", Mark:"mark-2"},
     {WindowID:"3", Mark:"mark-3"},

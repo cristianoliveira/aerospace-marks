@@ -8,7 +8,7 @@ import (
 	aerospace "github.com/cristianoliveira/aerospace-ipc"
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
-	"github.com/cristianoliveira/aerospace-marks/internal/storage"
+	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
@@ -21,17 +21,18 @@ func TestGetCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageMock, strg := mocks.MockStorageDbClient(ctrl)
-		marks := []storage.Mark{
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		marks := []queries.Mark{
 			{
 				WindowID: "1",
 				Mark:     "mark1",
 			},
 		}
 
-		storageMock.EXPECT().
-			QueryOne("SELECT * FROM marks WHERE mark = ?", "mark1").
-			Return(&marks[0], nil)
+		strg.EXPECT().
+			GetWindowByMark("mark1").
+			Return(&marks[0], nil).
+			Times(1)
 
 		connectionMock, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -89,17 +90,18 @@ func TestGetCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageMock, strg := mocks.MockStorageDbClient(ctrl)
-		marks := []storage.Mark{
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		marks := []queries.Mark{
 			{
 				WindowID: "1",
 				Mark:     "mark1",
 			},
 		}
 
-		storageMock.EXPECT().
-			QueryOne("SELECT * FROM marks WHERE mark = ?", "mark1").
-			Return(&marks[0], nil)
+		strg.EXPECT().
+			GetWindowByMark("mark1").
+			Return(&marks[0], nil).
+			Times(1)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -137,17 +139,18 @@ func TestGetCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageMock, strg := mocks.MockStorageDbClient(ctrl)
-		marks := []storage.Mark{
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		marks := []queries.Mark{
 			{
 				WindowID: "1",
 				Mark:     "mark1",
 			},
 		}
 
-		storageMock.EXPECT().
-			QueryOne("SELECT * FROM marks WHERE mark = ?", "mark1").
-			Return(&marks[0], nil)
+		strg.EXPECT().
+			GetWindowByMark("mark1").
+			Return(&marks[0], nil).
+			Times(1)
 
 		connectionMock, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -205,17 +208,18 @@ func TestGetCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageMock, strg := mocks.MockStorageDbClient(ctrl)
-		marks := []storage.Mark{
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		marks := []queries.Mark{
 			{
 				WindowID: "1",
 				Mark:     "mark1",
 			},
 		}
 
-		storageMock.EXPECT().
-			QueryOne("SELECT * FROM marks WHERE mark = ?", "mark1").
-			Return(&marks[0], nil)
+		strg.EXPECT().
+			GetWindowByMark("mark1").
+			Return(&marks[0], nil).
+			Times(1)
 
 		connectionMock, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{

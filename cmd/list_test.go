@@ -8,7 +8,7 @@ import (
 	aerospace "github.com/cristianoliveira/aerospace-ipc"
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
-	"github.com/cristianoliveira/aerospace-marks/internal/storage"
+	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"github.com/stretchr/testify/assert"
@@ -20,11 +20,11 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		storageDbClient.EXPECT().
-			QueryAll(gomock.Any()).
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			GetMarks().
 			Return(
-				[]storage.Mark{
+				[]queries.Mark{
 					{
 						WindowID: "1",
 						Mark:     "mark1",
@@ -34,7 +34,7 @@ func TestListCommand(t *testing.T) {
 						Mark:     "mark2",
 					},
 				}, nil,
-			)
+			).Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -95,11 +95,11 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		storageDbClient.EXPECT().
-			QueryAll(gomock.Any()).
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			GetMarks().
 			Return(
-				[]storage.Mark{
+				[]queries.Mark{
 					{
 						WindowID: "1",
 						Mark:     "mark1",
@@ -109,7 +109,7 @@ func TestListCommand(t *testing.T) {
 						Mark:     "mark2",
 					},
 				}, nil,
-			)
+			).Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		windows := []aerospace.Window{
@@ -165,10 +165,11 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		storageDbClient.EXPECT().
-			QueryAll(gomock.Any()).
-			Return([]storage.Mark{}, nil)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			GetMarks().
+			Return([]queries.Mark{}, nil).
+			Times(1)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
@@ -192,10 +193,11 @@ func TestListCommand(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		storageDbClient.EXPECT().
-			QueryAll(gomock.Any()).
-			Return(marks, nil)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			GetMarks().
+			Return(marks, nil).
+			Times(1)
 
 		windows, err := mocks.LoadAeroWindowsFixtureRaw(
 			"../internal/mocks/fixtures/aerospace/list-windows-all.json",
@@ -240,11 +242,7 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
-		strg, err := storage.NewMarkClient(storageDbClient)
-		if err != nil {
-			t.Fatal(err)
-		}
+		_, strg := mocks.MockStorageDbClient(ctrl)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 

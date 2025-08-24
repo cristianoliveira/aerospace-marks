@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
-	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
@@ -21,17 +20,11 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{1}[0])
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					DELETE FROM marks WHERE mark = ?
-				`),
-					"mark1").
-				Return(dbResult, nil).
-				Times(1),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			DeleteByMark("mark1").
+			Return(int64(1), nil).
+			Times(1)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
@@ -53,14 +46,11 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{2}[0])
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				Execute(`DELETE FROM marks`).
-				Return(dbResult, nil).
-				Times(1),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			DeleteAllMarks().
+			Return(int64(2), nil).
+			Times(1)
 
 		aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
 
@@ -81,11 +71,7 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
-		strg, err := storage.NewMarkClient(storageDbClient)
-		if err != nil {
-			t.Fatal(err)
-		}
+		_, strg := mocks.MockStorageDbClient(ctrl)
 
 		aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
 
@@ -107,17 +93,11 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		dbResult := mocks.MockStorageDbResult(ctrl, nil, &[]int64{0}[0])
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				Execute(strings.TrimSpace(`
-					DELETE FROM marks WHERE mark = ?
-				`),
-					"unkown").
-				Return(dbResult, nil).
-				Times(1),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			DeleteByMark("unkown").
+			Return(int64(0), nil).
+			Times(1)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 

@@ -114,6 +114,15 @@ func (l *EmptyLogger) AsJson(data any) string {
 	return ""
 }
 
+// Goose Logger interface implementation
+func (l *EmptyLogger) Fatalf(format string, v ...any) {
+	// No-op
+	os.Exit(1)
+}
+func (l *EmptyLogger) Printf(format string, v ...any) {
+	// No-op
+}
+
 // NewLogger creates a new logger instance
 // It accepts a path to a file where logs will be written
 // and a boolean indicating whether to log to stdout as well

@@ -1,9 +1,11 @@
 package storage
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
-	"strings"
 
+	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -11,11 +13,11 @@ type MarkStorage interface {
 	// AddMark adds a mark to the database
 	AddMark(id string, mark string) error
 	// GetMarks returns all marks in the database
-	GetMarks() ([]Mark, error)
+	GetMarks() ([]queries.Mark, error)
 	// GetMarksByWindowID returns all marks for a given window ID
-	GetMarksByWindowID(id string) ([]Mark, error)
+	GetMarksByWindowID(id string) ([]queries.Mark, error)
 	// GetWindowByMark returns the window for a given mark
-	GetWindowByMark(mark string) (*Mark, error)
+	GetWindowByMark(mark string) (*queries.Mark, error)
 	// GetWindowIDByMark returns the window ID for a given mark
 	GetWindowIDByMark(mark string) (string, error)
 	// ReplaceAllMarks replaces all marks for a window with a new mark
@@ -36,59 +38,52 @@ type MarkStorage interface {
 
 type MarkStorageClient struct {
 	storage StorageDbClient
+	queries *queries.Queries
 }
 
 func NewMarkClient(storageClient StorageDbClient) (*MarkStorageClient, error) {
+	// Initialize SQLC queries with the underlying database connection
+	db := storageClient.GetDB()
+	queriesClient := queries.New(db)
+
 	client := &MarkStorageClient{
 		storage: storageClient,
+		queries: queriesClient,
 	}
 
 	return client, nil
 }
 
 func (c *MarkStorageClient) AddMark(id string, mark string) error {
-	query := strings.TrimSpace(`
-	INSERT INTO marks (window_id, mark) VALUES (?, ?)
-	`)
-	_, err := c.storage.Execute(query, id, mark)
-	return err
+	ctx := context.Background()
+	return c.queries.AddMark(ctx, id, mark)
 }
 
-func (c *MarkStorageClient) GetMarks() ([]Mark, error) {
-	query := `SELECT window_id, mark FROM marks`
-	marks, err := c.storage.QueryAll(query)
-	return marks, err
+func (c *MarkStorageClient) GetMarks() ([]queries.Mark, error) {
+	ctx := context.Background()
+	return c.queries.GetAllMarks(ctx)
 }
 
-func (c *MarkStorageClient) GetMarksByWindowID(id string) ([]Mark, error) {
-	query := `
-	SELECT window_id, mark
-	FROM marks
-	WHERE window_id = ?
-	`
-	marks, err := c.storage.QueryAll(query, id)
-	if err != nil {
-		return nil, err
-	}
-	return marks, nil
+func (c *MarkStorageClient) GetMarksByWindowID(id string) ([]queries.Mark, error) {
+	ctx := context.Background()
+	return c.queries.GetMarksByWindowID(ctx, id)
 }
 
 // GetWindowByMark returns the window for a given mark
 //
 // This function will return the first window that matches the mark
 // If multiple windows match the mark, it will error
-func (c *MarkStorageClient) GetWindowByMark(mark string) (*Mark, error) {
-	query := "SELECT * FROM marks WHERE mark = ?"
-	markedWindow, err := c.storage.QueryOne(query, mark)
+func (c *MarkStorageClient) GetWindowByMark(mark string) (*queries.Mark, error) {
+	ctx := context.Background()
+	markedWindow, err := c.queries.GetWindowByMark(ctx, mark)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("no window found for mark %s", mark)
+		}
 		return nil, err
 	}
 
-	if markedWindow == nil {
-		return nil, fmt.Errorf("no window found for mark %s", mark)
-	}
-
-	return markedWindow, nil
+	return &markedWindow, nil
 }
 
 // Get window ID by mark
@@ -96,15 +91,13 @@ func (c *MarkStorageClient) GetWindowByMark(mark string) (*Mark, error) {
 // This function will return the first window ID that matches the mark
 // If multiple window IDs match the mark, it will return the first one found
 func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
-	query := "SELECT * FROM marks WHERE mark = ?"
-
-	markedWindow, err := c.storage.QueryOne(query, markI)
+	ctx := context.Background()
+	markedWindow, err := c.queries.GetWindowByMark(ctx, markI)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", fmt.Errorf("no window found for mark %s", markI)
+		}
 		return "", err
-	}
-
-	if markedWindow == nil {
-		return "", fmt.Errorf("no window found for mark %s", markI)
 	}
 
 	return markedWindow.WindowID, nil
@@ -114,12 +107,10 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 // This function will delete all marks for the specified window ID and
 // then add the new mark
 func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (int64, error) {
-	// Delete all marks for the window
-	query := strings.TrimSpace(`
-	DELETE FROM marks WHERE window_id = ? OR mark = ?
-	`)
+	ctx := context.Background()
 
-	res, err := c.storage.Execute(query, id, mark)
+	// Delete all marks for the window
+	res, err := c.queries.DeleteMarksByWindowIDOrMark(ctx, id, mark)
 	if err != nil {
 		return 0, err
 	}
@@ -170,8 +161,8 @@ func (c *MarkStorageClient) ToggleMark(id string, mark string) error {
 
 // DeleteAllMarks removes all marks from the database
 func (c *MarkStorageClient) DeleteAllMarks() (int64, error) {
-	query := "DELETE FROM marks"
-	res, err := c.storage.Execute(query)
+	ctx := context.Background()
+	res, err := c.queries.DeleteAllMarks(ctx)
 	if err != nil {
 		return 0, err
 	}
@@ -186,11 +177,8 @@ func (c *MarkStorageClient) DeleteAllMarks() (int64, error) {
 // DeleteByMark deletes a mark from the database
 // This function will delete the mark from the database
 func (c *MarkStorageClient) DeleteByMark(mark string) (int64, error) {
-	query := strings.TrimSpace(`
-	DELETE FROM marks WHERE mark = ?
-	`)
-
-	res, err := c.storage.Execute(query, mark)
+	ctx := context.Background()
+	res, err := c.queries.DeleteByMark(ctx, mark)
 	if err != nil {
 		return 0, err
 	}
@@ -206,8 +194,10 @@ func (c *MarkStorageClient) DeleteByMark(mark string) (int64, error) {
 // DeleteByWindow deletes a mark from the database
 // This function will delete the mark from the database
 func (c *MarkStorageClient) DeleteByWindow(windowId int) (int64, error) {
-	query := strings.TrimSpace(`DELETE FROM marks WHERE window_id = ?`)
-	res, err := c.storage.Execute(query, windowId)
+	ctx := context.Background()
+	// Convert int to string since our SQLC queries expect string
+	windowIdStr := fmt.Sprintf("%d", windowId)
+	res, err := c.queries.DeleteByWindow(ctx, windowIdStr)
 	if err != nil {
 		return 0, err
 	}
