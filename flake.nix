@@ -28,6 +28,13 @@
             # To generate the mock for the interfaces, run:
             # mockgen -source=./pkg/cli/cli.go -destination=./pkg/cli/mock/mock_cli.go -package=mock
             mockgen
+
+            ## Databse tools for golang
+            # USAGE: sqlc generate
+            sqlc
+            ## To manage the database migrations, run:
+            # USAGE: migrate create -ext sql -dir db/migration -seq <name>
+            goose
           ];
         };
 

@@ -2,15 +2,18 @@ package storage
 
 import (
 	"database/sql"
+	"embed"
 	"fmt"
 	"os"
 	"strconv"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/constants"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
+	"github.com/pressly/goose/v3"
 )
 
-var DATABASE_VERSION = 1
+//go:embed db/migrations/*.sql
+var embedMigrations embed.FS
 
 type Mark struct {
 	WindowID string `json:"window_id"`
@@ -142,62 +145,47 @@ func (c *StorageClient) Close() error {
 	return c.db.Close()
 }
 
-func (c *StorageClient) createTableIfNotExists() error {
-	// Marks are unique to a window, so we can use the window_id as a unique key
-	// but one window may have multiple marks
-	query := `
-	CREATE TABLE IF NOT EXISTS marks (
-		window_id INTEGER NOT NULL,
-    mark TEXT NOT NULL UNIQUE
-	);
-	`
-	_, err := c.db.Exec(query)
-	if err != nil {
-		logger.GetDefaultLogger().LogError("failed to create marks table", err)
-		return err
-	}
-	// Create the version table if it doesn't exist
-	// Version table is used to track the database schema version
-	query = `
-	CREATE TABLE IF NOT EXISTS version (
-		version INTEGER NOT NULL DEFAULT 1,
-		PRIMARY KEY (version)
-	);
-	`
-	_, err = c.db.Exec(query)
-	if err != nil {
-		logger.GetDefaultLogger().LogError("failed to create version table", err)
+func (c *StorageClient) runMigrations() error {
+	appLog := logger.GetDefaultLogger()
+	goose.SetLogger(appLog.(goose.Logger))
+
+	// Set the goose provider to use embedded migrations
+	goose.SetBaseFS(embedMigrations)
+
+	// Run migrations
+	if err := goose.SetDialect("sqlite3"); err != nil {
+		appLog.LogError("failed to set goose dialect", err)
 		return err
 	}
 
-	initVersionQuery := `
-	INSERT OR IGNORE INTO version (version) VALUES (?);
-	`
-	_, err = c.db.Exec(initVersionQuery, DATABASE_VERSION)
-	if err != nil {
-		logger.GetDefaultLogger().LogError("failed to insert initial version", err)
+	if err := goose.Up(c.db, "db/migrations"); err != nil {
+		appLog.LogError("failed to run migrations", err)
 		return err
 	}
 
+	appLog.LogInfo("migrations completed successfully")
 	return nil
 }
 
-func (c *StorageClient) GetVersion() (int, error) {
-	log := logger.GetDefaultLogger()
-	query := "SELECT version FROM version LIMIT 1"
-	row := c.db.QueryRow(query)
+func (c *StorageClient) GetVersion() (int64, error) {
+	appLog := logger.GetDefaultLogger()
+	goose.SetLogger(appLog.(goose.Logger))
 
-	var version int
-	if err := row.Scan(&version); err != nil {
-		if err == sql.ErrNoRows {
-			// If no version is found, we assume it's the first version
-			return 1, nil
-		}
-		log.LogError("failed to get database version", err)
+	// Set the goose provider to use embedded migrations
+	goose.SetBaseFS(embedMigrations)
+
+	if err := goose.SetDialect("sqlite3"); err != nil {
+		appLog.LogError("failed to set goose dialect", err)
 		return 0, err
 	}
 
-	log.LogInfo("database version", version)
+	version, err := goose.GetDBVersion(c.db)
+	if err != nil {
+		appLog.LogError("failed to get database version", err)
+		return 0, err
+	}
+
+	appLog.LogInfo("database version", version)
 	return version, nil
 }
 
@@ -227,14 +215,6 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 	}
 
 	dbPath := fmt.Sprintf("%s/storage.db", dbConfig.DbPath)
-	// check if the database file exists if so check version
-	var shouldCheckVersion bool
-	var shouldCreateTable bool
-	if _, err := os.Stat(dbPath); err == nil {
-		shouldCheckVersion = true
-	} else {
-		shouldCreateTable = true
-	}
 
 	log.LogInfo("connecting to database", dbPath)
 	db, err := sql.Open("sqlite3", dbPath)
@@ -247,26 +227,10 @@ func (c *MarksDatabaseConnector) Connect() (StorageDbClient, error) {
 		db:       db,
 	}
 
-	if shouldCreateTable {
-		if err := client.createTableIfNotExists(); err != nil {
-			log.LogError("failed to create table", err)
-			return nil, err
-		}
-	}
-
-	if shouldCheckVersion {
-		getVersion, err := client.GetVersion()
-		if err != nil {
-			log.LogError("failed to get database version", err)
-			return nil, err
-		}
-
-		if getVersion != DATABASE_VERSION {
-			fmt.Printf("Database verions is %d, but expected %d\n", getVersion, DATABASE_VERSION)
-			fmt.Println("Please visit: https://github.com/cristianoliveira/aerospace-marks for instructions")
-			fmt.Printf("Or if you don't care about migrating, rm %s", dbPath)
-			return nil, fmt.Errorf("database upgrade needed from version %d to %d", getVersion, DATABASE_VERSION)
-		}
+	// Run migrations to ensure database is up to date
+	if err := client.runMigrations(); err != nil {
+		log.LogError("failed to run migrations", err)
+		return nil, err
 	}
 
 	return client, nil
