@@ -7,6 +7,6 @@ package queries
 // Mark represents a mark in the database
 // This is an alias to the Mark struct in the parent storage package
 type Mark = struct {
-	WindowID string `json:"window_id"`
+	WindowID int    `json:"window_id"`
 	Mark     string `json:"mark"`
 }

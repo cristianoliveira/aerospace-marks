@@ -3,7 +3,6 @@ package aerospace
 import (
 	"fmt"
 	"log"
-	"strconv"
 
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
@@ -14,7 +13,7 @@ type AerosSpaceMarkWindows interface {
 	//
 	// Returns the window ID of the currently focused window
 	// or an error if the window ID is not found
-	GetWindowByID(windowID string) (*aerospacecli.Window, error)
+	GetWindowByID(windowID int) (*aerospacecli.Window, error)
 
 	// Client returns the AeroSpaceWM client
 	//
@@ -35,7 +34,7 @@ func (d *DefaultAeroSpaceWindows) Client() *aerospacecli.AeroSpaceWM {
 	return d.client
 }
 
-func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID string) (*aerospacecli.Window, error) {
+func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID int) (*aerospacecli.Window, error) {
 	logger := logger.GetDefaultLogger()
 	windows, err := d.client.GetAllWindows()
 	if err != nil {
@@ -43,18 +42,13 @@ func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID string) (*aerospacecli.
 	}
 	logger.LogDebug("Windows found: %d", len(windows))
 
-	intWindowID, err := strconv.Atoi(windowID)
-	if err != nil {
-		return nil, fmt.Errorf("invalid window ID '%s': %w", windowID, err)
-	}
-
 	for _, window := range windows {
-		if window.WindowID == intWindowID {
+		if window.WindowID == windowID {
 			return &window, nil
 		}
 	}
 
-	return nil, fmt.Errorf("window with ID %s not found", windowID)
+	return nil, fmt.Errorf("window with ID %d not found", windowID)
 }
 
 func NewAeroSpaceClient() (*DefaultAeroSpaceWindows, error) {

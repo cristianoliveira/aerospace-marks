@@ -4,8 +4,6 @@ Copyright © 2025 Cristian Oliveira license@cristianoliveira.dev
 package cmd
 
 import (
-	"strconv"
-
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
@@ -44,7 +42,7 @@ Similar to 'aerospace summon-workspace' but for marked windows to current worksp
 				stdout.ErrorAndExit(err)
 				return
 			}
-			if windowID == "" {
+			if windowID == 0 {
 				stdout.ErrorAndExitf("no window found for mark '%s'", mark)
 				return
 			}
@@ -55,22 +53,15 @@ Similar to 'aerospace summon-workspace' but for marked windows to current worksp
 				return
 			}
 
-			// FIXME: windowsID as number
-			intWindowID, err := strconv.Atoi(windowID)
-			if err != nil {
-				stdout.ErrorAndExitf("invalid window ID '%s'", windowID)
-				return
-			}
-
 			// focus to window by ID
-			err = aerospaceClient.Client().MoveWindowToWorkspace(intWindowID, workspace.Workspace)
+			err = aerospaceClient.Client().MoveWindowToWorkspace(windowID, workspace.Workspace)
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
 			}
 
 			if shouldFocus {
-				err := aerospaceClient.Client().SetFocusByWindowID(intWindowID)
+				err := aerospaceClient.Client().SetFocusByWindowID(windowID)
 				if err != nil {
 					stdout.ErrorAndExit(err)
 					return

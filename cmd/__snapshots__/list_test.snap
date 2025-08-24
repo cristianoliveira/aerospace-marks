@@ -38,12 +38,12 @@
   }
 ]
 
-[]struct { WindowID string "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:"1", Mark:"mark-1"},
-    {WindowID:"22", Mark:"mark-2"},
-    {WindowID:"3", Mark:"mark-3"},
-    {WindowID:"444", Mark:"mark-4"},
-    {WindowID:"5555", Mark:"mark-5"},
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark-1"},
+    {WindowID:22, Mark:"mark-2"},
+    {WindowID:3, Mark:"mark-3"},
+    {WindowID:444, Mark:"mark-4"},
+    {WindowID:5555, Mark:"mark-5"},
 }
 result:
 

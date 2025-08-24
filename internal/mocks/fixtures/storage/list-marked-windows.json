@@ -1,22 +1,22 @@
 [
   {
-    "window_id": "1",
+    "window_id": 1,
     "mark": "mark-1"
   },
   {
-    "window_id": "22",
+    "window_id": 22,
     "mark": "mark-2"
   },
   {
-    "window_id": "3",
+    "window_id": 3,
     "mark": "mark-3"
   },
   {
-    "window_id": "444",
+    "window_id": 444,
     "mark": "mark-4"
   },
   {
-    "window_id": "5555",
+    "window_id": 5555,
     "mark": "mark-5"
   }
 ]

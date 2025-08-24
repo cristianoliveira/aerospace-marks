@@ -42,7 +42,7 @@ func (m *MockMarkStorage) EXPECT() *MockMarkStorageMockRecorder {
 }
 
 // AddMark mocks base method.
-func (m *MockMarkStorage) AddMark(id, mark string) error {
+func (m *MockMarkStorage) AddMark(id int, mark string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddMark", id, mark)
 	ret0, _ := ret[0].(error)
@@ -144,7 +144,7 @@ func (mr *MockMarkStorageMockRecorder) GetMarks() *gomock.Call {
 }
 
 // GetMarksByWindowID mocks base method.
-func (m *MockMarkStorage) GetMarksByWindowID(id string) ([]queries.Mark, error) {
+func (m *MockMarkStorage) GetMarksByWindowID(id int) ([]queries.Mark, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetMarksByWindowID", id)
 	ret0, _ := ret[0].([]queries.Mark)
@@ -174,10 +174,10 @@ func (mr *MockMarkStorageMockRecorder) GetWindowByMark(mark any) *gomock.Call {
 }
 
 // GetWindowIDByMark mocks base method.
-func (m *MockMarkStorage) GetWindowIDByMark(mark string) (string, error) {
+func (m *MockMarkStorage) GetWindowIDByMark(mark string) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWindowIDByMark", mark)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(int)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -189,7 +189,7 @@ func (mr *MockMarkStorageMockRecorder) GetWindowIDByMark(mark any) *gomock.Call 
 }
 
 // ReplaceAllMarks mocks base method.
-func (m *MockMarkStorage) ReplaceAllMarks(id, mark string) (int64, error) {
+func (m *MockMarkStorage) ReplaceAllMarks(id int, mark string) (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReplaceAllMarks", id, mark)
 	ret0, _ := ret[0].(int64)
@@ -204,7 +204,7 @@ func (mr *MockMarkStorageMockRecorder) ReplaceAllMarks(id, mark any) *gomock.Cal
 }
 
 // ToggleMark mocks base method.
-func (m *MockMarkStorage) ToggleMark(id, mark string) error {
+func (m *MockMarkStorage) ToggleMark(id int, mark string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ToggleMark", id, mark)
 	ret0, _ := ret[0].(error)

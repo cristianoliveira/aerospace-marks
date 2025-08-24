@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
@@ -54,21 +55,26 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			silent, _ := cmd.Flags().GetBool("silent")
 
 			// Get the window ID from the command line argument
-			windowID := strings.TrimSpace(winArgID)
+			var windowID int
 			if winArgID == "" {
 				window, err := aerospaceClient.Client().GetFocusedWindow()
 				if err != nil {
 					stdout.ErrorAndExit(err)
 					return
 				}
-				windowID = fmt.Sprintf("%d", window.WindowID)
+				windowID = window.WindowID
 			} else {
-				window, err := aerospaceClient.GetWindowByID(windowID)
+				intWindowID, err := strconv.Atoi(strings.TrimSpace(winArgID))
+				if err != nil {
+					stdout.ErrorAndExitf("invalid window ID '%s'", winArgID)
+					return
+				}
+				window, err := aerospaceClient.GetWindowByID(intWindowID)
 				if err != nil {
 					stdout.ErrorAndExit(err)
 					return
 				}
-				windowID = fmt.Sprintf("%d", window.WindowID)
+				windowID = window.WindowID
 			}
 
 			// Manage marks using MarkClient
