@@ -29,6 +29,38 @@ jobs:
         with:
           go-version: '1.24'  # Specify your Go version
 
+      - name: Validate tag matches source version
+        if: github.event_name == 'release'
+        run: |
+          set -euo pipefail
+          tag="${{ github.event.release.tag_name }}"
+          if [ -z "${tag}" ]; then
+            tag="${GITHUB_REF_NAME}"
+          fi
+          echo "Git tag: ${tag}"
+
+          file="cmd/root.go"
+          if [ ! -f "${file}" ]; then
+            echo "Version file ${file} not found"
+            exit 1
+          fi
+
+          # Extract VERSION string from source (handles const/var assignments)
+          src_version=$(grep -E 'VERSION\s*=' "${file}" | head -n1 | sed -E 's/.*VERSION\s*=\s*"([^"]+)".*/\1/')
+          if [ -z "${src_version}" ]; then
+            echo "Could not extract VERSION from ${file}"
+            exit 1
+          fi
+          echo "Source version: ${src_version}"
+
+          if [ "${src_version}" != "${tag}" ]; then
+            echo "Version mismatch: tag ${tag} != ${src_version}"
+            exit 1
+          fi
+          echo "Tag matches source version."
+
+
+
       - name: Build and Release
         if: github.event_name == 'release'
         uses: wangyoucao577/go-release-action@v1
@@ -57,7 +89,7 @@ jobs:
         run: |
           version=$(git describe --tags --abbrev=0)
           sed -i 's#version = ".*";#version = "'"$version"'";#' nix/package-default.nix
-          sed -i 's#VERSION =.*#VERSION = "'"$version"'"#' cmd/main.go
+          sed -i 's#VERSION =.*#VERSION = "'"$version"'"#' cmd/root.go
           bash scripts/update-nix-hash.sh nix/package-default.nix ".#default"
 
       - name: Create Pull Request

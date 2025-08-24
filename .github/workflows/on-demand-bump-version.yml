@@ -1,0 +1,35 @@
+name: On demand Bump Version
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate new hashes based on latest tag
+        run: |
+          version=$(git describe --tags --abbrev=0)
+          sed -i 's#version = ".*";#version = "'"$version"'";#' nix/package-default.nix
+          sed -i 's#VERSION =.*#VERSION = "'"$version"'"#' cmd/root.go
+          bash scripts/update-nix-hash.sh nix/package-default.nix ".#default"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore(nix): bump nix hashes and version"
+          title: "chore(nix): bump nix hashes and version"
+          body: "This PR updates the Nix default package hashes and version."
+          base: main
