@@ -5,8 +5,8 @@
 #
 
 GIT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.1")
-VERSION=$(grep -oP '(?<=var VERSION = ")[^"]*' cmd/main.go)
-VERSION_FILE="cmd/main.go"
+VERSION=$(grep -oP '(?<=var VERSION = ")[^"]*' cmd/root.go)
+VERSION_FILE="cmd/root.go"
 
 if [ -z "$VERSION" ]; then
     # IF CI is defined, exit with error
@@ -15,8 +15,8 @@ if [ -z "$VERSION" ]; then
         exit 1
     fi
 
-    echo "Version not found in cmd/main.go."
-    read -p "Do you want to add the version to cmd/main.go? (y/n) " answer
+    echo "Version not found in cmd/root.go."
+    read -p "Do you want to add the version to cmd/root.go? (y/n) " answer
     if [[ "$answer" == "y" ]]; then
 
         read -p "[IMPORTANT] Is main release version? Otherwise is nighlty (y/n) " is_main_release
@@ -33,7 +33,7 @@ if [ -z "$VERSION" ]; then
         # Remove var VERSION line if it exists  
         sed -i '/var VERSION = /d' $VERSION_FILE
         echo "var VERSION = \"$GIT_TAG\"" >> $VERSION_FILE
-        echo "Added version $GIT_TAG to cmd/main.go"
+        echo "Added version $GIT_TAG to cmd/root.go"
     else
         echo "Version not found and not added. Exiting."
     fi
@@ -48,10 +48,10 @@ if [ "$GIT_TAG" != "$VERSION" ]; then
     fi
 
     echo "Version mismatch: GIT_TAG ($GIT_TAG) does not match VERSION ($VERSION)"
-    read -p "Do you want to update the version in cmd/main.go to match the GIT_TAG? (y/n) " answer
+    read -p "Do you want to update the version in cmd/root.go to match the GIT_TAG? (y/n) " answer
     if [[ "$answer" == "y" ]]; then
         sed -i "s/var VERSION = \"$VERSION\"/var VERSION = \"$GIT_TAG\"/" $VERSION_FILE
-        echo "Updated cmd/main.go to version $GIT_TAG"
+        echo "Updated cmd/root.go to version $GIT_TAG"
     else
         echo "Version mismatch not resolved. Exiting."
     fi
