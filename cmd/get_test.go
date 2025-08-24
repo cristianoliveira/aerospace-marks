@@ -24,7 +24,7 @@ func TestGetCommand(t *testing.T) {
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		marks := []queries.Mark{
 			{
-				WindowID: "1",
+				WindowID: 1,
 				Mark:     "mark1",
 			},
 		}
@@ -93,7 +93,7 @@ func TestGetCommand(t *testing.T) {
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		marks := []queries.Mark{
 			{
-				WindowID: "1",
+				WindowID: 1,
 				Mark:     "mark1",
 			},
 		}
@@ -142,7 +142,7 @@ func TestGetCommand(t *testing.T) {
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		marks := []queries.Mark{
 			{
-				WindowID: "1",
+				WindowID: 1,
 				Mark:     "mark1",
 			},
 		}
@@ -211,7 +211,7 @@ func TestGetCommand(t *testing.T) {
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		marks := []queries.Mark{
 			{
-				WindowID: "1",
+				WindowID: 1,
 				Mark:     "mark1",
 			},
 		}

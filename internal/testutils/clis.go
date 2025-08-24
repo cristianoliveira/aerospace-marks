@@ -106,7 +106,7 @@ func (d *MockEmptyAerspaceMarkWindows) Client() *aerospacecli.AeroSpaceWM {
 	return &aerospacecli.AeroSpaceWM{}
 }
 
-func (d *MockEmptyAerspaceMarkWindows) GetWindowByID(windowID string) (*aerospacecli.Window, error) {
+func (d *MockEmptyAerspaceMarkWindows) GetWindowByID(windowID int) (*aerospacecli.Window, error) {
 	fmt.Println("Mocked GetWindowByID called with windowID:", windowID)
 	return &aerospacecli.Window{}, nil
 }

@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
@@ -45,29 +44,23 @@ Moves focus to the first window marked with the specified identifier.
 				return
 			}
 
-			if windowID == "" {
+			if windowID == 0 {
 				stdout.ErrorAndExitf("empty window id for mark '%s'", mark)
 				return
 			}
 			logger.LogDebug("Window found", "windowID", windowID)
 
-			intWindowID, err := strconv.Atoi(windowID)
-			if err != nil {
-				stdout.ErrorAndExitf("invalid window ID '%s'", windowID)
-				return
-			}
-
 			// The program is too fast, what a problem to have!
 			// Delay setting focus to ensure the window is ready
 			time.Sleep(focusDelay)
-			err = aerospaceClient.Client().SetFocusByWindowID(intWindowID)
+			err = aerospaceClient.Client().SetFocusByWindowID(windowID)
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
 			}
 
 			logger.LogDebug("Focus set", "windowID", windowID)
-			fmt.Printf("Focus moved to window ID %s\n", windowID)
+			fmt.Printf("Focus moved to window ID %d\n", windowID)
 		},
 	}
 }

@@ -45,7 +45,7 @@ func TestFocusCmd(t *testing.T) {
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		strg.EXPECT().
 			GetWindowIDByMark("mark1").
-			Return("1", nil).
+			Return(1, nil).
 			Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
@@ -80,7 +80,7 @@ func TestFocusCmd(t *testing.T) {
 
 		strg.EXPECT().
 			GetWindowIDByMark("nonexistent-mark").
-			Return("", nil).
+			Return(0, nil).
 			Times(1)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)

@@ -11,19 +11,19 @@ import (
 
 type MarkStorage interface {
 	// AddMark adds a mark to the database
-	AddMark(id string, mark string) error
+	AddMark(id int, mark string) error
 	// GetMarks returns all marks in the database
 	GetMarks() ([]queries.Mark, error)
 	// GetMarksByWindowID returns all marks for a given window ID
-	GetMarksByWindowID(id string) ([]queries.Mark, error)
+	GetMarksByWindowID(id int) ([]queries.Mark, error)
 	// GetWindowByMark returns the window for a given mark
 	GetWindowByMark(mark string) (*queries.Mark, error)
 	// GetWindowIDByMark returns the window ID for a given mark
-	GetWindowIDByMark(mark string) (string, error)
+	GetWindowIDByMark(mark string) (int, error)
 	// ReplaceAllMarks replaces all marks for a window with a new mark
-	ReplaceAllMarks(id string, mark string) (int64, error)
+	ReplaceAllMarks(id int, mark string) (int64, error)
 	// ToggleMark toggles a mark for a window
-	ToggleMark(id string, mark string) error
+	ToggleMark(id int, mark string) error
 	// DeleteByMark removes a mark from the database
 	DeleteByMark(mark string) (int64, error)
 	// DeleteByMark removes a mark from the database
@@ -54,7 +54,7 @@ func NewMarkClient(storageClient StorageDbClient) (*MarkStorageClient, error) {
 	return client, nil
 }
 
-func (c *MarkStorageClient) AddMark(id string, mark string) error {
+func (c *MarkStorageClient) AddMark(id int, mark string) error {
 	ctx := context.Background()
 	return c.queries.AddMark(ctx, id, mark)
 }
@@ -64,7 +64,7 @@ func (c *MarkStorageClient) GetMarks() ([]queries.Mark, error) {
 	return c.queries.GetAllMarks(ctx)
 }
 
-func (c *MarkStorageClient) GetMarksByWindowID(id string) ([]queries.Mark, error) {
+func (c *MarkStorageClient) GetMarksByWindowID(id int) ([]queries.Mark, error) {
 	ctx := context.Background()
 	return c.queries.GetMarksByWindowID(ctx, id)
 }
@@ -90,14 +90,14 @@ func (c *MarkStorageClient) GetWindowByMark(mark string) (*queries.Mark, error) 
 //
 // This function will return the first window ID that matches the mark
 // If multiple window IDs match the mark, it will return the first one found
-func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
+func (c *MarkStorageClient) GetWindowIDByMark(markI string) (int, error) {
 	ctx := context.Background()
 	markedWindow, err := c.queries.GetWindowByMark(ctx, markI)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return "", fmt.Errorf("no window found for mark %s", markI)
+			return 0, fmt.Errorf("no window found for mark %s", markI)
 		}
-		return "", err
+		return 0, err
 	}
 
 	return markedWindow.WindowID, nil
@@ -106,7 +106,7 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (string, error) {
 // ReplaceAllMarks replaces all marks for a window with a new mark
 // This function will delete all marks for the specified window ID and
 // then add the new mark
-func (c *MarkStorageClient) ReplaceAllMarks(id string, mark string) (int64, error) {
+func (c *MarkStorageClient) ReplaceAllMarks(id int, mark string) (int64, error) {
 	ctx := context.Background()
 
 	// Delete all marks for the window
@@ -139,7 +139,7 @@ func (c *MarkStorageClient) Client() StorageDbClient {
 // ToggleMark toggles a mark for a window
 // If the mark exists, it will be deleted
 // If the mark does not exist, it will be added
-func (c *MarkStorageClient) ToggleMark(id string, mark string) error {
+func (c *MarkStorageClient) ToggleMark(id int, mark string) error {
 	rowsAffected, err := c.DeleteByMark(mark)
 	if err != nil {
 		return err
@@ -195,9 +195,7 @@ func (c *MarkStorageClient) DeleteByMark(mark string) (int64, error) {
 // This function will delete the mark from the database
 func (c *MarkStorageClient) DeleteByWindow(windowId int) (int64, error) {
 	ctx := context.Background()
-	// Convert int to string since our SQLC queries expect string
-	windowIdStr := fmt.Sprintf("%d", windowId)
-	res, err := c.queries.DeleteByWindow(ctx, windowIdStr)
+	res, err := c.queries.DeleteByWindow(ctx, windowId)
 	if err != nil {
 		return 0, err
 	}

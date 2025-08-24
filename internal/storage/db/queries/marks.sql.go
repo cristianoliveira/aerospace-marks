@@ -14,7 +14,7 @@ const addMark = `-- name: AddMark :exec
 INSERT INTO marks (window_id, mark) VALUES (?, ?)
 `
 
-func (q *Queries) AddMark(ctx context.Context, windowID string, mark string) error {
+func (q *Queries) AddMark(ctx context.Context, windowID int, mark string) error {
 	_, err := q.db.ExecContext(ctx, addMark, windowID, mark)
 	return err
 }
@@ -39,7 +39,7 @@ const deleteByWindow = `-- name: DeleteByWindow :execresult
 DELETE FROM marks WHERE window_id = ?
 `
 
-func (q *Queries) DeleteByWindow(ctx context.Context, windowID string) (sql.Result, error) {
+func (q *Queries) DeleteByWindow(ctx context.Context, windowID int) (sql.Result, error) {
 	return q.db.ExecContext(ctx, deleteByWindow, windowID)
 }
 
@@ -47,7 +47,7 @@ const deleteMarksByWindowIDOrMark = `-- name: DeleteMarksByWindowIDOrMark :execr
 DELETE FROM marks WHERE window_id = ? OR mark = ?
 `
 
-func (q *Queries) DeleteMarksByWindowIDOrMark(ctx context.Context, windowID string, mark string) (sql.Result, error) {
+func (q *Queries) DeleteMarksByWindowIDOrMark(ctx context.Context, windowID int, mark string) (sql.Result, error) {
 	return q.db.ExecContext(ctx, deleteMarksByWindowIDOrMark, windowID, mark)
 }
 
@@ -84,7 +84,7 @@ FROM marks
 WHERE window_id = ?
 `
 
-func (q *Queries) GetMarksByWindowID(ctx context.Context, windowID string) ([]Mark, error) {
+func (q *Queries) GetMarksByWindowID(ctx context.Context, windowID int) ([]Mark, error) {
 	rows, err := q.db.QueryContext(ctx, getMarksByWindowID, windowID)
 	if err != nil {
 		return nil, err

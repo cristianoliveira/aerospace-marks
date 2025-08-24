@@ -5,8 +5,6 @@ package cmd
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
@@ -17,14 +15,12 @@ import (
 	"slices"
 )
 
-func popWindow(windows []aerospacecli.Window, windowID string) (*aerospacecli.Window, error) {
+func popWindow(windows []aerospacecli.Window, windowID int) (*aerospacecli.Window, error) {
 	for i, window := range windows {
-		if windowID == "" {
+		if windowID == 0 {
 			return nil, fmt.Errorf("window ID not found")
 		}
-		winId := strconv.Itoa(window.WindowID)
-		winId = strings.TrimSpace(winId)
-		if windowID == winId {
+		if windowID == window.WindowID {
 			// Remove the window from the list
 			//nolint:staticcheck,ineffassign
 			windows = slices.Delete(windows, i, i+1)

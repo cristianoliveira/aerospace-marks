@@ -26,11 +26,11 @@ func TestListCommand(t *testing.T) {
 			Return(
 				[]queries.Mark{
 					{
-						WindowID: "1",
+						WindowID: 1,
 						Mark:     "mark1",
 					},
 					{
-						WindowID: "2",
+						WindowID: 2,
 						Mark:     "mark2",
 					},
 				}, nil,
@@ -101,11 +101,11 @@ func TestListCommand(t *testing.T) {
 			Return(
 				[]queries.Mark{
 					{
-						WindowID: "1",
+						WindowID: 1,
 						Mark:     "mark1",
 					},
 					{
-						WindowID: "2",
+						WindowID: 2,
 						Mark:     "mark2",
 					},
 				}, nil,

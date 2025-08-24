@@ -24,7 +24,7 @@ func TestMarkCommand(t *testing.T) {
 
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		strg.EXPECT().
-			ReplaceAllMarks("1", "mark1").
+			ReplaceAllMarks(1, "mark1").
 			Return(int64(1), nil).
 			Times(1)
 
@@ -76,7 +76,7 @@ func TestMarkCommand(t *testing.T) {
 
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		strg.EXPECT().
-			ReplaceAllMarks("2", "mark1").
+			ReplaceAllMarks(2, "mark1").
 			Return(int64(1), nil).
 			Times(1)
 
@@ -133,7 +133,7 @@ func TestMarkCommand(t *testing.T) {
 
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		strg.EXPECT().
-			AddMark("1", "mark2").
+			AddMark(1, "mark2").
 			Return(nil).
 			Times(1)
 
@@ -210,7 +210,7 @@ func TestMarkCommand(t *testing.T) {
 
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		strg.EXPECT().
-			ToggleMark("2", "foobar").
+			ToggleMark(2, "foobar").
 			Return(nil).
 			Times(1)
 
@@ -262,7 +262,7 @@ func TestMarkCommand(t *testing.T) {
 
 		_, strg := mocks.MockStorageDbClient(ctrl)
 		strg.EXPECT().
-			ToggleMark("2", "foobar").
+			ToggleMark(2, "foobar").
 			Return(nil).
 			Times(1)
 

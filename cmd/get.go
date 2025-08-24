@@ -44,7 +44,7 @@ This command retrieves a window by its mark (identifier). Print in the following
 			}
 
 			windowID := markedWindow.WindowID
-			if windowID == "" {
+			if windowID == 0 {
 				stdout.ErrorAndExit(fmt.Errorf("no window found for mark %s", mark))
 				return
 			}
@@ -68,7 +68,7 @@ This command retrieves a window by its mark (identifier). Print in the following
 				return
 			}
 			if window == nil {
-				stdout.ErrorAndExit(fmt.Errorf("no window found for ID %s", windowID))
+				stdout.ErrorAndExit(fmt.Errorf("no window found for ID %d", windowID))
 				return
 			}
 
