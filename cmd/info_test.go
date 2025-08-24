@@ -20,6 +20,12 @@ func TestInfoCmd(t *testing.T) {
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
 
+		storageClient.
+			EXPECT().
+			Client().
+			Return(dbClient).
+			Times(1)
+
 		dbClient.
 			EXPECT().
 			GetStorageConfig().
@@ -69,6 +75,12 @@ func TestInfoCmd(t *testing.T) {
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
 
+		storageClient.
+			EXPECT().
+			Client().
+			Return(dbClient).
+			Times(1)
+
 		dbClient.
 			EXPECT().
 			GetStorageConfig().
@@ -117,6 +129,12 @@ func TestInfoCmd(t *testing.T) {
 
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
+
+		storageClient.
+			EXPECT().
+			Client().
+			Return(dbClient).
+			Times(1)
 
 		dbClient.
 			EXPECT().

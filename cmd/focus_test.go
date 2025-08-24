@@ -8,7 +8,6 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
-	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
@@ -21,11 +20,7 @@ func TestFocusCmd(t *testing.T) {
 
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
-		storageDbClient, _ := mocks.MockStorageDbClient(ctrl)
-		strg, err := storage.NewMarkClient(storageDbClient)
-		if err != nil {
-			t.Fatal(err)
-		}
+		_, strg := mocks.MockStorageDbClient(ctrl)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
@@ -47,18 +42,11 @@ func TestFocusCmd(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				QueryOne(strings.TrimSpace(`
-					SELECT * FROM marks WHERE mark = ?
-				`), "mark1").
-				Return(&storage.Mark{
-					WindowID: "1",
-					Mark:     "mark1",
-				}, nil).
-				Times(1),
-		)
+		_, strg := mocks.MockStorageDbClient(ctrl)
+		strg.EXPECT().
+			GetWindowIDByMark("mark1").
+			Return("1", nil).
+			Times(1)
 
 		mockAeroSpaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		mockAeroSpaceConnection.EXPECT().
@@ -88,16 +76,13 @@ func TestFocusCmd(t *testing.T) {
 
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-		storageDbClient, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDbClient(ctrl)
 
-		gomock.InOrder(
-			storageDbClient.EXPECT().
-				QueryOne(strings.TrimSpace(`
-					SELECT * FROM marks WHERE mark = ?
-				`), "nonexistent-mark").
-				Return(nil, nil).
-				Times(1),
-		)
+		strg.EXPECT().
+			GetWindowIDByMark("nonexistent-mark").
+			Return("", nil).
+			Times(1)
+
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 		stdout.ShouldExit = false
 
