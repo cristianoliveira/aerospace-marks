@@ -1,5 +1,14 @@
 # Arbitrary Values for Marks - Design Proposal
 
+## Ideas
+
+### Allow add extra data to an already existing mark by window id
+
+```bash
+aerospace-marks mark --data key=value
+# This will add key=value to the existing mark of the current window
+```
+
 ## Context
 
 Currently, aerospace-marks stores only a `window_id` associated with each mark identifier. The marks are stored in a simple SQLite table structure:
@@ -26,7 +35,7 @@ The arbitrary marks feature would enable users to:
 
 ### Core Commands
 
-#### 1. Extended Mark Command
+#### Extended Mark Command
 
 ```bash
 # Current functionality (unchanged)
@@ -51,24 +60,7 @@ aerospace-marks mark <identifier> --data key=value --add
 - When using `--data` with `--add`: merges new data with existing data (overwrites keys if they exist)
 - When using `--data` with `--toggle`: if mark exists, removes mark and all its data; if mark doesn't exist, creates mark with provided data
 
-#### 2. New Data Management Commands
-
-```bash
-# Set/update arbitrary data for existing mark
-aerospace-marks set-data <identifier> key=value
-aerospace-marks set-data <identifier> key1=value1 key2=value2
-
-# Get arbitrary data from a mark
-aerospace-marks get-data <identifier> [key]
-aerospace-marks get-data <identifier>  # Returns all data as key=value pairs
-
-# Remove data from a mark
-aerospace-marks remove-data <identifier> key
-aerospace-marks remove-data <identifier> key1 key2
-aerospace-marks remove-data <identifier> --all  # Remove all data, keep the mark
-```
-
-#### 3. Enhanced Get Command
+#### Enhanced Get Command
 
 ```bash
 # Current functionality (unchanged)
@@ -79,10 +71,9 @@ aerospace-marks get <identifier> --window-title
 # NEW: Get arbitrary data
 aerospace-marks get <identifier> --data
 aerospace-marks get <identifier> --data key
-aerospace-marks get <identifier> --json  # Get all info as JSON
 ```
 
-#### 4. Enhanced List Command
+#### Enhanced List Command
 
 ```bash
 # Current functionality (unchanged)
@@ -90,7 +81,6 @@ aerospace-marks list
 
 # NEW: Include arbitrary data in output
 aerospace-marks list --with-data
-aerospace-marks list --json  # JSON output with all data
 ```
 
 ### Output Formats
@@ -108,44 +98,6 @@ $ aerospace-marks get myproject --data project_path
 $ aerospace-marks list --with-data
 myproject|12345|Code|MyProject.xcodeproj|1|com.apple.dt.Xcode|project_path=/home/user/myproject,build_config=release
 browser|67890|Safari|GitHub|2|com.apple.Safari|session=work
-```
-
-#### JSON Format
-```bash
-$ aerospace-marks get myproject --json
-{
-  "mark": "myproject",
-  "window_id": 12345,
-  "window": {
-    "app_name": "Code",
-    "window_title": "MyProject.xcodeproj",
-    "workspace": "1",
-    "app_bundle_id": "com.apple.dt.Xcode"
-  },
-  "data": {
-    "project_path": "/home/user/myproject",
-    "build_config": "release",
-    "last_commit": "abc123"
-  }
-}
-
-$ aerospace-marks list --json
-[
-  {
-    "mark": "myproject",
-    "window_id": 12345,
-    "window": {...},
-    "data": {...}
-  },
-  {
-    "mark": "browser",
-    "window_id": 67890,
-    "window": {...},
-    "data": {
-      "session": "work"
-    }
-  }
-]
 ```
 
 ## Database Schema Changes
@@ -177,44 +129,14 @@ CREATE TABLE IF NOT EXISTS mark_data (
 
 ## Usage Examples
 
-### Development Workflow
+### Window Management with aerospace-scratchpad
 ```bash
-# Mark a development window with project metadata
-aerospace-marks mark dev --data project=/home/user/myproject --data branch=feature/new-ui
+# Mark the chatgpt window with session info (Title contains "questions")
+aerospace-marks mark gpt --data session=questions
 
-# Later, retrieve project path for scripts
-PROJECT_PATH=$(aerospace-marks get-data dev project)
-cd "$PROJECT_PATH"
-
-# Update branch info
-aerospace-marks set-data dev branch=feature/updated-ui
-
-# Get all development context
-aerospace-marks get dev --json | jq .
-```
-
-### Session Management
-```bash
-# Mark browser windows with session info
-aerospace-marks mark work-browser --data session=work --data profile=corporate
-aerospace-marks mark personal-browser --data session=personal --data profile=default
-
-# Script to restore work session
-if aerospace-marks get work-browser --data session | grep -q "work"; then
-    aerospace-marks focus work-browser
-    echo "Restored work browser session"
-fi
-```
-
-### Build System Integration
-```bash
-# Mark editor with build configuration
-aerospace-marks mark editor --data build_config=debug --data target=ios
-
-# Build script reads configuration
-BUILD_CONFIG=$(aerospace-marks get-data editor build_config)
-TARGET=$(aerospace-marks get-data editor target)
-make build CONFIG=$BUILD_CONFIG TARGET=$TARGET
+# Later, with a shortcut, restore the window and set its title
+aerospace-scratchpad show "$(aerospace-marks get gpt -a)" \
+                  -F window-title="$(aerospace-marks get gpt --data session)"
 ```
 
 ## Implementation Considerations
