@@ -2,6 +2,11 @@ name: On demand Bump Version
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Next version to bump to (e.g., v1.2.3)'
+        required: true
+        type: string
   # Upon a new tag creation
   push:
     tags:
@@ -23,9 +28,14 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate new hashes based on latest tag
+      - name: Generate new hashes based on version
         run: |
-          version=$(git describe --tags --abbrev=0)
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            version="${{ inputs.version }}"
+          else
+            version=$(git describe --tags --abbrev=0)
+          fi
+          echo "Using version: $version"
           sed -i 's#version = ".*";#version = "'"$version"'";#' nix/package-default.nix
           sed -i 's#VERSION =.*#VERSION = "'"$version"'"#' cmd/root.go
           bash scripts/update-nix-hash.sh nix/package-default.nix ".#default"
