@@ -43,7 +43,13 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore(nix): bump nix hashes and version"
-          title: "chore(nix): bump nix hashes and version"
-          body: "This PR updates the Nix default package hashes and version."
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: bump version to ${{ inputs.version }}"
+          branch: bump-version-${{ inputs.version }}
+          title: "chore: bump version to ${{ inputs.version }}"
+          body: |
+            This PR bumps the version to ${{ inputs.version }} and updates the necessary hashes.
+          labels: version-bump
+          draft: false
           base: main
+          delete-branch: true
