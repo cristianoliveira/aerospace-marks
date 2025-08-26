@@ -29,38 +29,6 @@ jobs:
         with:
           go-version: '1.24'  # Specify your Go version
 
-      - name: Validate tag matches source version
-        if: github.event_name == 'release'
-        run: |
-          set -euo pipefail
-          tag="${{ github.event.release.tag_name }}"
-          if [ -z "${tag}" ]; then
-            tag="${GITHUB_REF_NAME}"
-          fi
-          echo "Git tag: ${tag}"
-
-          file="cmd/root.go"
-          if [ ! -f "${file}" ]; then
-            echo "Version file ${file} not found"
-            exit 1
-          fi
-
-          # Extract VERSION string from source (handles const/var assignments)
-          src_version=$(grep -E 'VERSION\s*=' "${file}" | head -n1 | sed -E 's/.*VERSION\s*=\s*"([^"]+)".*/\1/')
-          if [ -z "${src_version}" ]; then
-            echo "Could not extract VERSION from ${file}"
-            exit 1
-          fi
-          echo "Source version: ${src_version}"
-
-          if [ "${src_version}" != "${tag}" ]; then
-            echo "Version mismatch: tag ${tag} != ${src_version}"
-            exit 1
-          fi
-          echo "Tag matches source version."
-
-
-
       - name: Build and Release
         if: github.event_name == 'release'
         uses: wangyoucao577/go-release-action@v1
@@ -71,6 +39,7 @@ jobs:
           binary_name: aerospace-marks
           project_path: ./
           extra_files: LICENSE README.md
+          ldflags: "-s -w -X github.com/cristianoliveira/aerospace-marks/cmd.VERSION=${{ github.event.release.tag_name }}"
           compress_assets: true
           overwrite: true
 
@@ -87,7 +56,7 @@ jobs:
 
       - name: Generate new hashes
         run: |
-          version=$(git describe --tags --abbrev=0)
+          version="${{ github.event.release.tag_name }}"
           sed -i 's#version = ".*";#version = "'"$version"'";#' nix/package-default.nix
           sed -i 's#VERSION =.*#VERSION = "'"$version"'"#' cmd/root.go
           bash scripts/update-nix-hash.sh nix/package-default.nix ".#default"
@@ -95,6 +64,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore(nix): bump nix hashes and version"
-          title: "chore(nix): bump nix hashes and version"
-          base: main
+          commit-message: "chore: bump version to ${{ inputs.version }}"
+          branch: bump-version-${{ inputs.version }}
+          title: "chore: bump version to ${{ inputs.version }}"
+          body: |
+            This PR bumps the version to ${{ inputs.version }} and updates the necessary hashes.
