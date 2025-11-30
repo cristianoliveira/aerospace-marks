@@ -56,13 +56,6 @@ This command retrieves a window by its mark (identifier). Print in the following
 			}
 
 			window, err := aerospaceClient.GetWindowByID(windowID)
-			logger.LogDebug(
-				"Get window by ID",
-				"windowID", windowID,
-				"window", *window,
-				"windowTitle", window.WindowTitle,
-				"err", err,
-			)
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
@@ -71,6 +64,13 @@ This command retrieves a window by its mark (identifier). Print in the following
 				stdout.ErrorAndExit(fmt.Errorf("no window found for ID %d", windowID))
 				return
 			}
+			logger.LogDebug(
+				"Get window by ID",
+				"windowID", windowID,
+				"window", *window,
+				"windowTitle", window.WindowTitle,
+				"err", err,
+			)
 
 			getWinTitle, _ := cmd.Flags().GetBool("window-title")
 			if getWinTitle {

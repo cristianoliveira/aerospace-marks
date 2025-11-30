@@ -5,8 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	aerospace "github.com/cristianoliveira/aerospace-ipc"
+	aerospace "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
@@ -15,6 +16,8 @@ import (
 )
 
 func TestGetCommand(t *testing.T) {
+	logger.SetDefaultLogger(&logger.EmptyLogger{})
+
 	t.Run("shows only the marked windows", func(t *testing.T) {
 		args := []string{"get", "mark1"}
 

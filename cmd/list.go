@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
@@ -58,7 +58,7 @@ Display in the following format:
 				return
 			}
 
-			windows, err := aerospaceClient.Client().GetAllWindows()
+			windows, err := aerospaceClient.Client().Windows().GetAllWindows()
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return

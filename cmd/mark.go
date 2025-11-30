@@ -57,7 +57,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			// Get the window ID from the command line argument
 			var windowID int
 			if winArgID == "" {
-				window, err := aerospaceClient.Client().GetFocusedWindow()
+				window, err := aerospaceClient.Client().Windows().GetFocusedWindow()
 				if err != nil {
 					stdout.ErrorAndExit(err)
 					return

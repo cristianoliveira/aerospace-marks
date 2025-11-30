@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 )
 
@@ -36,7 +36,7 @@ func (d *DefaultAeroSpaceWindows) Client() *aerospacecli.AeroSpaceWM {
 
 func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID int) (*aerospacecli.Window, error) {
 	logger := logger.GetDefaultLogger()
-	windows, err := d.client.GetAllWindows()
+	windows, err := d.client.Windows().GetAllWindows()
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID int) (*aerospacecli.Win
 }
 
 func NewAeroSpaceClient() (*DefaultAeroSpaceWindows, error) {
-	cli, err := aerospacecli.NewAeroSpaceClient()
+	cli, err := aerospacecli.NewClient()
 	if err != nil {
 		return nil, err
 	}
