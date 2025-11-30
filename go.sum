@@ -4,6 +4,8 @@ github.com/cristianoliveira/aerospace-ipc v0.2.2-0.20251130105333-9de15e5631ea h
 github.com/cristianoliveira/aerospace-ipc v0.2.2-0.20251130105333-9de15e5631ea/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
 github.com/cristianoliveira/aerospace-ipc v0.2.2-0.20251130115621-503d03b8be64 h1:pOOBFRnKrWwDr2n2eJ7eQv8X5ouWePdrD8b1CaF41N4=
 github.com/cristianoliveira/aerospace-ipc v0.2.2-0.20251130115621-503d03b8be64/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
+github.com/cristianoliveira/aerospace-ipc v0.3.0 h1:7OyDwzQaA8yO9HHdVG0//t0ExSx4Jit7uRJywf3hAn4=
+github.com/cristianoliveira/aerospace-ipc v0.3.0/go.mod h1:Dr928g0F980Y/Hu1t60RKOiWvQF02Lx5nLLM0SwPZ7M=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=

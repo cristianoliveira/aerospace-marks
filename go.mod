@@ -5,7 +5,7 @@ go 1.24.2
 toolchain go1.24.3
 
 require (
-	github.com/cristianoliveira/aerospace-ipc v0.2.2-0.20251130115621-503d03b8be64
+	github.com/cristianoliveira/aerospace-ipc v0.3.0
 	github.com/gkampitakis/go-snaps v0.5.11
 	github.com/mattn/go-sqlite3 v1.14.28
 	github.com/pressly/goose/v3 v3.24.3
