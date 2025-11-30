@@ -1,9 +1,10 @@
-package cmd
+package cmd_test
 
 import (
 	"strings"
 	"testing"
 
+	"github.com/cristianoliveira/aerospace-marks/cmd"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
@@ -21,10 +22,10 @@ func TestSummonCmd(t *testing.T) {
 
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if out != "" {
 			t.Fatal("output should be empty", out)
@@ -46,10 +47,10 @@ func TestSummonCmd(t *testing.T) {
 
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if out != "" {
 			t.Fatal("output should be empty", out)

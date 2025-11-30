@@ -1,18 +1,20 @@
-package cmd
+package cmd_test
 
 import (
 	"encoding/json"
 	"strings"
 	"testing"
 
-	aerospace "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
+	"github.com/cristianoliveira/aerospace-marks/cmd"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
+
+	aerospace "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 )
 
 func TestGetCommand(t *testing.T) {
@@ -24,7 +26,7 @@ func TestGetCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		marks := []queries.Mark{
 			{
 				WindowID: 1,
@@ -76,7 +78,7 @@ func TestGetCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
@@ -93,7 +95,7 @@ func TestGetCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		marks := []queries.Mark{
 			{
 				WindowID: 1,
@@ -125,7 +127,7 @@ func TestGetCommand(t *testing.T) {
 			},
 		}
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
@@ -142,7 +144,7 @@ func TestGetCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		marks := []queries.Mark{
 			{
 				WindowID: 1,
@@ -194,7 +196,7 @@ func TestGetCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
@@ -211,7 +213,7 @@ func TestGetCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		marks := []queries.Mark{
 			{
 				WindowID: 1,
@@ -266,7 +268,7 @@ func TestGetCommand(t *testing.T) {
 					ExitCode:      0,
 				}, nil).Times(1)
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)

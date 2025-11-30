@@ -1,18 +1,20 @@
-package cmd
+package cmd_test
 
 import (
 	"encoding/json"
 	"strings"
 	"testing"
 
-	aerospace "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
+	"github.com/cristianoliveira/aerospace-marks/cmd"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
+
+	aerospace "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 )
 
 func TestListCommand(t *testing.T) {
@@ -20,7 +22,7 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		strg.EXPECT().
 			GetMarks().
 			Return(
@@ -82,7 +84,7 @@ func TestListCommand(t *testing.T) {
 				}, nil).Times(1)
 
 		args := []string{"list"}
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
@@ -90,18 +92,18 @@ func TestListCommand(t *testing.T) {
 
 		result := strings.TrimSpace(out)
 		lines := strings.Split(result, "\n")
-		assert.Equal(t, 2, len(lines))
-		assert.Equal(t, lines, []string{
+		assert.Len(t, lines, 2)
+		assert.Equal(t, []string{
 			"mark1 | 1 | app1 | title1 | _ | _",
 			"mark2 | 2 | app2 | title2 | _ | _",
-		})
+		}, lines)
 	})
 
 	t.Run("shows no marked window found", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		strg.EXPECT().
 			GetMarks().
 			Return(
@@ -163,21 +165,21 @@ func TestListCommand(t *testing.T) {
 				}, nil).Times(1)
 
 		args := []string{"list"}
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
 
 		result := strings.TrimSpace(out)
-		assert.Equal(t, result, "No marked window found")
+		assert.Equal(t, "No marked window found", result)
 	})
 
 	t.Run("shows no marks found", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		strg.EXPECT().
 			GetMarks().
 			Return([]queries.Mark{}, nil).
@@ -186,14 +188,14 @@ func TestListCommand(t *testing.T) {
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
 		args := []string{"list"}
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
 
 		result := strings.TrimSpace(out)
-		assert.Equal(t, result, "No marks found")
+		assert.Equal(t, "No marks found", result)
 	})
 
 	t.Run("print all marked windows", func(t *testing.T) {
@@ -205,7 +207,7 @@ func TestListCommand(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		strg.EXPECT().
 			GetMarks().
 			Return(marks, nil).
@@ -230,13 +232,13 @@ func TestListCommand(t *testing.T) {
 				}).
 			Return(&aerospacecli.Response{
 				ServerVersion: "1.0",
-				StdOut:        string(windows),
+				StdOut:        windows,
 				StdErr:        "",
 				ExitCode:      0,
 			}, nil).Times(1)
 
 		args := []string{"list"}
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
@@ -254,11 +256,11 @@ func TestListCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)

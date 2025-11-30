@@ -4,6 +4,10 @@ help: ## Lists the available commands. Add a comment with '##' to describe a com
 		| sort\
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: 
+build: ## Build the cli
+	@echo "Building the cli..."
+	@go build -o bin/aerospace-marks main.go
 
 .PHONY: run
 run: ## Run the cli
@@ -28,7 +32,6 @@ setup-ci: ## Install dependencies for CI
 .PHONY: fmt
 fmt: setup-ci ## Format the code
 	@echo "Formatting the code..."
-	@gofmt -s -w .
 	@golangci-lint run --fix
 
 .PHONY: lint

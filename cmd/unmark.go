@@ -5,13 +5,14 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 
 	"github.com/spf13/cobra"
 )
 
-// unmarkCmd represents the unmark command
+// UnmarkCmd represents the unmark command.
 func UnmarkCmd(storageClient storage.MarkStorage) *cobra.Command {
 	unmarkCmd := &cobra.Command{
 		Use:   "unmark",
@@ -30,7 +31,7 @@ unmark cmd will remove identifier from the list of current marks on a window. If
 					return err
 				}
 
-				fmt.Printf("Removed %d marks\n", rowsEffected)
+				fmt.Fprintf(os.Stdout, "Removed %d marks\n", rowsEffected)
 				return nil
 			}
 
@@ -46,7 +47,7 @@ unmark cmd will remove identifier from the list of current marks on a window. If
 				count += int(rowsAffected)
 			}
 
-			fmt.Printf("Removed %d marks\n", count)
+			fmt.Fprintf(os.Stdout, "Removed %d marks\n", count)
 			return nil
 		},
 	}

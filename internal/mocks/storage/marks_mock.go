@@ -56,10 +56,10 @@ func (mr *MockMarkStorageMockRecorder) AddMark(id, mark any) *gomock.Call {
 }
 
 // Client mocks base method.
-func (m *MockMarkStorage) Client() storage.StorageDbClient {
+func (m *MockMarkStorage) Client() storage.StorageDBClient {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Client")
-	ret0, _ := ret[0].(storage.StorageDbClient)
+	ret0, _ := ret[0].(storage.StorageDBClient)
 	return ret0
 }
 

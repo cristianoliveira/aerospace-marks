@@ -1,10 +1,11 @@
-package cmd
+package cmd_test
 
 import (
 	"errors"
 	"fmt"
 	"testing"
 
+	"github.com/cristianoliveira/aerospace-marks/cmd"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
@@ -18,7 +19,7 @@ func TestInfoCmd(t *testing.T) {
 		defer ctrl.Finish()
 
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
+		dbClient, storageClient := mocks.MockStorageDBClient(ctrl)
 
 		storageClient.
 			EXPECT().
@@ -30,8 +31,8 @@ func TestInfoCmd(t *testing.T) {
 			EXPECT().
 			GetStorageConfig().
 			Return(storage.StorageConfig{
-				DbPath: "/tmp/database/",
-				DbName: "foo.db",
+				DBPath: "/tmp/database/",
+				DBName: "foo.db",
 			}).
 			Times(1)
 
@@ -55,7 +56,7 @@ func TestInfoCmd(t *testing.T) {
 				Times(1),
 		)
 
-		cmd := InfoCmd(
+		cmd := cmd.InfoCmd(
 			storageClient,
 			aerospaceClient,
 		)
@@ -73,7 +74,7 @@ func TestInfoCmd(t *testing.T) {
 		defer ctrl.Finish()
 
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
+		dbClient, storageClient := mocks.MockStorageDBClient(ctrl)
 
 		storageClient.
 			EXPECT().
@@ -85,8 +86,8 @@ func TestInfoCmd(t *testing.T) {
 			EXPECT().
 			GetStorageConfig().
 			Return(storage.StorageConfig{
-				DbPath: "/tmp/database/",
-				DbName: "foo.db",
+				DBPath: "/tmp/database/",
+				DBName: "foo.db",
 			}).
 			Times(1)
 
@@ -110,7 +111,7 @@ func TestInfoCmd(t *testing.T) {
 				Times(1),
 		)
 
-		cmd := InfoCmd(
+		cmd := cmd.InfoCmd(
 			storageClient,
 			aerospaceClient,
 		)
@@ -128,7 +129,7 @@ func TestInfoCmd(t *testing.T) {
 		defer ctrl.Finish()
 
 		aerospaceConnection, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
-		dbClient, storageClient := mocks.MockStorageDbClient(ctrl)
+		dbClient, storageClient := mocks.MockStorageDBClient(ctrl)
 
 		storageClient.
 			EXPECT().
@@ -140,8 +141,8 @@ func TestInfoCmd(t *testing.T) {
 			EXPECT().
 			GetStorageConfig().
 			Return(storage.StorageConfig{
-				DbPath: "/tmp/database/",
-				DbName: "foo.db",
+				DBPath: "/tmp/database/",
+				DBName: "foo.db",
 			}).
 			Times(1)
 
@@ -153,7 +154,7 @@ func TestInfoCmd(t *testing.T) {
 				Times(1),
 		)
 
-		cmd := InfoCmd(
+		cmd := cmd.InfoCmd(
 			storageClient,
 			aerospaceClient,
 		)

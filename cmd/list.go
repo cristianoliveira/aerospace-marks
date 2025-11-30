@@ -4,34 +4,42 @@ Copyright © 2025 Cristian Oliveira license@cristianoliveira.dev
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	"strconv"
 
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
+	"slices"
+
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
-	"slices"
+
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 )
 
-func popWindow(windows []aerospacecli.Window, windowID int) (*aerospacecli.Window, error) {
-	for i, window := range windows {
+func popWindow(windowsList []windows.Window, windowID int) (*windows.Window, error) {
+	for i, window := range windowsList {
 		if windowID == 0 {
-			return nil, fmt.Errorf("window ID not found")
+			return nil, errors.New("window ID not found")
 		}
 		if windowID == window.WindowID {
 			// Remove the window from the list
-			//nolint:staticcheck,ineffassign
-			windows = slices.Delete(windows, i, i+1)
+			// The assignment is intentional to show intent, even though the slice is passed by value
+			//nolint:staticcheck,ineffassign,wastedassign // intentional: shows removal intent
+			windowsList = slices.Delete(windowsList, i, i+1)
 			return &window, nil
 		}
 	}
 
-	return nil, fmt.Errorf("window ID not found")
+	return nil, errors.New("window ID not found")
 }
 
-// listCmd represents the list command
+// ListCmd represents the list command.
+//
+//nolint:gocognit // ListCmd has high complexity due to multiple formatting operations
 func ListCmd(
 	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
@@ -54,11 +62,11 @@ Display in the following format:
 				return
 			}
 			if len(marks) == 0 {
-				fmt.Println("No marks found")
+				fmt.Fprintln(os.Stdout, "No marks found")
 				return
 			}
 
-			windows, err := aerospaceClient.Client().Windows().GetAllWindows()
+			windowsList, err := aerospaceClient.Client().Windows().GetAllWindows()
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
@@ -66,13 +74,13 @@ Display in the following format:
 
 			lines := make([]string, 0)
 			for _, mark := range marks {
-				window, err := popWindow(windows, mark.WindowID)
-				if err != nil {
+				window, popErr := popWindow(windowsList, mark.WindowID)
+				if popErr != nil {
 					continue
 				}
 
 				// Format window fields, using "_" for empty fields
-				windowID := fmt.Sprintf("%d", window.WindowID)
+				windowID := strconv.Itoa(window.WindowID)
 				appName := window.AppName
 				if appName == "" {
 					appName = "_"
@@ -96,12 +104,12 @@ Display in the following format:
 			}
 
 			if len(lines) == 0 {
-				fmt.Println("No marked window found")
+				fmt.Fprintln(os.Stdout, "No marked window found")
 				return
 			}
 
 			formattedOutput := format.FormatTableList(lines)
-			fmt.Println(formattedOutput)
+			fmt.Fprintln(os.Stdout, formattedOutput)
 		},
 	}
 }

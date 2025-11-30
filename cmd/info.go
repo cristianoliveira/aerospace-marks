@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/constants"
@@ -13,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// configCmd represents the config command
+// InfoCmd represents the config command.
 func InfoCmd(
 	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
@@ -46,7 +47,7 @@ It also displays help information about environment variables available.
 				return fmt.Errorf("failed to get server version: %w", err)
 			}
 
-			fmt.Printf(`Aerospace Marks CLI - Configuration
+			fmt.Fprintf(os.Stdout, `Aerospace Marks CLI - Configuration
 
 [Socket]
 Path: %s
@@ -72,8 +73,8 @@ Configure with ENV variables:
 				validationInfo,
 
 				// Database configuration
-				dbConfig.DbName,
-				dbConfig.DbPath,
+				dbConfig.DBName,
+				dbConfig.DBPath,
 
 				// logging configuration
 				logConfig.Path,
@@ -81,7 +82,7 @@ Configure with ENV variables:
 
 				// Environment variables
 				constants.EnvAeroSpaceSock,
-				constants.EnvAeroSpaceMarksDbPath,
+				constants.EnvAeroSpaceMarksDBPath,
 				constants.EnvAeroSpaceMarksLogsLevel,
 				constants.EnvAeroSpaceMarksLogsPath,
 			)

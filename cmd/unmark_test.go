@@ -1,10 +1,11 @@
-package cmd
+package cmd_test
 
 import (
 	"fmt"
 	"strings"
 	"testing"
 
+	"github.com/cristianoliveira/aerospace-marks/cmd"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
@@ -20,7 +21,7 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		strg.EXPECT().
 			DeleteByMark("mark1").
 			Return(int64(1), nil).
@@ -28,7 +29,7 @@ func TestUnmarkCommand(t *testing.T) {
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
@@ -46,7 +47,7 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		strg.EXPECT().
 			DeleteAllMarks().
 			Return(int64(2), nil).
@@ -54,7 +55,7 @@ func TestUnmarkCommand(t *testing.T) {
 
 		aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
@@ -71,11 +72,11 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 
 		aerospaceClient := &testutils.MockEmptyAerspaceMarkWindows{}
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err != nil {
 			t.Fatal(err)
@@ -93,7 +94,7 @@ func TestUnmarkCommand(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		strg.EXPECT().
 			DeleteByMark("unkown").
 			Return(int64(0), nil).
@@ -101,7 +102,7 @@ func TestUnmarkCommand(t *testing.T) {
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
-		cmd := NewRootCmd(strg, aerospaceClient)
+		cmd := cmd.NewRootCmd(strg, aerospaceClient)
 		out, err := testutils.CmdExecute(cmd, args...)
 		if err == nil {
 			t.Fatal(err)

@@ -5,26 +5,27 @@ import (
 	"fmt"
 	"os"
 
-	aerospaceipc "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	aerospacecli_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"
 	storage_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/storage"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
 	"go.uber.org/mock/gomock"
+
+	aerospaceipc "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 )
 
 // This module contains a set of mock helpers for mocking AeroSpace socket connections
 // and storage, easily used in unit tests.
 
-func MockStorageDbClient(ctrl *gomock.Controller) (
-	*storage_mock.MockStorageDbClient,
+func MockStorageDBClient(ctrl *gomock.Controller) (
+	*storage_mock.MockStorageDBClient,
 	*storage_mock.MockMarkStorage,
 ) {
-	storageDbClient := storage_mock.NewMockStorageDbClient(ctrl)
+	storageDBClient := storage_mock.NewMockStorageDBClient(ctrl)
 	newStorage := storage_mock.NewMockMarkStorage(ctrl)
 
-	return storageDbClient, newStorage
+	return storageDBClient, newStorage
 }
 
 func MockAerospaceConnection(ctrl *gomock.Controller) (
