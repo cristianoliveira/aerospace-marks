@@ -1,7 +1,7 @@
 { pkgs, ... }:
   pkgs.buildGoModule rec {
     name = "aerospace-marks";
-    version = "v0.2.1";
+    version = "v0.3.0";
 
     go = pkgs.go_1_24;
 
@@ -10,10 +10,10 @@
       owner = "cristianoliveira";
       repo = "aerospace-marks";
       rev = version;
-      sha256 = "sha256-ki5xMo/HfG5WNx+hIgMO5nbgWgmAPKHd7hS82SMUivU=";
+      sha256 = "sha256-23O8lRvtDVmze98ukkJ5PXzXeK43TRRVpjzigePnyOM=";
     };
 
-    vendorHash = "sha256-gkPFhSZtkgFGpiZBWO8TA+RqejZKfdrjhpxNeOgUuDo=";
+    vendorHash = "sha256-EMsjDi/D+tuwzE7uKtUIG2DVmmBBasn6c4YJkKMFyRQ=";
 
     ldflags = [
       "-s" "-w"
