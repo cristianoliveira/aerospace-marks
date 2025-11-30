@@ -53,7 +53,7 @@ Moves focus to the first window marked with the specified identifier.
 			// The program is too fast, what a problem to have!
 			// Delay setting focus to ensure the window is ready
 			time.Sleep(focusDelay)
-			err = aerospaceClient.Client().SetFocusByWindowID(windowID)
+			err = aerospaceClient.Client().Windows().SetFocusByWindowID(windowID)
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return

@@ -5,9 +5,10 @@ go 1.24.2
 toolchain go1.24.3
 
 require (
-	github.com/cristianoliveira/aerospace-ipc v0.2.1
+	github.com/cristianoliveira/aerospace-ipc v0.2.2-0.20251129205702-c6ef7f778136
 	github.com/gkampitakis/go-snaps v0.5.11
 	github.com/mattn/go-sqlite3 v1.14.28
+	github.com/pressly/goose/v3 v3.24.3
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/mock v0.5.2
@@ -24,7 +25,6 @@ require (
 	github.com/maruel/natural v1.1.1 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/pressly/goose/v3 v3.24.3 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/sethvargo/go-retry v0.3.0 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect

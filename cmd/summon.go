@@ -47,21 +47,21 @@ Similar to 'aerospace summon-workspace' but for marked windows to current worksp
 				return
 			}
 
-			workspace, err := aerospaceClient.Client().GetFocusedWorkspace()
+			workspace, err := aerospaceClient.Client().Workspaces().GetFocusedWorkspace()
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
 			}
 
 			// focus to window by ID
-			err = aerospaceClient.Client().MoveWindowToWorkspace(windowID, workspace.Workspace)
+			err = aerospaceClient.Client().Workspaces().MoveWindowToWorkspace(windowID, workspace.Workspace)
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
 			}
 
 			if shouldFocus {
-				err := aerospaceClient.Client().SetFocusByWindowID(windowID)
+				err := aerospaceClient.Client().Windows().SetFocusByWindowID(windowID)
 				if err != nil {
 					stdout.ErrorAndExit(err)
 					return

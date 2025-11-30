@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	aerospaceipc "github.com/cristianoliveira/aerospace-ipc"
+	aerospaceipc "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	aerospacecli_mock "github.com/cristianoliveira/aerospace-marks/internal/mocks/aerospacecli"

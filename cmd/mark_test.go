@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	aerospace "github.com/cristianoliveira/aerospace-ipc"
+	aerospace "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
