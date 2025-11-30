@@ -37,6 +37,7 @@ This CLI is heavily inspired by the marks feature of i3 and sway window managers
 	return newRootCmd
 }
 
+//nolint:gochecknoinits // init function is required for cobra root command setup
 func init() {
 	// NOTE: add here global flags
 	// rootCmd.Flags().BoolP("version", "v", false, "Print version information")
@@ -50,7 +51,10 @@ func Run(storage storage.MarkStorage, aerospaceClient aerospace.AerosSpaceMarkWi
 	}
 }
 
+// VERSION is the version of the application.
 // THIS IS GENERATED DON'T EDIT
 // NOTE: to update VERSION to empty string
-// and then run scripts/validate-version.sh
+// and then run scripts/validate-version.sh.
+//
+//nolint:gochecknoglobals // VERSION is a build-time constant
 var VERSION = "v0.2.1"

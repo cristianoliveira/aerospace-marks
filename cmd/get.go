@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
@@ -49,9 +50,9 @@ This command retrieves a window by its mark (identifier). Print in the following
 				return
 			}
 
-			getWinId, _ := cmd.Flags().GetBool("window-id")
-			if getWinId {
-				fmt.Print(windowID)
+			getWinID, _ := cmd.Flags().GetBool("window-id")
+			if getWinID {
+				fmt.Fprint(os.Stdout, windowID)
 				return
 			}
 
@@ -74,19 +75,19 @@ This command retrieves a window by its mark (identifier). Print in the following
 
 			getWinTitle, _ := cmd.Flags().GetBool("window-title")
 			if getWinTitle {
-				fmt.Print(window.WindowTitle)
+				fmt.Fprint(os.Stdout, window.WindowTitle)
 				return
 			}
 
 			getWinApp, _ := cmd.Flags().GetBool("app-name")
 			if getWinApp {
-				fmt.Print(window.AppName)
+				fmt.Fprint(os.Stdout, window.AppName)
 				return
 			}
 
 			getWinAppBundleID, _ := cmd.Flags().GetBool("app-bundle-id")
 			if getWinAppBundleID {
-				fmt.Print(window.AppBundleID)
+				fmt.Fprint(os.Stdout, window.AppBundleID)
 				return
 			}
 
@@ -95,7 +96,7 @@ This command retrieves a window by its mark (identifier). Print in the following
 				"windowID", windowID,
 				"window", window,
 			)
-			fmt.Print(window)
+			fmt.Fprint(os.Stdout, window)
 		},
 	}
 

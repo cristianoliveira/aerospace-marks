@@ -5,20 +5,23 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"time"
 
-	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
+
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 )
 
+//nolint:gochecknoglobals // focusDelay is a configuration constant
 var focusDelay = 100 * time.Millisecond // Default delay to wait for the window to be ready
 
-// focusCmd represents the focus command
+// FocusCmd represents the focus command.
 func FocusCmd(
 	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
@@ -63,7 +66,7 @@ Moves focus to the first window marked with the specified identifier.
 			}
 
 			logger.LogDebug("Focus set", "windowID", windowID)
-			fmt.Printf("Focus moved to window ID %d\n", windowID)
+			fmt.Fprintf(os.Stdout, "Focus moved to window ID %d\n", windowID)
 		},
 	}
 }

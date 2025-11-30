@@ -6,8 +6,7 @@
 
 - name: quick checks
   run: 
-    - go fmt ./...
-    - gotestsum --format pkgname
+    - make test
   run_on_init: true
   change: 
     - '**/*.go'
@@ -19,6 +18,17 @@
   run: 
     # Validate if file .install contains 1 otherwise 
     - if [ -f .tmp/install ]; then go install . && echo "installed latest" ; fi
+  change: 
+    - '**/*.go'
+    - '**/*.snap'
+  ignore: 
+    - '**/*.log'
+
+- name: quick checks style
+  run: 
+    - make fmt
+    - make lint
+  run_on_init: true
   change: 
     - '**/*.go'
     - '**/*.snap'

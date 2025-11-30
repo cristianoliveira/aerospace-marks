@@ -15,8 +15,8 @@ func main() {
 		return
 	}
 	defer func() {
-		if err := defaultLogger.Close(); err != nil {
-			stdout.ErrorAndExit(err)
+		if closeErr := defaultLogger.Close(); closeErr != nil {
+			stdout.ErrorAndExit(closeErr)
 		}
 	}()
 	logger.SetDefaultLogger(defaultLogger)
@@ -32,8 +32,8 @@ func main() {
 		stdout.ErrorAndExit(err)
 	}
 	defer func() {
-		if err := conn.Close(); err != nil {
-			stdout.ErrorAndExit(err)
+		if closeErr := conn.Close(); closeErr != nil {
+			stdout.ErrorAndExit(closeErr)
 		}
 	}()
 

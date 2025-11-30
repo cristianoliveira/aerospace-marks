@@ -38,4 +38,5 @@ require (
 )
 
 // NOTE: for development only
-replace github.com/cristianoliveira/aerospace-ipc => ../aerospace-ipc
+// Local replacement is intentional for development
+// replace github.com/cristianoliveira/aerospace-ipc => ../aerospace-ipc

@@ -9,6 +9,7 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/constants"
 )
 
+//nolint:gochecknoglobals // defaultLogger is a package-level singleton
 var defaultLogger Logger
 
 type LogConfig struct {
@@ -29,9 +30,9 @@ type Logger interface {
 	// GetConfig returns the logger configuration
 	GetConfig() LogConfig
 
-	// AsJson returns the logger as a JSON object
+	// AsJSON returns the logger as a JSON object
 	// In error, logs the error and returns an empty string
-	AsJson(data any) string
+	AsJSON(data any) string
 
 	// Close closes the logger
 	Close() error
@@ -59,7 +60,7 @@ func (l *LoggerClient) GetConfig() LogConfig {
 	return l.config
 }
 
-func (l *LoggerClient) AsJson(data any) string {
+func (l *LoggerClient) AsJSON(data any) string {
 	json, err := json.Marshal(data)
 	if err != nil {
 		l.LogError("failed to marshal data to JSON", err)
@@ -72,13 +73,13 @@ func (l *LoggerClient) Close() error {
 	if l.file != nil {
 		err := l.file.Close()
 		if err != nil {
-			return fmt.Errorf("failed to close log file: %v", err)
+			return fmt.Errorf("failed to close log file: %w", err)
 		}
 	}
 	return nil
 }
 
-// Goose Logger interface implementation
+// Fatalf implements the goose.Logger interface.
 func (l *LoggerClient) Fatalf(format string, v ...any) {
 	l.logger.Error(fmt.Sprintf(format, v...))
 	os.Exit(1)
@@ -109,12 +110,12 @@ func (l *EmptyLogger) GetConfig() LogConfig {
 		Level: "DISABLED",
 	}
 }
-func (l *EmptyLogger) AsJson(data any) string {
+func (l *EmptyLogger) AsJSON(data any) string {
 	// No-op
 	return ""
 }
 
-// Goose Logger interface implementation
+// Fatalf implements the goose.Logger interface.
 func (l *EmptyLogger) Fatalf(format string, v ...any) {
 	// No-op
 	os.Exit(1)
@@ -125,16 +126,17 @@ func (l *EmptyLogger) Printf(format string, v ...any) {
 
 // NewLogger creates a new logger instance
 // It accepts a path to a file where logs will be written
-// and a boolean indicating whether to log to stdout as well
+// and a boolean indicating whether to log to stdout as well.
 func NewLogger() (Logger, error) {
 	path := os.Getenv(constants.EnvAeroSpaceMarksLogsPath)
 	if path == "" {
 		path = "/tmp/aerospace-marks.log"
 	}
 
+	//nolint:gosec // 0666 permissions are intentional for log files to be readable by all
 	file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open log file: %v", err)
+		return nil, fmt.Errorf("failed to open log file: %w", err)
 	}
 
 	configLogLevel := os.Getenv(constants.EnvAeroSpaceMarksLogsLevel)

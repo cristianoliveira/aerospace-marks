@@ -2,11 +2,11 @@ package aerospace
 
 import (
 	"fmt"
-	"log"
+
+	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
 	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
-	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 )
 
 type AerosSpaceMarkWindows interface {
@@ -27,9 +27,22 @@ type DefaultAeroSpaceWindows struct {
 	client *aerospacecli.AeroSpaceWM
 }
 
+func NewAeroSpaceClient() (*DefaultAeroSpaceWindows, error) {
+	cli, err := aerospacecli.NewClient()
+	if err != nil {
+		return nil, err
+	}
+
+	return &DefaultAeroSpaceWindows{
+		client: cli,
+	}, nil
+}
+
 func (d *DefaultAeroSpaceWindows) Client() *aerospacecli.AeroSpaceWM {
 	if d.client == nil {
-		log.Fatal("ASSERT: AeroSpaceWM client is not initialized")
+		logger := logger.GetDefaultLogger()
+		logger.LogError("ASSERT: AeroSpaceWM client is not initialized", nil)
+		panic("AeroSpaceWM client is not initialized")
 	}
 
 	return d.client
@@ -50,15 +63,4 @@ func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID int) (*windows.Window, 
 	}
 
 	return nil, fmt.Errorf("window with ID %d not found", windowID)
-}
-
-func NewAeroSpaceClient() (*DefaultAeroSpaceWindows, error) {
-	cli, err := aerospacecli.NewClient()
-	if err != nil {
-		return nil, err
-	}
-
-	return &DefaultAeroSpaceWindows{
-		client: cli,
-	}, nil
 }

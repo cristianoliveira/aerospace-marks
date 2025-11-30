@@ -11,9 +11,10 @@ import (
 	"io"
 	"os"
 
+	"github.com/spf13/cobra"
+
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
 	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
-	"github.com/spf13/cobra"
 )
 
 // CmdExecuteWithStdin executes a Cobra command with the provided arguments and stdin input.
@@ -28,7 +29,7 @@ func CmdExecuteWithStdin(cmd *cobra.Command, stdinInput string, args ...string) 
 		return "", err
 	}
 
-	return string(stdOut), nil
+	return stdOut, nil
 }
 
 func CmdExecute(cmd *cobra.Command, args ...string) (string, error) {
@@ -41,22 +42,26 @@ func CmdExecute(cmd *cobra.Command, args ...string) (string, error) {
 		return "", err
 	}
 
-	return string(stdOut), nil
+	return stdOut, nil
 }
 
 func CaptureStdOut(f func() error) (string, error) {
 	old := os.Stdout
 	defer func() {
+		//nolint:reassign // Test utility needs to restore stdout
 		os.Stdout = old
 	}()
 	errOld := os.Stderr
 	defer func() {
+		//nolint:reassign // Test utility needs to restore stderr
 		os.Stdout = errOld
 	}()
 
 	r, w, _ := os.Pipe()
 	rErr, wErr, _ := os.Pipe()
+	//nolint:reassign // Test utility needs to redirect stdout/stderr
 	os.Stdout = w
+	//nolint:reassign // Test utility needs to redirect stderr
 	os.Stderr = wErr // Redirect stderr as well
 
 	// Run the function that prints to stdout
@@ -108,6 +113,6 @@ func (d *MockEmptyAerspaceMarkWindows) Client() *aerospacecli.AeroSpaceWM {
 }
 
 func (d *MockEmptyAerspaceMarkWindows) GetWindowByID(windowID int) (*windows.Window, error) {
-	fmt.Println("Mocked GetWindowByID called with windowID:", windowID)
+	fmt.Fprintln(os.Stdout, "Mocked GetWindowByID called with windowID:", windowID)
 	return &windows.Window{}, nil
 }

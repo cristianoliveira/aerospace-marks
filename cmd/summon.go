@@ -4,16 +4,17 @@ Copyright © 2025 Cristian Oliveira license@cristianoliveira.dev
 package cmd
 
 import (
-	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
-	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/workspaces"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
+
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/workspaces"
 )
 
-// SummonCmd represents the summon command
+// SummonCmd represents the summon command.
 func SummonCmd(
 	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
@@ -70,11 +71,13 @@ Similar to 'aerospace summon-workspace' but for marked windows to current worksp
 			}
 
 			if shouldFocus {
-				err := aerospaceClient.Client().Windows().SetFocusByWindowID(windows.SetFocusArgs{
-					WindowID: windowID,
-				})
-				if err != nil {
-					stdout.ErrorAndExit(err)
+				focusErr := aerospaceClient.Client().
+					Windows().
+					SetFocusByWindowID(windows.SetFocusArgs{
+						WindowID: windowID,
+					})
+				if focusErr != nil {
+					stdout.ErrorAndExit(focusErr)
 					return
 				}
 			}

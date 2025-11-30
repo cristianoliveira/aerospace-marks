@@ -1,16 +1,18 @@
-package cmd
+package cmd_test
 
 import (
 	"strings"
 	"testing"
 
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
+	"github.com/cristianoliveira/aerospace-marks/cmd"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/mocks"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/testutils"
 	"github.com/gkampitakis/go-snaps/snaps"
 	"go.uber.org/mock/gomock"
+
+	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/client"
 )
 
 func TestFocusCmd(t *testing.T) {
@@ -20,13 +22,13 @@ func TestFocusCmd(t *testing.T) {
 
 		logger.SetDefaultLogger(&logger.EmptyLogger{})
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
 
 		args := []string{"focus"}
-		cmd := NewRootCmd(strg, aerospaceClient)
-		out, err := testutils.CmdExecute(cmd, args...)
+		rootCmd := cmd.NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(rootCmd, args...)
 		if out != "" {
 			t.Fatal("output should be empty", out)
 		}
@@ -42,7 +44,7 @@ func TestFocusCmd(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 		strg.EXPECT().
 			GetWindowIDByMark("mark1").
 			Return(1, nil).
@@ -60,8 +62,8 @@ func TestFocusCmd(t *testing.T) {
 				}, nil).Times(1)
 
 		args := []string{"focus", "mark1"}
-		cmd := NewRootCmd(strg, aerospaceClient)
-		out, err := testutils.CmdExecute(cmd, args...)
+		rootCmd := cmd.NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(rootCmd, args...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -76,7 +78,7 @@ func TestFocusCmd(t *testing.T) {
 
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-		_, strg := mocks.MockStorageDbClient(ctrl)
+		_, strg := mocks.MockStorageDBClient(ctrl)
 
 		strg.EXPECT().
 			GetWindowIDByMark("nonexistent-mark").
@@ -84,10 +86,11 @@ func TestFocusCmd(t *testing.T) {
 			Times(1)
 
 		_, aerospaceClient := mocks.MockAerospaceConnection(ctrl)
+		//nolint:reassign // Test utility needs to modify package variable
 		stdout.ShouldExit = false
 
-		cmd := NewRootCmd(strg, aerospaceClient)
-		out, err := testutils.CmdExecute(cmd, args...)
+		rootCmd := cmd.NewRootCmd(strg, aerospaceClient)
+		out, err := testutils.CmdExecute(rootCmd, args...)
 		if err == nil {
 			t.Fatal(err)
 		}

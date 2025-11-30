@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -15,6 +16,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+//nolint:gocognit,funlen // MarkCmd has high complexity and length due to multiple mark operations
 func MarkCmd(
 	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
@@ -88,7 +90,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 					return
 				}
 
-				fmt.Printf("Added mark: %s\n", identifier)
+				fmt.Fprintf(os.Stdout, "Added mark: %s\n", identifier)
 				return
 			}
 
@@ -98,9 +100,9 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 					return
 				}
 
-				err := storageClient.ToggleMark(windowID, identifier)
-				if err != nil {
-					stdout.ErrorAndExit(err)
+				toggleErr := storageClient.ToggleMark(windowID, identifier)
+				if toggleErr != nil {
+					stdout.ErrorAndExit(toggleErr)
 					return
 				}
 
@@ -108,7 +110,7 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 					return
 				}
 
-				fmt.Printf("Toggling mark: %s\n", identifier)
+				fmt.Fprintf(os.Stdout, "Toggling mark: %s\n", identifier)
 				return
 			}
 
@@ -123,9 +125,9 @@ aerospace-marks mark --add sec # Will add the mark sec to the current window [fi
 			}
 
 			if hasBeenDeleted > 0 {
-				fmt.Printf("Replaced all marks with '%s'\n", identifier)
+				fmt.Fprintf(os.Stdout, "Replaced all marks with '%s'\n", identifier)
 			} else {
-				fmt.Printf("Marked window with '%s'\n", identifier)
+				fmt.Fprintf(os.Stdout, "Marked window with '%s'\n", identifier)
 			}
 		},
 	}

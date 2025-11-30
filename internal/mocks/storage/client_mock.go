@@ -17,32 +17,32 @@ import (
 	gomock "go.uber.org/mock/gomock"
 )
 
-// MockDbResult is a mock of DbResult interface.
-type MockDbResult struct {
+// MockDBResult is a mock of DBResult interface.
+type MockDBResult struct {
 	ctrl     *gomock.Controller
-	recorder *MockDbResultMockRecorder
+	recorder *MockDBResultMockRecorder
 	isgomock struct{}
 }
 
-// MockDbResultMockRecorder is the mock recorder for MockDbResult.
-type MockDbResultMockRecorder struct {
-	mock *MockDbResult
+// MockDBResultMockRecorder is the mock recorder for MockDBResult.
+type MockDBResultMockRecorder struct {
+	mock *MockDBResult
 }
 
-// NewMockDbResult creates a new mock instance.
-func NewMockDbResult(ctrl *gomock.Controller) *MockDbResult {
-	mock := &MockDbResult{ctrl: ctrl}
-	mock.recorder = &MockDbResultMockRecorder{mock}
+// NewMockDBResult creates a new mock instance.
+func NewMockDBResult(ctrl *gomock.Controller) *MockDBResult {
+	mock := &MockDBResult{ctrl: ctrl}
+	mock.recorder = &MockDBResultMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockDbResult) EXPECT() *MockDbResultMockRecorder {
+func (m *MockDBResult) EXPECT() *MockDBResultMockRecorder {
 	return m.recorder
 }
 
 // LastInsertId mocks base method.
-func (m *MockDbResult) LastInsertId() (int64, error) {
+func (m *MockDBResult) LastInsertId() (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LastInsertId")
 	ret0, _ := ret[0].(int64)
@@ -51,13 +51,13 @@ func (m *MockDbResult) LastInsertId() (int64, error) {
 }
 
 // LastInsertId indicates an expected call of LastInsertId.
-func (mr *MockDbResultMockRecorder) LastInsertId() *gomock.Call {
+func (mr *MockDBResultMockRecorder) LastInsertId() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LastInsertId", reflect.TypeOf((*MockDbResult)(nil).LastInsertId))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LastInsertId", reflect.TypeOf((*MockDBResult)(nil).LastInsertId))
 }
 
 // RowsAffected mocks base method.
-func (m *MockDbResult) RowsAffected() (int64, error) {
+func (m *MockDBResult) RowsAffected() (int64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RowsAffected")
 	ret0, _ := ret[0].(int64)
@@ -66,37 +66,37 @@ func (m *MockDbResult) RowsAffected() (int64, error) {
 }
 
 // RowsAffected indicates an expected call of RowsAffected.
-func (mr *MockDbResultMockRecorder) RowsAffected() *gomock.Call {
+func (mr *MockDBResultMockRecorder) RowsAffected() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RowsAffected", reflect.TypeOf((*MockDbResult)(nil).RowsAffected))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RowsAffected", reflect.TypeOf((*MockDBResult)(nil).RowsAffected))
 }
 
-// MockStorageDbClient is a mock of StorageDbClient interface.
-type MockStorageDbClient struct {
+// MockStorageDBClient is a mock of StorageDBClient interface.
+type MockStorageDBClient struct {
 	ctrl     *gomock.Controller
-	recorder *MockStorageDbClientMockRecorder
+	recorder *MockStorageDBClientMockRecorder
 	isgomock struct{}
 }
 
-// MockStorageDbClientMockRecorder is the mock recorder for MockStorageDbClient.
-type MockStorageDbClientMockRecorder struct {
-	mock *MockStorageDbClient
+// MockStorageDBClientMockRecorder is the mock recorder for MockStorageDBClient.
+type MockStorageDBClientMockRecorder struct {
+	mock *MockStorageDBClient
 }
 
-// NewMockStorageDbClient creates a new mock instance.
-func NewMockStorageDbClient(ctrl *gomock.Controller) *MockStorageDbClient {
-	mock := &MockStorageDbClient{ctrl: ctrl}
-	mock.recorder = &MockStorageDbClientMockRecorder{mock}
+// NewMockStorageDBClient creates a new mock instance.
+func NewMockStorageDBClient(ctrl *gomock.Controller) *MockStorageDBClient {
+	mock := &MockStorageDBClient{ctrl: ctrl}
+	mock.recorder = &MockStorageDBClientMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockStorageDbClient) EXPECT() *MockStorageDbClientMockRecorder {
+func (m *MockStorageDBClient) EXPECT() *MockStorageDBClientMockRecorder {
 	return m.recorder
 }
 
 // Close mocks base method.
-func (m *MockStorageDbClient) Close() error {
+func (m *MockStorageDBClient) Close() error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Close")
 	ret0, _ := ret[0].(error)
@@ -104,13 +104,13 @@ func (m *MockStorageDbClient) Close() error {
 }
 
 // Close indicates an expected call of Close.
-func (mr *MockStorageDbClientMockRecorder) Close() *gomock.Call {
+func (mr *MockStorageDBClientMockRecorder) Close() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockStorageDbClient)(nil).Close))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockStorageDBClient)(nil).Close))
 }
 
 // GetDB mocks base method.
-func (m *MockStorageDbClient) GetDB() *sql.DB {
+func (m *MockStorageDBClient) GetDB() *sql.DB {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDB")
 	ret0, _ := ret[0].(*sql.DB)
@@ -118,13 +118,13 @@ func (m *MockStorageDbClient) GetDB() *sql.DB {
 }
 
 // GetDB indicates an expected call of GetDB.
-func (mr *MockStorageDbClientMockRecorder) GetDB() *gomock.Call {
+func (mr *MockStorageDBClientMockRecorder) GetDB() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDB", reflect.TypeOf((*MockStorageDbClient)(nil).GetDB))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDB", reflect.TypeOf((*MockStorageDBClient)(nil).GetDB))
 }
 
 // GetStorageConfig mocks base method.
-func (m *MockStorageDbClient) GetStorageConfig() storage.StorageConfig {
+func (m *MockStorageDBClient) GetStorageConfig() storage.StorageConfig {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetStorageConfig")
 	ret0, _ := ret[0].(storage.StorageConfig)
@@ -132,9 +132,9 @@ func (m *MockStorageDbClient) GetStorageConfig() storage.StorageConfig {
 }
 
 // GetStorageConfig indicates an expected call of GetStorageConfig.
-func (mr *MockStorageDbClientMockRecorder) GetStorageConfig() *gomock.Call {
+func (mr *MockStorageDBClientMockRecorder) GetStorageConfig() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStorageConfig", reflect.TypeOf((*MockStorageDbClient)(nil).GetStorageConfig))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStorageConfig", reflect.TypeOf((*MockStorageDBClient)(nil).GetStorageConfig))
 }
 
 // MockDatabaseConnector is a mock of DatabaseConnector interface.
@@ -162,10 +162,10 @@ func (m *MockDatabaseConnector) EXPECT() *MockDatabaseConnectorMockRecorder {
 }
 
 // Connect mocks base method.
-func (m *MockDatabaseConnector) Connect() (storage.StorageDbClient, error) {
+func (m *MockDatabaseConnector) Connect() (storage.StorageDBClient, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Connect")
-	ret0, _ := ret[0].(storage.StorageDbClient)
+	ret0, _ := ret[0].(storage.StorageDBClient)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

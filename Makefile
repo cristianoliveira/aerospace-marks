@@ -32,7 +32,6 @@ setup-ci: ## Install dependencies for CI
 .PHONY: fmt
 fmt: setup-ci ## Format the code
 	@echo "Formatting the code..."
-	@gofmt -s -w .
 	@golangci-lint run --fix
 
 .PHONY: lint

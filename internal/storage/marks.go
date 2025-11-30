@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/storage/db/queries"
@@ -27,21 +28,21 @@ type MarkStorage interface {
 	// DeleteByMark removes a mark from the database
 	DeleteByMark(mark string) (int64, error)
 	// DeleteByMark removes a mark from the database
-	DeleteByWindow(windowId int) (int64, error)
+	DeleteByWindow(windowID int) (int64, error)
 	// DeleteAllMarks removes all marks from the database
 	DeleteAllMarks() (int64, error)
 	// Close closes the database connection
 	Close() error
 	// Client returns the storage client
-	Client() StorageDbClient
+	Client() StorageDBClient
 }
 
 type MarkStorageClient struct {
-	storage StorageDbClient
+	storage StorageDBClient
 	queries *queries.Queries
 }
 
-func NewMarkClient(storageClient StorageDbClient) (*MarkStorageClient, error) {
+func NewMarkClient(storageClient StorageDBClient) (*MarkStorageClient, error) {
 	// Initialize SQLC queries with the underlying database connection
 	db := storageClient.GetDB()
 	queriesClient := queries.New(db)
@@ -72,12 +73,12 @@ func (c *MarkStorageClient) GetMarksByWindowID(id int) ([]queries.Mark, error) {
 // GetWindowByMark returns the window for a given mark
 //
 // This function will return the first window that matches the mark
-// If multiple windows match the mark, it will error
+// If multiple windows match the mark, it will error.
 func (c *MarkStorageClient) GetWindowByMark(mark string) (*queries.Mark, error) {
 	ctx := context.Background()
 	markedWindow, err := c.queries.GetWindowByMark(ctx, mark)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("no window found for mark %s", mark)
 		}
 		return nil, err
@@ -86,15 +87,15 @@ func (c *MarkStorageClient) GetWindowByMark(mark string) (*queries.Mark, error) 
 	return &markedWindow, nil
 }
 
-// Get window ID by mark
+// GetWindowIDByMark returns the window ID by mark.
 //
 // This function will return the first window ID that matches the mark
-// If multiple window IDs match the mark, it will return the first one found
+// If multiple window IDs match the mark, it will return the first one found.
 func (c *MarkStorageClient) GetWindowIDByMark(markI string) (int, error) {
 	ctx := context.Background()
 	markedWindow, err := c.queries.GetWindowByMark(ctx, markI)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return 0, fmt.Errorf("no window found for mark %s", markI)
 		}
 		return 0, err
@@ -105,7 +106,7 @@ func (c *MarkStorageClient) GetWindowIDByMark(markI string) (int, error) {
 
 // ReplaceAllMarks replaces all marks for a window with a new mark
 // This function will delete all marks for the specified window ID and
-// then add the new mark
+// then add the new mark.
 func (c *MarkStorageClient) ReplaceAllMarks(id int, mark string) (int64, error) {
 	ctx := context.Background()
 
@@ -131,14 +132,14 @@ func (c *MarkStorageClient) Close() error {
 	return c.storage.Close()
 }
 
-// Client returns the storage client
-func (c *MarkStorageClient) Client() StorageDbClient {
+// Client returns the storage client.
+func (c *MarkStorageClient) Client() StorageDBClient {
 	return c.storage
 }
 
 // ToggleMark toggles a mark for a window
 // If the mark exists, it will be deleted
-// If the mark does not exist, it will be added
+// If the mark does not exist, it will be added.
 func (c *MarkStorageClient) ToggleMark(id int, mark string) error {
 	rowsAffected, err := c.DeleteByMark(mark)
 	if err != nil {
@@ -159,7 +160,7 @@ func (c *MarkStorageClient) ToggleMark(id int, mark string) error {
 	return nil
 }
 
-// DeleteAllMarks removes all marks from the database
+// DeleteAllMarks removes all marks from the database.
 func (c *MarkStorageClient) DeleteAllMarks() (int64, error) {
 	ctx := context.Background()
 	res, err := c.queries.DeleteAllMarks(ctx)
@@ -175,7 +176,7 @@ func (c *MarkStorageClient) DeleteAllMarks() (int64, error) {
 }
 
 // DeleteByMark deletes a mark from the database
-// This function will delete the mark from the database
+// This function will delete the mark from the database.
 func (c *MarkStorageClient) DeleteByMark(mark string) (int64, error) {
 	ctx := context.Background()
 	res, err := c.queries.DeleteByMark(ctx, mark)
@@ -192,10 +193,10 @@ func (c *MarkStorageClient) DeleteByMark(mark string) (int64, error) {
 }
 
 // DeleteByWindow deletes a mark from the database
-// This function will delete the mark from the database
-func (c *MarkStorageClient) DeleteByWindow(windowId int) (int64, error) {
+// This function will delete the mark from the database.
+func (c *MarkStorageClient) DeleteByWindow(windowID int) (int64, error) {
 	ctx := context.Background()
-	res, err := c.queries.DeleteByWindow(ctx, windowId)
+	res, err := c.queries.DeleteByWindow(ctx, windowID)
 	if err != nil {
 		return 0, err
 	}
