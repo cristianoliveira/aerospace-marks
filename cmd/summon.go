@@ -73,8 +73,8 @@ Similar to 'aerospace summon-workspace' but for marked windows to current worksp
 			if shouldFocus {
 				focusErr := aerospaceClient.Client().
 					Windows().
-					SetFocus(windows.SetFocusArgs{
-						WindowID: &windowID,
+					SetFocusByWindowID(windows.SetFocusArgs{
+						WindowID: windowID,
 					})
 				if focusErr != nil {
 					stdout.ErrorAndExit(focusErr)
