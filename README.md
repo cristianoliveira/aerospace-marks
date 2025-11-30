@@ -7,7 +7,7 @@
 ## AeroSpace Compatibility
 
  - v0.20.0 use v0.3.x or higher
- - v0.19.1 use v0.2.x or higher
+ - v0.19.1 use v0.2.x or lower
 
 ## Demo
 
