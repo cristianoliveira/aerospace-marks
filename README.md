@@ -2,14 +2,12 @@
 
 [Vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace)
 
-# IMPORTANT for AeroSpace v0.20.0
-
-Currently incompatible with AeroSpace v0.20.0 work is being done and will be release with v0.4.0
-In the meanwhile use v0.19.0
-
-Or if you are brave enough, and/or want to help me :), install it from `nightly` branch
-
 **Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
+
+## AeroSpace Compatibility
+
+ - v0.20.0 use v0.3.x or higher
+ - v0.19.1 use v0.2.x or higher
 
 ## Demo
 
