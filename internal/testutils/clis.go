@@ -12,6 +12,7 @@ import (
 	"os"
 
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 	"github.com/spf13/cobra"
 )
 
@@ -106,7 +107,7 @@ func (d *MockEmptyAerspaceMarkWindows) Client() *aerospacecli.AeroSpaceWM {
 	return &aerospacecli.AeroSpaceWM{}
 }
 
-func (d *MockEmptyAerspaceMarkWindows) GetWindowByID(windowID int) (*aerospacecli.Window, error) {
+func (d *MockEmptyAerspaceMarkWindows) GetWindowByID(windowID int) (*windows.Window, error) {
 	fmt.Println("Mocked GetWindowByID called with windowID:", windowID)
-	return &aerospacecli.Window{}, nil
+	return &windows.Window{}, nil
 }

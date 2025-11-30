@@ -5,6 +5,7 @@ import (
 	"log"
 
 	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 )
 
@@ -13,7 +14,7 @@ type AerosSpaceMarkWindows interface {
 	//
 	// Returns the window ID of the currently focused window
 	// or an error if the window ID is not found
-	GetWindowByID(windowID int) (*aerospacecli.Window, error)
+	GetWindowByID(windowID int) (*windows.Window, error)
 
 	// Client returns the AeroSpaceWM client
 	//
@@ -34,15 +35,15 @@ func (d *DefaultAeroSpaceWindows) Client() *aerospacecli.AeroSpaceWM {
 	return d.client
 }
 
-func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID int) (*aerospacecli.Window, error) {
+func (d *DefaultAeroSpaceWindows) GetWindowByID(windowID int) (*windows.Window, error) {
 	logger := logger.GetDefaultLogger()
-	windows, err := d.client.Windows().GetAllWindows()
+	windowsList, err := d.client.Windows().GetAllWindows()
 	if err != nil {
 		return nil, err
 	}
-	logger.LogDebug("Windows found: %d", len(windows))
+	logger.LogDebug("Windows found: %d", len(windowsList))
 
-	for _, window := range windows {
+	for _, window := range windowsList {
 		if window.WindowID == windowID {
 			return &window, nil
 		}

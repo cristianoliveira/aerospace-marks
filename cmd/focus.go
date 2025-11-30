@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
@@ -53,7 +54,9 @@ Moves focus to the first window marked with the specified identifier.
 			// The program is too fast, what a problem to have!
 			// Delay setting focus to ensure the window is ready
 			time.Sleep(focusDelay)
-			err = aerospaceClient.Client().Windows().SetFocusByWindowID(windowID)
+			err = aerospaceClient.Client().Windows().SetFocusByWindowID(windows.SetFocusArgs{
+				WindowID: windowID,
+			})
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return

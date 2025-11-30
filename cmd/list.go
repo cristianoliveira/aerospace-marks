@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	aerospacecli "github.com/cristianoliveira/aerospace-ipc/pkg/aerospace"
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
@@ -15,15 +15,15 @@ import (
 	"slices"
 )
 
-func popWindow(windows []aerospacecli.Window, windowID int) (*aerospacecli.Window, error) {
-	for i, window := range windows {
+func popWindow(windowsList []windows.Window, windowID int) (*windows.Window, error) {
+	for i, window := range windowsList {
 		if windowID == 0 {
 			return nil, fmt.Errorf("window ID not found")
 		}
 		if windowID == window.WindowID {
 			// Remove the window from the list
 			//nolint:staticcheck,ineffassign
-			windows = slices.Delete(windows, i, i+1)
+			windowsList = slices.Delete(windowsList, i, i+1)
 			return &window, nil
 		}
 	}
@@ -58,7 +58,7 @@ Display in the following format:
 				return
 			}
 
-			windows, err := aerospaceClient.Client().Windows().GetAllWindows()
+			windowsList, err := aerospaceClient.Client().Windows().GetAllWindows()
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
@@ -66,7 +66,7 @@ Display in the following format:
 
 			lines := make([]string, 0)
 			for _, mark := range marks {
-				window, err := popWindow(windows, mark.WindowID)
+				window, err := popWindow(windowsList, mark.WindowID)
 				if err != nil {
 					continue
 				}

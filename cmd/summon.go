@@ -4,6 +4,8 @@ Copyright © 2025 Cristian Oliveira license@cristianoliveira.dev
 package cmd
 
 import (
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
+	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/workspaces"
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
@@ -54,14 +56,23 @@ Similar to 'aerospace summon-workspace' but for marked windows to current worksp
 			}
 
 			// focus to window by ID
-			err = aerospaceClient.Client().Workspaces().MoveWindowToWorkspace(windowID, workspace.Workspace)
+			err = aerospaceClient.Client().Workspaces().MoveWindowToWorkspaceWithOpts(
+				workspaces.MoveWindowToWorkspaceArgs{
+					WorkspaceName: workspace.Workspace,
+				},
+				workspaces.MoveWindowToWorkspaceOpts{
+					WindowID: &windowID,
+				},
+			)
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
 			}
 
 			if shouldFocus {
-				err := aerospaceClient.Client().Windows().SetFocusByWindowID(windowID)
+				err := aerospaceClient.Client().Windows().SetFocusByWindowID(windows.SetFocusArgs{
+					WindowID: windowID,
+				})
 				if err != nil {
 					stdout.ErrorAndExit(err)
 					return
