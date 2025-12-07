@@ -74,6 +74,26 @@ func (f *ListOutputFormatter) Format(windows []MarkedWindow) error {
 	}
 }
 
+// FormatEmpty formats and writes empty results with an optional message for text format.
+// For JSON, outputs "[]". For CSV, outputs header only. For text, outputs the message.
+func (f *ListOutputFormatter) FormatEmpty(message string) error {
+	switch f.format {
+	case OutputFormatJSON:
+		_, err := fmt.Fprintln(f.writer, "[]")
+		return err
+	case OutputFormatCSV:
+		return f.formatCSV([]MarkedWindow{})
+	case OutputFormatText:
+		if message != "" {
+			_, err := fmt.Fprintln(f.writer, message)
+			return err
+		}
+		return nil
+	default:
+		return fmt.Errorf("unsupported output format: %s", f.format)
+	}
+}
+
 // formatText formats windows as pipe-separated aligned columns.
 func (f *ListOutputFormatter) formatText(windows []MarkedWindow) error {
 	if len(windows) == 0 {

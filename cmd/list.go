@@ -84,19 +84,11 @@ Default format (text):
 
 			// Handle empty marks based on format
 			if len(marks) == 0 {
-				switch outputFormat {
-				case "json":
-					fmt.Fprintln(os.Stdout, "[]")
-					return
-				case "csv":
-					// Write header only for CSV
-					csvFormatter, _ := format.NewListOutputFormatter(os.Stdout, "csv")
-					_ = csvFormatter.Format([]format.MarkedWindow{})
-					return
-				default: // text
-					fmt.Fprintln(os.Stdout, "No marks found")
+				if formatErr := formatter.FormatEmpty("No marks found"); formatErr != nil {
+					stdout.ErrorAndExit(fmt.Errorf("failed to format empty output: %w", formatErr))
 					return
 				}
+				return
 			}
 
 			// Get windows from Aerospace
@@ -127,19 +119,11 @@ Default format (text):
 
 			// Handle empty marked windows based on format
 			if len(markedWindows) == 0 {
-				switch outputFormat {
-				case "json":
-					fmt.Fprintln(os.Stdout, "[]")
-					return
-				case "csv":
-					// Write header only for CSV
-					csvFormatter, _ := format.NewListOutputFormatter(os.Stdout, "csv")
-					_ = csvFormatter.Format([]format.MarkedWindow{})
-					return
-				default: // text
-					fmt.Fprintln(os.Stdout, "No marked window found")
+				if formatErr := formatter.FormatEmpty("No marked window found"); formatErr != nil {
+					stdout.ErrorAndExit(fmt.Errorf("failed to format empty output: %w", formatErr))
 					return
 				}
+				return
 			}
 
 			// Format and output

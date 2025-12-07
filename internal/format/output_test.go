@@ -661,3 +661,65 @@ func TestListOutputFormatter_FormatJSON_AllEmptyFields(t *testing.T) {
 	assert.Empty(t, jsonResult[0].Workspace)
 	assert.Empty(t, jsonResult[0].AppBundleID)
 }
+
+func TestListOutputFormatter_FormatEmpty(t *testing.T) {
+	t.Run("JSON format outputs empty array", func(t *testing.T) {
+		var buf bytes.Buffer
+		formatter, err := format.NewListOutputFormatter(&buf, "json")
+		require.NoError(t, err)
+
+		err = formatter.FormatEmpty("")
+		require.NoError(t, err)
+
+		result := strings.TrimSpace(buf.String())
+		assert.Equal(t, "[]", result)
+	})
+
+	t.Run("CSV format outputs header only", func(t *testing.T) {
+		var buf bytes.Buffer
+		formatter, err := format.NewListOutputFormatter(&buf, "csv")
+		require.NoError(t, err)
+
+		err = formatter.FormatEmpty("")
+		require.NoError(t, err)
+
+		result := buf.String()
+		reader := csv.NewReader(strings.NewReader(result))
+		records, err := reader.ReadAll()
+		require.NoError(t, err)
+		assert.Len(t, records, 1) // Header only
+		expectedHeader := []string{
+			"mark",
+			"window_id",
+			"app_name",
+			"window_title",
+			"workspace",
+			"app_bundle_id",
+		}
+		assert.Equal(t, expectedHeader, records[0])
+	})
+
+	t.Run("Text format outputs message", func(t *testing.T) {
+		var buf bytes.Buffer
+		formatter, err := format.NewListOutputFormatter(&buf, "text")
+		require.NoError(t, err)
+
+		err = formatter.FormatEmpty("No marks found")
+		require.NoError(t, err)
+
+		result := strings.TrimSpace(buf.String())
+		assert.Equal(t, "No marks found", result)
+	})
+
+	t.Run("Text format with empty message outputs nothing", func(t *testing.T) {
+		var buf bytes.Buffer
+		formatter, err := format.NewListOutputFormatter(&buf, "text")
+		require.NoError(t, err)
+
+		err = formatter.FormatEmpty("")
+		require.NoError(t, err)
+
+		result := strings.TrimSpace(buf.String())
+		assert.Empty(t, result)
+	})
+}
