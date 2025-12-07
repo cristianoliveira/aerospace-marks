@@ -59,8 +59,9 @@ aerospace-marks summon <identifier>
 
 ### Output Formats
 
-The `list` command supports multiple output formats for scripting:
+Multiple commands support structured output formats for scripting via the `--output` (or `-o`) flag:
 
+#### List Command
 ```bash
 # JSON format for jq processing
 aerospace-marks list -o json | jq '.[] | select(.app_name == "Brave")'
@@ -70,6 +71,36 @@ aerospace-marks list -o csv | csvcut -c mark,window_title
 
 # Text format (default) for awk/sed
 aerospace-marks list | awk -F'|' '{print $1}'
+```
+
+#### Focus Command
+```bash
+# JSON format for scripting
+aerospace-marks focus mark1 -o json | jq '.window_id'
+
+# CSV format
+aerospace-marks focus mark1 -o csv
+```
+
+#### Summon Command
+```bash
+# JSON format with focus flag
+aerospace-marks summon mark1 --focus -o json | jq '.action'
+
+# Text format (default)
+aerospace-marks summon mark1
+```
+
+#### Get Command
+```bash
+# JSON format for full window info
+aerospace-marks get mark1 -o json | jq '.app_name'
+
+# JSON format for single field (window ID)
+aerospace-marks get mark1 -i -o json | jq '.result'
+
+# Plain text for single field (backward compatible)
+aerospace-marks get mark1 -i
 ```
 
 See more in [documentation](docs/)

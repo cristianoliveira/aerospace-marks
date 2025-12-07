@@ -6,15 +6,55 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
+	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
 )
 
+// formatSingleFieldOutput formats a single field output based on output format.
+// For json/csv formats, uses OutputEvent. For text/default, outputs plain value.
+//
+//nolint:unparam // fieldName is used conditionally for app_name field
+func formatSingleFieldOutput(
+	outputFormat string,
+	command string,
+	windowID int,
+	fieldValue string,
+	fieldName string,
+) error {
+	// text format or default - output plain value (backward compatibility)
+	if outputFormat == string(format.OutputFormatText) || outputFormat == "" {
+		fmt.Fprint(os.Stdout, fieldValue)
+		return nil
+	}
+
+	// json/csv formats - use OutputEvent
+	formatter, formatErr := format.NewOutputEventFormatter(os.Stdout, outputFormat)
+	if formatErr != nil {
+		return formatErr
+	}
+	event := format.OutputEvent{
+		Command:  command,
+		WindowID: windowID,
+		Result:   fieldValue,
+		Message:  fieldValue,
+	}
+	if fieldName == "app_name" {
+		event.AppName = fieldValue
+	}
+	if fmtErr := formatter.Format(event); fmtErr != nil {
+		return fmt.Errorf("failed to format output: %w", fmtErr)
+	}
+	return nil
+}
+
+//nolint:gocognit,funlen // GetCmd has high complexity and length due to multiple field output options
 func GetCmd(
 	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
@@ -38,6 +78,18 @@ This command retrieves a window by its mark (identifier). Print in the following
 			mark := args[0]
 			logger.LogDebug("Getting window by mark: %s", mark)
 
+			// Get and validate output format early
+			outputFormat, err := cmd.Flags().GetString("output")
+			if err != nil {
+				stdout.ErrorAndExit(fmt.Errorf("failed to get output flag: %w", err))
+				return
+			}
+
+			// Default to text if not specified
+			if outputFormat == "" {
+				outputFormat = string(format.OutputFormatText)
+			}
+
 			markedWindow, err := storageClient.GetWindowByMark(mark)
 			if err != nil {
 				stdout.ErrorAndExit(err)
@@ -52,7 +104,11 @@ This command retrieves a window by its mark (identifier). Print in the following
 
 			getWinID, _ := cmd.Flags().GetBool("window-id")
 			if getWinID {
-				fmt.Fprint(os.Stdout, windowID)
+				// Single field flag - respect --output flag for json/csv, plain value for text/default
+				if formatErr := formatSingleFieldOutput(outputFormat, "get", windowID, strconv.Itoa(windowID), ""); formatErr != nil {
+					stdout.ErrorAndExit(formatErr)
+					return
+				}
 				return
 			}
 
@@ -75,20 +131,53 @@ This command retrieves a window by its mark (identifier). Print in the following
 
 			getWinTitle, _ := cmd.Flags().GetBool("window-title")
 			if getWinTitle {
-				fmt.Fprint(os.Stdout, window.WindowTitle)
+				// Single field flag - respect --output flag for json/csv, plain value for text/default
+				if formatErr := formatSingleFieldOutput(outputFormat, "get", windowID, window.WindowTitle, ""); formatErr != nil {
+					stdout.ErrorAndExit(formatErr)
+					return
+				}
 				return
 			}
 
 			getWinApp, _ := cmd.Flags().GetBool("app-name")
 			if getWinApp {
-				fmt.Fprint(os.Stdout, window.AppName)
+				// Single field flag - respect --output flag for json/csv, plain value for text/default
+				if formatErr := formatSingleFieldOutput(outputFormat, "get", windowID, window.AppName, "app_name"); formatErr != nil {
+					stdout.ErrorAndExit(formatErr)
+					return
+				}
 				return
 			}
 
 			getWinAppBundleID, _ := cmd.Flags().GetBool("app-bundle-id")
 			if getWinAppBundleID {
-				fmt.Fprint(os.Stdout, window.AppBundleID)
+				// Single field flag - respect --output flag for json/csv, plain value for text/default
+				if formatErr := formatSingleFieldOutput(outputFormat, "get", windowID, window.AppBundleID, ""); formatErr != nil {
+					stdout.ErrorAndExit(formatErr)
+					return
+				}
 				return
+			}
+
+			// Full window output - use OutputEvent
+			formatter, err := format.NewOutputEventFormatter(os.Stdout, outputFormat)
+			if err != nil {
+				stdout.ErrorAndExit(err)
+				return
+			}
+
+			event := format.OutputEvent{
+				Command:   "get",
+				WindowID:  window.WindowID,
+				AppName:   window.AppName,
+				Workspace: window.Workspace,
+				Message:   window.WindowTitle, // For backward compatibility, window_title goes in Message
+				Result: fmt.Sprintf(
+					"%d | %s | %s",
+					window.WindowID,
+					window.AppName,
+					window.WindowTitle,
+				),
 			}
 
 			logger.LogInfo(
@@ -96,7 +185,11 @@ This command retrieves a window by its mark (identifier). Print in the following
 				"windowID", windowID,
 				"window", window,
 			)
-			fmt.Fprint(os.Stdout, window)
+
+			if formatErr := formatter.Format(event); formatErr != nil {
+				stdout.ErrorAndExit(fmt.Errorf("failed to format output: %w", formatErr))
+				return
+			}
 		},
 	}
 
@@ -104,6 +197,8 @@ This command retrieves a window by its mark (identifier). Print in the following
 	getCmd.Flags().BoolP("window-title", "t", false, "Get only window [t]itle")
 	getCmd.Flags().BoolP("app-name", "a", false, "Get only window [a]pp name")
 	getCmd.Flags().BoolP("app-bundle-id", "b", false, "Get only window app [b]undle ID")
+	getCmd.Flags().StringP("output", "o", "text", "Output format: text, json, or csv")
+	getCmd.Flag("output").DefValue = "text"
 
 	return getCmd
 }

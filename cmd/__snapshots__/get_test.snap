@@ -11,6 +11,7 @@
 aerospace-marks get mark1
 
 1 | app1 | title1
+
 ---
 
 [TestGetCommand/shows_only_the_marked_windows_id - 1]
@@ -53,4 +54,97 @@ app1
 aerospace-marks get mark1 --app-bundle-id
 
 bundle1
+---
+
+[TestGetCommand/snapshot_test_for_text_output_format - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+[]windows.Window{
+    {WindowID:1, WindowTitle:"Test Window Title", AppName:"Test App", AppBundleID:"com.test.app", Workspace:"workspace1"},
+    {WindowID:2, WindowTitle:"Another Window", AppName:"Another App", AppBundleID:"com.another.app", Workspace:"workspace2"},
+}
+aerospace-marks get mark1 -o text
+
+result:
+
+1 | Test App | Test Window Title
+---
+
+[TestGetCommand/snapshot_test_for_JSON_output_format - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+[]windows.Window{
+    {WindowID:1, WindowTitle:"Test Window Title", AppName:"Test App", AppBundleID:"com.test.app", Workspace:"workspace1"},
+    {WindowID:2, WindowTitle:"Another Window", AppName:"Another App", AppBundleID:"com.another.app", Workspace:"workspace2"},
+}
+aerospace-marks get mark1 -o json
+
+result:
+
+{
+  "command": "get",
+  "action": "",
+  "window_id": 1,
+  "app_name": "Test App",
+  "workspace": "workspace1",
+  "target_workspace": "",
+  "result": "1 | Test App | Test Window Title",
+  "message": "Test Window Title"
+}
+---
+
+[TestGetCommand/snapshot_test_for_CSV_output_format - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+[]windows.Window{
+    {WindowID:1, WindowTitle:"Test Window Title", AppName:"Test App", AppBundleID:"com.test.app", Workspace:"workspace1"},
+    {WindowID:2, WindowTitle:"Another Window", AppName:"Another App", AppBundleID:"com.another.app", Workspace:"workspace2"},
+}
+aerospace-marks get mark1 -o csv
+
+result:
+
+command,action,window_id,app_name,workspace,target_workspace,result,message
+get,,1,Test App,workspace1,,1 | Test App | Test Window Title,Test Window Title
+---
+
+[TestGetCommand/snapshot_test_for_single_field_JSON_output - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+[]windows.Window{
+    {WindowID:1, WindowTitle:"Test Window Title", AppName:"Test App", AppBundleID:"com.test.app", Workspace:"workspace1"},
+}
+aerospace-marks get mark1 --window-title -o json
+
+result:
+
+{
+  "command": "get",
+  "action": "",
+  "window_id": 1,
+  "app_name": "",
+  "workspace": "",
+  "target_workspace": "",
+  "result": "Test Window Title",
+  "message": "Test Window Title"
+}
+---
+
+[TestGetCommand/snapshot_test_for_single_field_CSV_output - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+[]windows.Window{
+    {WindowID:1, WindowTitle:"Test Window Title", AppName:"Test App", AppBundleID:"com.test.app", Workspace:"workspace1"},
+}
+aerospace-marks get mark1 --app-name -o csv
+
+result:
+
+command,action,window_id,app_name,workspace,target_workspace,result,message
+get,,1,Test App,,,Test App,Test App
 ---

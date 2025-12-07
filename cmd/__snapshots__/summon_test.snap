@@ -12,3 +12,66 @@ aerospace-marks summon
 Error
 argument cannot be empty or whitespace
 ---
+
+[TestSummonCmd/snapshot_test_for_text_output_format - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+aerospace-marks summon mark1 -o text
+
+result:
+
+Window 1 summoned to workspace workspace1
+---
+
+[TestSummonCmd/snapshot_test_for_JSON_output_format - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+aerospace-marks summon mark1 -o json
+
+result:
+
+{
+  "command": "summon",
+  "action": "summon",
+  "window_id": 1,
+  "app_name": "",
+  "workspace": "workspace1",
+  "target_workspace": "workspace1",
+  "result": "success",
+  "message": "Window 1 summoned to workspace workspace1"
+}
+---
+
+[TestSummonCmd/snapshot_test_for_CSV_output_format - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+aerospace-marks summon mark1 -o csv
+
+result:
+
+command,action,window_id,app_name,workspace,target_workspace,result,message
+summon,summon,1,,workspace1,workspace1,success,Window 1 summoned to workspace workspace1
+---
+
+[TestSummonCmd/snapshot_test_for_JSON_output_format_with_focus_flag - 1]
+[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
+    {WindowID:1, Mark:"mark1"},
+}
+aerospace-marks summon mark1 --focus -o json
+
+result:
+
+{
+  "command": "summon",
+  "action": "summon_and_focus",
+  "window_id": 1,
+  "app_name": "",
+  "workspace": "workspace1",
+  "target_workspace": "workspace1",
+  "result": "success",
+  "message": "Window 1 summoned to workspace workspace1 and focused"
+}
+---
