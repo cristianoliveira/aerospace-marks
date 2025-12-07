@@ -197,8 +197,6 @@ This command retrieves a window by its mark (identifier). Print in the following
 	getCmd.Flags().BoolP("window-title", "t", false, "Get only window [t]itle")
 	getCmd.Flags().BoolP("app-name", "a", false, "Get only window [a]pp name")
 	getCmd.Flags().BoolP("app-bundle-id", "b", false, "Get only window app [b]undle ID")
-	getCmd.Flags().StringP("output", "o", "text", "Output format: text, json, or csv")
-	getCmd.Flag("output").DefValue = "text"
 
 	return getCmd
 }

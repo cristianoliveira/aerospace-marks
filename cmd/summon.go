@@ -154,9 +154,6 @@ Output format can be controlled with --output flag (text, json, csv).
 	}
 
 	summonCmd.Flags().BoolP("focus", "f", false, "Focus the window after summoning")
-	summonCmd.Flags().
-		StringP("output", "o", string(format.OutputFormatText), "Output format: text, json, or csv")
-	summonCmd.Flag("output").DefValue = string(format.OutputFormatText)
 
 	return summonCmd
 }

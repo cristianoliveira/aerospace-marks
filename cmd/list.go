@@ -134,9 +134,5 @@ Default format (text):
 		},
 	}
 
-	// Add output flag
-	listCmd.Flags().StringP("output", "o", "text", "Output format: text, json, or csv")
-	listCmd.Flag("output").DefValue = "text"
-
 	return listCmd
 }

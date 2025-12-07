@@ -104,10 +104,5 @@ Output format can be controlled with --output flag (text, json, csv).
 		},
 	}
 
-	// Add output flag
-	focusCmd.Flags().
-		StringP("output", "o", string(format.OutputFormatText), "Output format: text, json, or csv")
-	focusCmd.Flag("output").DefValue = string(format.OutputFormatText)
-
 	return focusCmd
 }
