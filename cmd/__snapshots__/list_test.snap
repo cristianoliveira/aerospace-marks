@@ -1,261 +1,294 @@
 
 [TestListCommand/print_all_marked_windows - 1]
-context
+Context:
+  marks:
+    - mark: mark-1
+      window_id: 1
+    - mark: mark-2
+      window_id: 22
+    - mark: mark-3
+      window_id: 3
+    - mark: mark-4
+      window_id: 444
+    - mark: mark-5
+      window_id: 5555
+  windows:
+    [
+      {
+        "window-title" : "Alacritty",
+        "app-name" : "Alacritty",
+        "window-id" : 1
+      },
+      {
+        "window-id" : 2,
+        "window-title" : "Chat Box Widget - Brave",
+        "app-name" : "Brave Browser"
+      },
+      {
+        "window-id" : 3,
+        "app-name" : "Brave Browser",
+        "window-title" : "GitHub - Brave"
+      },
+      {
+        "window-id" : 28104,
+        "app-name" : "ChatGPT",
+        "window-title" : ""
+      },
+      {
+        "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
+        "app-name" : "OBS Studio",
+        "window-id" : 34647
+      },
+      {
+        "app-name" : "Telegram",
+        "window-id" : 7988,
+        "window-title" : "Telegram"
+      },
+      {
+        "app-name" : "Twitch - cris0liver",
+        "window-id" : 34394,
+        "window-title" : ""
+      }
+    ]
 
-[
-  {
-    "window-title" : "Alacritty",
-    "app-name" : "Alacritty",
-    "window-id" : 1
-  },
-  {
-    "window-id" : 2,
-    "window-title" : "Chat Box Widget - Brave",
-    "app-name" : "Brave Browser"
-  },
-  {
-    "window-id" : 3,
-    "app-name" : "Brave Browser",
-    "window-title" : "GitHub - Brave"
-  },
-  {
-    "window-id" : 28104,
-    "app-name" : "ChatGPT",
-    "window-title" : ""
-  },
-  {
-    "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
-    "app-name" : "OBS Studio",
-    "window-id" : 34647
-  },
-  {
-    "app-name" : "Telegram",
-    "window-id" : 7988,
-    "window-title" : "Telegram"
-  },
-  {
-    "app-name" : "Twitch - cris0liver",
-    "window-id" : 34394,
-    "window-title" : ""
-  }
-]
+Command:
+  $ aerospace-marks list -o text
 
-[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:1, Mark:"mark-1"},
-    {WindowID:22, Mark:"mark-2"},
-    {WindowID:3, Mark:"mark-3"},
-    {WindowID:444, Mark:"mark-4"},
-    {WindowID:5555, Mark:"mark-5"},
-}
-
-$aerospace-marks list -o text
-
-mark-1 | 1 | Alacritty     | Alacritty      | _ | _
-mark-3 | 3 | Brave Browser | GitHub - Brave | _ | _
+Result:
+  stdout:
+    mark-1 | 1 | Alacritty     | Alacritty      | _ | _
+    mark-3 | 3 | Brave Browser | GitHub - Brave | _ | _
+  stderr: ""
 ---
 
 [TestListCommand/print_all_marked_windows#01 - 1]
+Context:
+  (none)
 
-$aerospace-marks ls --help
+Command:
+  $ aerospace-marks ls --help
 
-List all marked windows
-
-This command lists all marked windows with their respective marks.
-Display format can be controlled with --output flag (text, json, csv).
-
-Default format (text):
-<mark>|<window-id>|<app-name>|<window-title>|<workspace>|<app-bundle-id>
-
-Usage:
-  aerospace-marks list [flags]
-
-Aliases:
-  list, ls
-
-Flags:
-  -h, --help            help for list
-  -o, --output string   Output format: text, json, or csv (default "text")
-
+Result:
+  stdout:
+    List all marked windows
+    
+    This command lists all marked windows with their respective marks.
+    Display format can be controlled with --output flag (text, json, csv).
+    
+    Default format (text):
+    <mark>|<window-id>|<app-name>|<window-title>|<workspace>|<app-bundle-id>
+    
+    Usage:
+      aerospace-marks list [flags]
+    
+    Aliases:
+      list, ls
+    
+    Flags:
+      -h, --help            help for list
+      -o, --output string   Output format: text, json, or csv (default "text")
+  stderr: ""
 ---
 
 [TestListCommand/snapshot_test_for_text_output_format - 1]
-context
+Context:
+  marks:
+    - mark: mark-1
+      window_id: 1
+    - mark: mark-2
+      window_id: 22
+    - mark: mark-3
+      window_id: 3
+    - mark: mark-4
+      window_id: 444
+    - mark: mark-5
+      window_id: 5555
+  windows:
+    [
+      {
+        "window-title" : "Alacritty",
+        "app-name" : "Alacritty",
+        "window-id" : 1
+      },
+      {
+        "window-id" : 2,
+        "window-title" : "Chat Box Widget - Brave",
+        "app-name" : "Brave Browser"
+      },
+      {
+        "window-id" : 3,
+        "app-name" : "Brave Browser",
+        "window-title" : "GitHub - Brave"
+      },
+      {
+        "window-id" : 28104,
+        "app-name" : "ChatGPT",
+        "window-title" : ""
+      },
+      {
+        "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
+        "app-name" : "OBS Studio",
+        "window-id" : 34647
+      },
+      {
+        "app-name" : "Telegram",
+        "window-id" : 7988,
+        "window-title" : "Telegram"
+      },
+      {
+        "app-name" : "Twitch - cris0liver",
+        "window-id" : 34394,
+        "window-title" : ""
+      }
+    ]
 
-[
-  {
-    "window-title" : "Alacritty",
-    "app-name" : "Alacritty",
-    "window-id" : 1
-  },
-  {
-    "window-id" : 2,
-    "window-title" : "Chat Box Widget - Brave",
-    "app-name" : "Brave Browser"
-  },
-  {
-    "window-id" : 3,
-    "app-name" : "Brave Browser",
-    "window-title" : "GitHub - Brave"
-  },
-  {
-    "window-id" : 28104,
-    "app-name" : "ChatGPT",
-    "window-title" : ""
-  },
-  {
-    "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
-    "app-name" : "OBS Studio",
-    "window-id" : 34647
-  },
-  {
-    "app-name" : "Telegram",
-    "window-id" : 7988,
-    "window-title" : "Telegram"
-  },
-  {
-    "app-name" : "Twitch - cris0liver",
-    "window-id" : 34394,
-    "window-title" : ""
-  }
-]
+Command:
+  $ aerospace-marks list -o text
 
-[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:1, Mark:"mark-1"},
-    {WindowID:22, Mark:"mark-2"},
-    {WindowID:3, Mark:"mark-3"},
-    {WindowID:444, Mark:"mark-4"},
-    {WindowID:5555, Mark:"mark-5"},
-}
-
-$aerospace-marks list -o text
-
-mark-1 | 1 | Alacritty     | Alacritty      | _ | _
-mark-3 | 3 | Brave Browser | GitHub - Brave | _ | _
+Result:
+  stdout:
+    mark-1 | 1 | Alacritty     | Alacritty      | _ | _
+    mark-3 | 3 | Brave Browser | GitHub - Brave | _ | _
+  stderr: ""
 ---
 
 [TestListCommand/snapshot_test_for_JSON_output_format - 1]
-context
+Context:
+  marks:
+    - mark: mark-1
+      window_id: 1
+    - mark: mark-2
+      window_id: 22
+    - mark: mark-3
+      window_id: 3
+    - mark: mark-4
+      window_id: 444
+    - mark: mark-5
+      window_id: 5555
+  windows:
+    [
+      {
+        "window-title" : "Alacritty",
+        "app-name" : "Alacritty",
+        "window-id" : 1
+      },
+      {
+        "window-id" : 2,
+        "window-title" : "Chat Box Widget - Brave",
+        "app-name" : "Brave Browser"
+      },
+      {
+        "window-id" : 3,
+        "app-name" : "Brave Browser",
+        "window-title" : "GitHub - Brave"
+      },
+      {
+        "window-id" : 28104,
+        "app-name" : "ChatGPT",
+        "window-title" : ""
+      },
+      {
+        "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
+        "app-name" : "OBS Studio",
+        "window-id" : 34647
+      },
+      {
+        "app-name" : "Telegram",
+        "window-id" : 7988,
+        "window-title" : "Telegram"
+      },
+      {
+        "app-name" : "Twitch - cris0liver",
+        "window-id" : 34394,
+        "window-title" : ""
+      }
+    ]
 
-[
-  {
-    "window-title" : "Alacritty",
-    "app-name" : "Alacritty",
-    "window-id" : 1
-  },
-  {
-    "window-id" : 2,
-    "window-title" : "Chat Box Widget - Brave",
-    "app-name" : "Brave Browser"
-  },
-  {
-    "window-id" : 3,
-    "app-name" : "Brave Browser",
-    "window-title" : "GitHub - Brave"
-  },
-  {
-    "window-id" : 28104,
-    "app-name" : "ChatGPT",
-    "window-title" : ""
-  },
-  {
-    "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
-    "app-name" : "OBS Studio",
-    "window-id" : 34647
-  },
-  {
-    "app-name" : "Telegram",
-    "window-id" : 7988,
-    "window-title" : "Telegram"
-  },
-  {
-    "app-name" : "Twitch - cris0liver",
-    "window-id" : 34394,
-    "window-title" : ""
-  }
-]
+Command:
+  $ aerospace-marks list -o json
 
-[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:1, Mark:"mark-1"},
-    {WindowID:22, Mark:"mark-2"},
-    {WindowID:3, Mark:"mark-3"},
-    {WindowID:444, Mark:"mark-4"},
-    {WindowID:5555, Mark:"mark-5"},
-}
-
-$aerospace-marks list -o json
-
-[
-  {
-    "mark": "mark-1",
-    "window_id": 1,
-    "app_name": "Alacritty",
-    "window_title": "Alacritty",
-    "workspace": "",
-    "app_bundle_id": ""
-  },
-  {
-    "mark": "mark-3",
-    "window_id": 3,
-    "app_name": "Brave Browser",
-    "window_title": "GitHub - Brave",
-    "workspace": "",
-    "app_bundle_id": ""
-  }
-]
+Result:
+  stdout:
+    [
+      {
+        "mark": "mark-1",
+        "window_id": 1,
+        "app_name": "Alacritty",
+        "window_title": "Alacritty",
+        "workspace": "",
+        "app_bundle_id": ""
+      },
+      {
+        "mark": "mark-3",
+        "window_id": 3,
+        "app_name": "Brave Browser",
+        "window_title": "GitHub - Brave",
+        "workspace": "",
+        "app_bundle_id": ""
+      }
+    ]
+  stderr: ""
 ---
 
 [TestListCommand/snapshot_test_for_CSV_output_format - 1]
-context
+Context:
+  marks:
+    - mark: mark-1
+      window_id: 1
+    - mark: mark-2
+      window_id: 22
+    - mark: mark-3
+      window_id: 3
+    - mark: mark-4
+      window_id: 444
+    - mark: mark-5
+      window_id: 5555
+  windows:
+    [
+      {
+        "window-title" : "Alacritty",
+        "app-name" : "Alacritty",
+        "window-id" : 1
+      },
+      {
+        "window-id" : 2,
+        "window-title" : "Chat Box Widget - Brave",
+        "app-name" : "Brave Browser"
+      },
+      {
+        "window-id" : 3,
+        "app-name" : "Brave Browser",
+        "window-title" : "GitHub - Brave"
+      },
+      {
+        "window-id" : 28104,
+        "app-name" : "ChatGPT",
+        "window-title" : ""
+      },
+      {
+        "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
+        "app-name" : "OBS Studio",
+        "window-id" : 34647
+      },
+      {
+        "app-name" : "Telegram",
+        "window-id" : 7988,
+        "window-title" : "Telegram"
+      },
+      {
+        "app-name" : "Twitch - cris0liver",
+        "window-id" : 34394,
+        "window-title" : ""
+      }
+    ]
 
-[
-  {
-    "window-title" : "Alacritty",
-    "app-name" : "Alacritty",
-    "window-id" : 1
-  },
-  {
-    "window-id" : 2,
-    "window-title" : "Chat Box Widget - Brave",
-    "app-name" : "Brave Browser"
-  },
-  {
-    "window-id" : 3,
-    "app-name" : "Brave Browser",
-    "window-title" : "GitHub - Brave"
-  },
-  {
-    "window-id" : 28104,
-    "app-name" : "ChatGPT",
-    "window-title" : ""
-  },
-  {
-    "window-title" : "OBS 31.0.3 - Profile: Untitled - Scenes: Untitled",
-    "app-name" : "OBS Studio",
-    "window-id" : 34647
-  },
-  {
-    "app-name" : "Telegram",
-    "window-id" : 7988,
-    "window-title" : "Telegram"
-  },
-  {
-    "app-name" : "Twitch - cris0liver",
-    "window-id" : 34394,
-    "window-title" : ""
-  }
-]
+Command:
+  $ aerospace-marks list -o csv
 
-[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:1, Mark:"mark-1"},
-    {WindowID:22, Mark:"mark-2"},
-    {WindowID:3, Mark:"mark-3"},
-    {WindowID:444, Mark:"mark-4"},
-    {WindowID:5555, Mark:"mark-5"},
-}
-
-$aerospace-marks list -o csv
-
-mark,window_id,app_name,window_title,workspace,app_bundle_id
-mark-1,1,Alacritty,Alacritty,,
-mark-3,3,Brave Browser,GitHub - Brave,,
+Result:
+  stdout:
+    mark,window_id,app_name,window_title,workspace,app_bundle_id
+    mark-1,1,Alacritty,Alacritty,,
+    mark-3,3,Brave Browser,GitHub - Brave,,
+  stderr: ""
 ---

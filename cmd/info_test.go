@@ -65,8 +65,11 @@ func TestInfoCmd(t *testing.T) {
 			tt.Fatal(err)
 		}
 
-		cmdExecuted := fmt.Sprintf("aerospace-marks %s", cmd.Use)
-		snaps.MatchSnapshot(tt, cmdExecuted, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: fmt.Sprintf("aerospace-marks %s", cmd.Use),
+			Stdout:  out,
+		})
+		snaps.MatchSnapshot(tt, snapshot)
 	})
 
 	t.Run("Happy path - non compatible", func(tt *testing.T) {
@@ -120,8 +123,11 @@ func TestInfoCmd(t *testing.T) {
 			tt.Fatal(err)
 		}
 
-		cmdExecuted := fmt.Sprintf("aerospace-marks %s", cmd.Use)
-		snaps.MatchSnapshot(tt, cmdExecuted, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: fmt.Sprintf("aerospace-marks %s", cmd.Use),
+			Stdout:  out,
+		})
+		snaps.MatchSnapshot(tt, snapshot)
 	})
 
 	t.Run("Failure - to retrieve socket path", func(tt *testing.T) {
@@ -163,7 +169,11 @@ func TestInfoCmd(t *testing.T) {
 			tt.Fatal(err)
 		}
 
-		cmdExecuted := fmt.Sprintf("aerospace-marks %s", cmd.Use)
-		snaps.MatchSnapshot(tt, cmdExecuted, "Output", out, "Error", err.Error())
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: fmt.Sprintf("aerospace-marks %s", cmd.Use),
+			Stdout:  out,
+			Stderr:  err.Error(),
+		})
+		snaps.MatchSnapshot(tt, snapshot)
 	})
 }

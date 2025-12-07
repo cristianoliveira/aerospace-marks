@@ -1,67 +1,126 @@
 
 [TestMarkCommand/marks_the_focused_window_-_`marks_mark_mark1` - 1]
-[]windows.Window{
-    {WindowID:1, WindowTitle:"title1", AppName:"app1", AppBundleID:"", Workspace:""},
-}
-aerospace-marks mark mark1
+Context:
+  windows:
+    - app-bundle-id: ""
+      app-name: app1
+      window-id: 1
+      window-title: title1
+      workspace: ""
 
-Replaced all marks with 'mark1'
+Command:
+  $ aerospace-marks mark mark1
 
+Result:
+  stdout:
+    Replaced all marks with 'mark1'
+  stderr: ""
 ---
 
 [TestMarkCommand/marks_window_by_id_-_`marks_mark_mark1_--window-id_2` - 1]
-[]windows.Window{
-    {WindowID:1, WindowTitle:"title1", AppName:"app1", AppBundleID:"", Workspace:""},
-    {WindowID:2, WindowTitle:"title2", AppName:"app2", AppBundleID:"", Workspace:""},
-}
-aerospace-marks mark mark1 --window-id 2
+Context:
+  windows:
+    - app-bundle-id: ""
+      app-name: app1
+      window-id: 1
+      window-title: title1
+      workspace: ""
+    - app-bundle-id: ""
+      app-name: app2
+      window-id: 2
+      window-title: title2
+      workspace: ""
 
-Replaced all marks with 'mark1'
+Command:
+  $ aerospace-marks mark mark1 --window-id 2
 
+Result:
+  stdout:
+    Replaced all marks with 'mark1'
+  stderr: ""
 ---
 
 [TestMarkCommand/marks_the_focused_window_-_`marks_mark_--add` - 1]
-[]windows.Window{
-    {WindowID:1, WindowTitle:"title1", AppName:"app1", AppBundleID:"", Workspace:""},
-}
-aerospace-marks mark mark2 --add
+Context:
+  windows:
+    - app-bundle-id: ""
+      app-name: app1
+      window-id: 1
+      window-title: title1
+      workspace: ""
 
-Added mark: mark2
+Command:
+  $ aerospace-marks mark mark2 --add
 
+Result:
+  stdout:
+    Added mark: mark2
+  stderr: ""
 ---
 
 [TestMarkCommand/validates_missing_identifier_-_`marks_mark` - 1]
-aerospace-marks mark
+Context:
+  (none)
 
-accepts 1 arg(s), received 0
+Command:
+  $ aerospace-marks mark
+
+Result:
+  stdout: ""
+  stderr:
+    accepts 1 arg(s), received 0
 ---
 
 [TestMarkCommand/marks_toggles_mark_(remove)_-_`marks_foobar_--toggle` - 1]
-[]windows.Window{
-    {WindowID:2, WindowTitle:"title2", AppName:"app2", AppBundleID:"", Workspace:""},
-}
-aerospace-marks mark foobar --toggle
+Context:
+  windows:
+    - app-bundle-id: ""
+      app-name: app2
+      window-id: 2
+      window-title: title2
+      workspace: ""
 
-Toggling mark: foobar
+Command:
+  $ aerospace-marks mark foobar --toggle
 
+Result:
+  stdout:
+    Toggling mark: foobar
+  stderr: ""
 ---
 
 [TestMarkCommand/marks_toggles_mark_(adding)_-_`marks_foobar_--toggle` - 1]
-[]windows.Window{
-    {WindowID:2, WindowTitle:"title2", AppName:"app2", AppBundleID:"", Workspace:""},
-}
-aerospace-marks mark foobar --toggle
+Context:
+  windows:
+    - app-bundle-id: ""
+      app-name: app2
+      window-id: 2
+      window-title: title2
+      workspace: ""
 
-Toggling mark: foobar
+Command:
+  $ aerospace-marks mark foobar --toggle
 
+Result:
+  stdout:
+    Toggling mark: foobar
+  stderr: ""
 ---
 
 [TestMarkCommand/fails_when_empty_identifier_-_`marks_''` - 1]
-[]windows.Window{
-    {WindowID:2, WindowTitle:"title2", AppName:"app2", AppBundleID:"", Workspace:""},
-}
-aerospace-marks mark 
+Context:
+  windows:
+    - app-bundle-id: ""
+      app-name: app2
+      window-id: 2
+      window-title: title2
+      workspace: ""
 
-Error
-argument cannot be empty or whitespace
+Command:
+  $ aerospace-marks mark
+
+Result:
+  stdout: ""
+  stderr:
+    argument cannot be empty or whitespace
 ---

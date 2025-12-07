@@ -2,7 +2,6 @@ package cmd_test
 
 import (
 	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/cristianoliveira/aerospace-marks/cmd"
@@ -35,8 +34,11 @@ func TestUnmarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("unmarks all marks from a window - `marks unmark`", func(t *testing.T) {
@@ -61,8 +63,11 @@ func TestUnmarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("unmarks --help", func(t *testing.T) {
@@ -82,8 +87,11 @@ func TestUnmarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("fails when mark not found", func(t *testing.T) {
@@ -108,8 +116,12 @@ func TestUnmarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
 		expectedError := fmt.Sprintf("Error\n%+v", err)
-		snaps.MatchSnapshot(t, cmdAsString, expectedError, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Stderr:  fmt.Errorf("%s", expectedError).Error(),
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 }

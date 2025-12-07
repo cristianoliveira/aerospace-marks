@@ -1,20 +1,39 @@
 
 [TestFocusCmd/validate_missing_identifier - 1]
-aerospace-marks focus
+Context:
+  (none)
 
-accepts 1 arg(s), received 0
+Command:
+  $ aerospace-marks focus
+
+Result:
+  stdout: ""
+  stderr:
+    accepts 1 arg(s), received 0
 ---
 
 [TestFocusCmd/focus_to_a_window_by_mark_-_`marks_focus_mark1` - 1]
-aerospace-marks focus mark1
+Context:
+  (none)
 
-Focus moved to window ID 1
+Command:
+  $ aerospace-marks focus mark1
 
+Result:
+  stdout:
+    Focus moved to window ID 1
+  stderr: ""
 ---
 
 [TestFocusCmd/focus_using_mark_that_does_not_exist - 1]
-aerospace-marks focus nonexistent-mark
+Context:
+  (none)
 
-error: empty window id for mark 'nonexistent-mark'
+Command:
+  $ aerospace-marks focus nonexistent-mark
 
+Result:
+  stdout: ""
+  stderr:
+    error: empty window id for mark 'nonexistent-mark'
 ---

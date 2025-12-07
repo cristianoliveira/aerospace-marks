@@ -249,9 +249,15 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(out)
-		cmdAsString := "\n$aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, "context\n", windows, marks, cmdAsString, result)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("marks", marks),
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("outputs JSON format", func(t *testing.T) {
@@ -893,8 +899,11 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "\n$aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("snapshot test for text output format", func(t *testing.T) {
@@ -944,9 +953,15 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(out)
-		cmdAsString := "\n$aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, "context\n", windows, marks, cmdAsString, result)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("marks", marks),
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("snapshot test for JSON output format", func(t *testing.T) {
@@ -996,9 +1011,15 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(out)
-		cmdAsString := "\n$aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, "context\n", windows, marks, cmdAsString, result)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("marks", marks),
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("snapshot test for CSV output format", func(t *testing.T) {
@@ -1048,8 +1069,14 @@ func TestListCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		result := strings.TrimSpace(out)
-		cmdAsString := "\n$aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, "context\n", windows, marks, cmdAsString, result)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("marks", marks),
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 }
