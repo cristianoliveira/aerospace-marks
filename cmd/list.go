@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"strconv"
 
 	"slices"
 
@@ -44,72 +43,100 @@ func ListCmd(
 	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
 ) *cobra.Command {
-	return &cobra.Command{
+	listCmd := &cobra.Command{
 		Use:     "list",
 		Aliases: []string{"ls"},
 		Short:   "List all marked windows",
 		Long: `List all marked windows
 
 This command lists all marked windows with their respective marks.
-Display in the following format:
+Display format can be controlled with --output flag (text, json, csv).
 
+Default format (text):
 <mark>|<window-id>|<app-name>|<window-title>|<workspace>|<app-bundle-id>
 	`,
 		Run: func(cmd *cobra.Command, args []string) {
+			// Get and validate output format early
+			outputFormat, err := cmd.Flags().GetString("output")
+			if err != nil {
+				stdout.ErrorAndExit(fmt.Errorf("failed to get output flag: %w", err))
+				return
+			}
+
+			// Default to text if not specified
+			if outputFormat == "" {
+				outputFormat = "text"
+			}
+
+			// Validate format before any processing
+			formatter, err := format.NewListOutputFormatter(os.Stdout, outputFormat)
+			if err != nil {
+				stdout.ErrorAndExit(err)
+				return
+			}
+
+			// Get marks from storage
 			marks, err := storageClient.GetMarks()
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
 			}
+
+			// Handle empty marks based on format
 			if len(marks) == 0 {
-				fmt.Fprintln(os.Stdout, "No marks found")
+				if formatErr := formatter.FormatEmpty("No marks found"); formatErr != nil {
+					stdout.ErrorAndExit(fmt.Errorf("failed to format empty output: %w", formatErr))
+					return
+				}
 				return
 			}
 
+			// Get windows from Aerospace
 			windowsList, err := aerospaceClient.Client().Windows().GetAllWindows()
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return
 			}
 
-			lines := make([]string, 0)
+			// Collect marked windows
+			markedWindows := make([]format.MarkedWindow, 0)
 			for _, mark := range marks {
 				window, popErr := popWindow(windowsList, mark.WindowID)
 				if popErr != nil {
+					// Silently skip windows that no longer exist
 					continue
 				}
 
-				// Format window fields, using "_" for empty fields
-				windowID := strconv.Itoa(window.WindowID)
-				appName := window.AppName
-				if appName == "" {
-					appName = "_"
-				}
-				windowTitle := window.WindowTitle
-				if windowTitle == "" {
-					windowTitle = "_"
-				}
-				workspace := window.Workspace
-				if workspace == "" {
-					workspace = "_"
-				}
-				appBundleID := window.AppBundleID
-				if appBundleID == "" {
-					appBundleID = "_"
-				}
-
-				line := fmt.Sprintf("%s|%s|%s|%s|%s|%s\r\n",
-					mark.Mark, windowID, appName, windowTitle, workspace, appBundleID)
-				lines = append(lines, line)
+				markedWindows = append(markedWindows, format.MarkedWindow{
+					Mark:        mark.Mark,
+					WindowID:    window.WindowID,
+					AppName:     window.AppName,
+					WindowTitle: window.WindowTitle,
+					Workspace:   window.Workspace,
+					AppBundleID: window.AppBundleID,
+				})
 			}
 
-			if len(lines) == 0 {
-				fmt.Fprintln(os.Stdout, "No marked window found")
+			// Handle empty marked windows based on format
+			if len(markedWindows) == 0 {
+				if formatErr := formatter.FormatEmpty("No marked window found"); formatErr != nil {
+					stdout.ErrorAndExit(fmt.Errorf("failed to format empty output: %w", formatErr))
+					return
+				}
 				return
 			}
 
-			formattedOutput := format.FormatTableList(lines)
-			fmt.Fprintln(os.Stdout, formattedOutput)
+			// Format and output
+			if formatErr := formatter.Format(markedWindows); formatErr != nil {
+				stdout.ErrorAndExit(fmt.Errorf("failed to format output: %w", formatErr))
+				return
+			}
 		},
 	}
+
+	// Add output flag
+	listCmd.Flags().StringP("output", "o", "text", "Output format: text, json, or csv")
+	listCmd.Flag("output").DefValue = "text"
+
+	return listCmd
 }
