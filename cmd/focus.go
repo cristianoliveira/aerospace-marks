@@ -10,6 +10,7 @@ import (
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
 	"github.com/cristianoliveira/aerospace-marks/internal/cli"
+	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/logger"
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
@@ -26,12 +27,13 @@ func FocusCmd(
 	storageClient storage.MarkStorage,
 	aerospaceClient aerospace.AerosSpaceMarkWindows,
 ) *cobra.Command {
-	return &cobra.Command{
+	focusCmd := &cobra.Command{
 		Use:   "focus <identifier> [flags]",
 		Short: "Move focus to a window by mark (identifier)",
 		Long: `Move focus to a window by mark (identifier)
 
 Moves focus to the first window marked with the specified identifier.
+Output format can be controlled with --output flag (text, json, csv).
 	`,
 		Args: cobra.MatchAll(
 			cobra.ExactArgs(1),
@@ -41,6 +43,18 @@ Moves focus to the first window marked with the specified identifier.
 			logger := logger.GetDefaultLogger()
 			mark := args[0]
 			logger.LogDebug("FocusCmd called", "mark", mark)
+
+			// Get and validate output format early
+			outputFormat, err := cmd.Flags().GetString("output")
+			if err != nil {
+				stdout.ErrorAndExit(fmt.Errorf("failed to get output flag: %w", err))
+				return
+			}
+
+			// Default to text if not specified
+			if outputFormat == "" {
+				outputFormat = string(format.OutputFormatText)
+			}
 
 			windowID, err := storageClient.GetWindowIDByMark(mark)
 			if err != nil {
@@ -66,7 +80,34 @@ Moves focus to the first window marked with the specified identifier.
 			}
 
 			logger.LogDebug("Focus set", "windowID", windowID)
-			fmt.Fprintf(os.Stdout, "Focus moved to window ID %d\n", windowID)
+
+			// Format output using OutputEvent
+			formatter, err := format.NewOutputEventFormatter(os.Stdout, outputFormat)
+			if err != nil {
+				stdout.ErrorAndExit(err)
+				return
+			}
+
+			message := fmt.Sprintf("Focus moved to window ID %d", windowID)
+			event := format.OutputEvent{
+				Command:  "focus",
+				Action:   "focus",
+				WindowID: windowID,
+				Result:   "success",
+				Message:  message,
+			}
+
+			if formatErr := formatter.Format(event); formatErr != nil {
+				stdout.ErrorAndExit(fmt.Errorf("failed to format output: %w", formatErr))
+				return
+			}
 		},
 	}
+
+	// Add output flag
+	focusCmd.Flags().
+		StringP("output", "o", string(format.OutputFormatText), "Output format: text, json, or csv")
+	focusCmd.Flag("output").DefValue = string(format.OutputFormatText)
+
+	return focusCmd
 }

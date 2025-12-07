@@ -65,7 +65,7 @@ Default format (text):
 
 			// Default to text if not specified
 			if outputFormat == "" {
-				outputFormat = "text"
+				outputFormat = string(format.OutputFormatText)
 			}
 
 			// Validate format before any processing

@@ -28,7 +28,36 @@ USAGE: `aerospace-marks mark [--add|--replace] [--toggle] <identifier>`
 
 Focus to a window with the given mark.
 
-USAGE: `aerospace-marks focus <identifier>`
+USAGE: `aerospace-marks focus <identifier> [--output <format>]`
+
+### Output Formats
+
+The `focus` command supports multiple output formats via the `--output` (or `-o`) flag:
+
+- **`text`** (default): Human-readable message
+  ```
+  Focus moved to window ID 123
+  ```
+
+- **`json`**: JSON object with structured event data
+  ```json
+  {
+    "command": "focus",
+    "action": "focus",
+    "window_id": 123,
+    "app_name": "",
+    "workspace": "",
+    "target_workspace": "",
+    "result": "success",
+    "message": "Focus moved to window ID 123"
+  }
+  ```
+
+- **`csv`**: CSV format with headers
+  ```csv
+  command,action,window_id,app_name,workspace,target_workspace,result,message
+  focus,focus,123,,,success,Focus moved to window ID 123
+  ```
 
 ## Command: `list`
 
@@ -125,13 +154,110 @@ USAGE: `aerospace-marks unmark [<identifier>]`
 
 summon will bring the marked window to the current workspace.
 
-USAGE: `aerospace-marks summon [<identifier>]`
+USAGE: `aerospace-marks summon <identifier> [--focus] [--output <format>]`
+
+### Flags
+
+- `--focus`, `-f`: Focus the window after summoning
+
+### Output Formats
+
+The `summon` command supports multiple output formats via the `--output` (or `-o`) flag:
+
+- **`text`** (default): Human-readable message
+  ```
+  Window 123 summoned to workspace workspace1
+  ```
+
+- **`json`**: JSON object with structured event data
+  ```json
+  {
+    "command": "summon",
+    "action": "summon",
+    "window_id": 123,
+    "app_name": "",
+    "workspace": "workspace1",
+    "target_workspace": "workspace1",
+    "result": "success",
+    "message": "Window 123 summoned to workspace workspace1"
+  }
+  ```
+
+  When using `--focus` flag, the `action` field will be `"summon_and_focus"`:
+  ```json
+  {
+    "command": "summon",
+    "action": "summon_and_focus",
+    "window_id": 123,
+    "workspace": "workspace1",
+    "target_workspace": "workspace1",
+    "result": "success",
+    "message": "Window 123 summoned to workspace workspace1 and focused"
+  }
+  ```
+
+- **`csv`**: CSV format with headers
+  ```csv
+  command,action,window_id,app_name,workspace,target_workspace,result,message
+  summon,summon,123,,workspace1,workspace1,success,Window 123 summoned to workspace workspace1
+  ```
 
 ## Command: `get`
 
 Get a window by its mark (identifier) and prints the details in the following format:
 
-USAGE: `aerospace-marks get <identifier> [flags]`
+USAGE: `aerospace-marks get <identifier> [flags] [--output <format>]`
+
+### Flags
+
+- `--window-id`, `-i`: Show only the window ID
+- `--window-title`, `-t`: Show only the window title
+- `--app-name`, `-a`: Show only the app name
+- `--app-bundle-id`, `-b`: Show only the app bundle ID
+
+### Output Formats
+
+The `get` command supports multiple output formats via the `--output` (or `-o`) flag:
+
+- **`text`** (default): 
+  - Full output: `<window_id> | <app_name> | <window_title>`
+    ```
+    123 | Brave Browser | GitHub - Brave
+    ```
+  - Single field flags (`-i`, `-t`, `-a`, `-b`): Plain value (backward compatible)
+    ```
+    123
+    ```
+
+- **`json`**: JSON object with structured event data
+  ```json
+  {
+    "command": "get",
+    "action": "",
+    "window_id": 123,
+    "app_name": "Brave Browser",
+    "workspace": "",
+    "target_workspace": "",
+    "result": "123 | Brave Browser | GitHub - Brave",
+    "message": "123 | Brave Browser | GitHub - Brave"
+  }
+  ```
+
+  For single field flags, the `result` and `message` fields contain just the field value:
+  ```json
+  {
+    "command": "get",
+    "window_id": 123,
+    "result": "123",
+    "message": "123"
+  }
+  ```
+
+- **`csv`**: CSV format with headers
+  ```csv
+  command,action,window_id,app_name,workspace,target_workspace,result,message
+  get,,123,Brave Browser,,,123 | Brave Browser | GitHub - Brave,123 | Brave Browser | GitHub - Brave
+  ```
 
 ## Command: `info`
 

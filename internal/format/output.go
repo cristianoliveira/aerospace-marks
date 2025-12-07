@@ -192,3 +192,137 @@ func (f *ListOutputFormatter) emptyToUnderscore(s string) string {
 	}
 	return s
 }
+
+// OutputEvent describes a single command result in a structured way.
+type OutputEvent struct {
+	Command         string `json:"command"`
+	Action          string `json:"action"`
+	WindowID        int    `json:"window_id"`
+	AppName         string `json:"app_name"`
+	Workspace       string `json:"workspace"`
+	TargetWorkspace string `json:"target_workspace"`
+	Result          string `json:"result"`
+	Message         string `json:"message"`
+}
+
+// OutputEventFormatter formats a single command result event.
+type OutputEventFormatter struct {
+	format OutputFormat
+	writer io.Writer
+}
+
+// NewOutputEventFormatter creates a new OutputEventFormatter.
+func NewOutputEventFormatter(w io.Writer, format string) (*OutputEventFormatter, error) {
+	normalized := strings.ToLower(strings.TrimSpace(format))
+	switch normalized {
+	case string(OutputFormatText):
+		return &OutputEventFormatter{format: OutputFormatText, writer: w}, nil
+	case string(OutputFormatJSON):
+		return &OutputEventFormatter{format: OutputFormatJSON, writer: w}, nil
+	case string(OutputFormatCSV):
+		return &OutputEventFormatter{format: OutputFormatCSV, writer: w}, nil
+	default:
+		return nil, fmt.Errorf(
+			"unsupported output format: %s (valid formats: text, json, csv)",
+			format,
+		)
+	}
+}
+
+// Format formats and writes a single output event.
+func (f *OutputEventFormatter) Format(event OutputEvent) error {
+	switch f.format {
+	case OutputFormatJSON:
+		return f.formatJSON(event)
+	case OutputFormatCSV:
+		return f.formatCSV(event)
+	case OutputFormatText:
+		return f.formatText(event)
+	default:
+		return fmt.Errorf("unsupported output format: %s", f.format)
+	}
+}
+
+// formatText formats event as pipe-separated values.
+// Format: <window_id> | <app_name> | <message> (for backward compatibility with get command).
+func (f *OutputEventFormatter) formatText(event OutputEvent) error {
+	// For single field outputs (when only Result is set and it's a simple value), output just the value
+	if event.Command == "get" && event.Action == "" && event.AppName == "" && event.Message == "" {
+		// Single field output (window-id, window-title, app-name, app-bundle-id)
+		_, err := fmt.Fprintln(f.writer, event.Result)
+		return err
+	}
+
+	appName := event.AppName
+	if appName == "" {
+		appName = "_"
+	}
+	message := event.Message
+	if message == "" {
+		message = event.Result
+	}
+	if message == "" {
+		message = "_"
+	}
+
+	// For get command full output, maintain backward compatibility: <window_id> | <app_name> | <window_title>
+	if event.Command == "get" && event.Action == "" && event.AppName != "" {
+		output := fmt.Sprintf("%d | %s | %s",
+			event.WindowID,
+			appName,
+			message,
+		)
+		_, err := fmt.Fprintln(f.writer, output)
+		return err
+	}
+
+	// Default format: just the message/result
+	_, err := fmt.Fprintln(f.writer, message)
+	return err
+}
+
+// formatJSON formats event as JSON object.
+func (f *OutputEventFormatter) formatJSON(event OutputEvent) error {
+	data, err := json.MarshalIndent(event, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to marshal JSON: %w", err)
+	}
+	_, err = fmt.Fprintln(f.writer, string(data))
+	return err
+}
+
+// formatCSV formats event as CSV with header.
+func (f *OutputEventFormatter) formatCSV(event OutputEvent) error {
+	writer := csv.NewWriter(f.writer)
+	defer writer.Flush()
+
+	headers := []string{
+		"command",
+		"action",
+		"window_id",
+		"app_name",
+		"workspace",
+		"target_workspace",
+		"result",
+		"message",
+	}
+	if err := writer.Write(headers); err != nil {
+		return fmt.Errorf("failed to write CSV header: %w", err)
+	}
+
+	row := []string{
+		event.Command,
+		event.Action,
+		strconv.Itoa(event.WindowID),
+		event.AppName,
+		event.Workspace,
+		event.TargetWorkspace,
+		event.Result,
+		event.Message,
+	}
+	if err := writer.Write(row); err != nil {
+		return fmt.Errorf("failed to write CSV row: %w", err)
+	}
+
+	return writer.Error()
+}
