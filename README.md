@@ -57,6 +57,21 @@ aerospace-marks summon <identifier>
 
 ## Advanced Usage
 
+### Output Formats
+
+The `list` command supports multiple output formats for scripting:
+
+```bash
+# JSON format for jq processing
+aerospace-marks list -o json | jq '.[] | select(.app_name == "Brave")'
+
+# CSV format for spreadsheet tools
+aerospace-marks list -o csv | csvcut -c mark,window_title
+
+# Text format (default) for awk/sed
+aerospace-marks list | awk -F'|' '{print $1}'
+```
+
 See more in [documentation](docs/)
 
 Check [vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for a more advanced usage.
