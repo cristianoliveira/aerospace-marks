@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/cristianoliveira/aerospace-marks/internal/aerospace"
+	"github.com/cristianoliveira/aerospace-marks/internal/format"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
 )
@@ -26,13 +27,17 @@ This CLI is heavily inspired by the marks feature of i3 and sway window managers
 	}
 
 	// Required new Mark Cmd because of leaking context
+	newRootCmd.AddCommand(InfoCmd(storage, aerospaceClient))
+
+	// Manage marks
 	newRootCmd.AddCommand(MarkCmd(storage, aerospaceClient))
 	newRootCmd.AddCommand(UnmarkCmd(storage))
-	newRootCmd.AddCommand(FocusCmd(storage, aerospaceClient))
-	newRootCmd.AddCommand(ListCmd(storage, aerospaceClient))
-	newRootCmd.AddCommand(InfoCmd(storage, aerospaceClient))
-	newRootCmd.AddCommand(SummonCmd(storage, aerospaceClient))
-	newRootCmd.AddCommand(GetCmd(storage, aerospaceClient))
+
+	// Manage windows with marks
+	newRootCmd.AddCommand(enableOutputFlag(FocusCmd(storage, aerospaceClient)))
+	newRootCmd.AddCommand(enableOutputFlag(ListCmd(storage, aerospaceClient)))
+	newRootCmd.AddCommand(enableOutputFlag(SummonCmd(storage, aerospaceClient)))
+	newRootCmd.AddCommand(enableOutputFlag(GetCmd(storage, aerospaceClient)))
 
 	return newRootCmd
 }
@@ -41,6 +46,13 @@ This CLI is heavily inspired by the marks feature of i3 and sway window managers
 func init() {
 	// NOTE: add here global flags
 	// rootCmd.Flags().BoolP("version", "v", false, "Print version information")
+}
+
+func enableOutputFlag(command *cobra.Command) *cobra.Command {
+	// Add output flag
+	command.Flags().StringP("output", "o", "text", "Output format: text, json, or csv")
+	command.Flag("output").DefValue = string(format.OutputFormatText)
+	return command
 }
 
 func Run(storage storage.MarkStorage, aerospaceClient aerospace.AerosSpaceMarkWindows) {
