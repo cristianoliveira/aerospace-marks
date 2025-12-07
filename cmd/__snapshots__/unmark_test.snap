@@ -1,39 +1,63 @@
 
 [TestUnmarkCommand/unmarks_a_mark_from_a_window_-_`marks_unmark_mark1` - 1]
-aerospace-marks unmark mark1
+Context:
+  (none)
 
-Removed 1 marks
+Command:
+  $ aerospace-marks unmark mark1
 
+Result:
+  stdout:
+    Removed 1 marks
+  stderr: ""
 ---
 
 [TestUnmarkCommand/unmarks_all_marks_from_a_window_-_`marks_unmark` - 1]
-aerospace-marks unmark
+Context:
+  (none)
 
-Removed 2 marks
+Command:
+  $ aerospace-marks unmark
 
+Result:
+  stdout:
+    Removed 2 marks
+  stderr: ""
 ---
 
 [TestUnmarkCommand/unmarks_--help - 1]
-aerospace-marks unmark --help
+Context:
+  (none)
 
-Unmark one or more windows by identifier.
+Command:
+  $ aerospace-marks unmark --help
 
-unmark [<identifier>]
-
-unmark cmd will remove identifier from the list of current marks on a window. If identifier is omitted, all marks are removed.
-
-Usage:
-  aerospace-marks unmark [flags]
-
-Flags:
-  -h, --help   help for unmark
-
+Result:
+  stdout:
+    Unmark one or more windows by identifier.
+    
+    unmark [<identifier>]
+    
+    unmark cmd will remove identifier from the list of current marks on a window. If identifier is omitted, all marks are removed.
+    
+    Usage:
+      aerospace-marks unmark [flags]
+    
+    Flags:
+      -h, --help   help for unmark
+  stderr: ""
 ---
 
 [TestUnmarkCommand/fails_when_mark_not_found - 1]
-aerospace-marks unmark unkown
+Context:
+  (none)
 
-Error
-mark 'unkown' not found
+Command:
+  $ aerospace-marks unmark unkown
 
+Result:
+  stdout: ""
+  stderr:
+    Error
+    mark 'unkown' not found
 ---

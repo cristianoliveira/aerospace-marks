@@ -38,8 +38,12 @@ func TestFocusCmd(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, err.Error())
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Stderr:  err.Error(),
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("focus to a window by mark - `marks focus mark1`", func(t *testing.T) {
@@ -70,8 +74,11 @@ func TestFocusCmd(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("focus using mark that does not exist", func(t *testing.T) {
@@ -100,8 +107,12 @@ func TestFocusCmd(t *testing.T) {
 			t.Fatal("output should be empty", out)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, err.Error())
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Stderr:  err.Error(),
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("outputs JSON format", func(t *testing.T) {

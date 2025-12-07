@@ -1,77 +1,105 @@
 
 [TestSummonCmd/validate_missing_identifier - 1]
-aerospace-marks summon
+Context:
+  (none)
 
-Error
-accepts 1 arg(s), received 0
+Command:
+  $ aerospace-marks summon
+
+Result:
+  stdout: ""
+  stderr:
+    accepts 1 arg(s), received 0
 ---
 
 [TestSummonCmd/validate_empty_identifier - 1]
-aerospace-marks summon  
+Context:
+  (none)
 
-Error
-argument cannot be empty or whitespace
+Command:
+  $ aerospace-marks summon
+
+Result:
+  stdout: ""
+  stderr:
+    argument cannot be empty or whitespace
 ---
 
 [TestSummonCmd/snapshot_test_for_text_output_format - 1]
-[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:1, Mark:"mark1"},
-}
-aerospace-marks summon mark1 -o text
+Context:
+  marks:
+    - mark: mark1
+      window_id: 1
 
-result:
+Command:
+  $ aerospace-marks summon mark1 -o text
 
-Window 1 summoned to workspace workspace1
+Result:
+  stdout:
+    Window 1 summoned to workspace workspace1
+  stderr: ""
 ---
 
 [TestSummonCmd/snapshot_test_for_JSON_output_format - 1]
-[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:1, Mark:"mark1"},
-}
-aerospace-marks summon mark1 -o json
+Context:
+  marks:
+    - mark: mark1
+      window_id: 1
 
-result:
+Command:
+  $ aerospace-marks summon mark1 -o json
 
-{
-  "command": "summon",
-  "action": "summon",
-  "window_id": 1,
-  "app_name": "",
-  "workspace": "workspace1",
-  "target_workspace": "workspace1",
-  "result": "success",
-  "message": "Window 1 summoned to workspace workspace1"
-}
+Result:
+  stdout:
+    {
+      "command": "summon",
+      "action": "summon",
+      "window_id": 1,
+      "app_name": "",
+      "workspace": "workspace1",
+      "target_workspace": "workspace1",
+      "result": "success",
+      "message": "Window 1 summoned to workspace workspace1"
+    }
+  stderr: ""
 ---
 
 [TestSummonCmd/snapshot_test_for_CSV_output_format - 1]
-[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:1, Mark:"mark1"},
-}
-aerospace-marks summon mark1 -o csv
+Context:
+  marks:
+    - mark: mark1
+      window_id: 1
 
-result:
+Command:
+  $ aerospace-marks summon mark1 -o csv
 
-command,action,window_id,app_name,workspace,target_workspace,result,message
-summon,summon,1,,workspace1,workspace1,success,Window 1 summoned to workspace workspace1
+Result:
+  stdout:
+    command,action,window_id,app_name,workspace,target_workspace,result,message
+    summon,summon,1,,workspace1,workspace1,success,Window 1 summoned to workspace workspace1
+  stderr: ""
 ---
 
 [TestSummonCmd/snapshot_test_for_JSON_output_format_with_focus_flag - 1]
-[]struct { WindowID int "json:\"window_id\""; Mark string "json:\"mark\"" }{
-    {WindowID:1, Mark:"mark1"},
-}
-aerospace-marks summon mark1 --focus -o json
+Context:
+  marks:
+    - mark: mark1
+      window_id: 1
 
-result:
+Command:
+  $ aerospace-marks summon mark1 --focus -o json
 
-{
-  "command": "summon",
-  "action": "summon_and_focus",
-  "window_id": 1,
-  "app_name": "",
-  "workspace": "workspace1",
-  "target_workspace": "workspace1",
-  "result": "success",
-  "message": "Window 1 summoned to workspace workspace1 and focused"
-}
+Result:
+  stdout:
+    {
+      "command": "summon",
+      "action": "summon_and_focus",
+      "window_id": 1,
+      "app_name": "",
+      "workspace": "workspace1",
+      "target_workspace": "workspace1",
+      "result": "success",
+      "message": "Window 1 summoned to workspace workspace1 and focused"
+    }
+  stderr: ""
 ---

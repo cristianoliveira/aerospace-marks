@@ -2,7 +2,6 @@ package cmd_test
 
 import (
 	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/cristianoliveira/aerospace-marks/cmd"
@@ -66,8 +65,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, windows, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("marks window by id - `marks mark mark1 --window-id 2`", func(t *testing.T) {
@@ -123,8 +128,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, windows, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("marks the focused window - `marks mark --add`", func(t *testing.T) {
@@ -175,8 +186,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, windows, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("validates missing identifier - `marks mark`", func(t *testing.T) {
@@ -200,8 +217,12 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal("output should be empty", out)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, cmdAsString, err.Error())
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Stderr:  err.Error(),
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("marks toggles mark (remove) - `marks foobar --toggle`", func(t *testing.T) {
@@ -252,8 +273,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, windows, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("marks toggles mark (adding) - `marks foobar --toggle`", func(t *testing.T) {
@@ -304,8 +331,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, windows, cmdAsString, out)
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 
 	t.Run("fails when empty identifier - `marks ''`", func(t *testing.T) {
@@ -334,7 +367,14 @@ func TestMarkCommand(t *testing.T) {
 			t.Fatal("expected error, got nil")
 		}
 
-		cmdAsString := "aerospace-marks " + strings.Join(args, " ") + "\n"
-		snaps.MatchSnapshot(t, windows, cmdAsString, "Error", err.Error())
+		snapshot := testutils.RenderSnapshotSpec(testutils.SnapshotSpec{
+			Command: testutils.CommandString(args...),
+			Stdout:  out,
+			Stderr:  err.Error(),
+			Contexts: []testutils.SnapshotContext{
+				testutils.Context("windows", windows),
+			},
+		})
+		snaps.MatchSnapshot(t, snapshot)
 	})
 }
