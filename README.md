@@ -2,10 +2,9 @@
 
 [Vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for [AeroSpace WM](https://github.com/nikitabobko/AeroSpace)
 
-**Beta**: I use this daily, but it's still a work in progress. Please report any issues or ideas in the [issues](https://github.com/cristianoliveira/aerospace-marks/issues) section.
-
 ## AeroSpace Compatibility
 
+ - Stable version: v1.0.0
  - v0.20.0 use v0.3.x or higher
  - v0.19.1 use v0.2.x or lower
 
@@ -42,7 +41,7 @@ Also, by pairing with [aerospace-scratchpad](https://github.com/cristianoliveira
 
 ## Basic Usage
 
-Allow one to mark the current focused window with the given identifier. 
+Allow one to mark the current focused window with the given identifier.
 ```text
 aerospace-marks mark [--add|--replace] [--toggle] <identifier>
 ```
@@ -110,7 +109,7 @@ Check [vim-like marks](https://i3wm.org/docs/userguide.html#vim_like_marks) for 
 ### Config Usage
 ```toml
 # ~/.config/aerospace/config.toml
-[mode.main.binding] 
+[mode.main.binding]
 
 # Vim's like marks, similar to i3-input
 # cmd + ctrl + m and <letter> -- mark a window with a given <letter>
