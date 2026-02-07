@@ -105,7 +105,13 @@ This command retrieves a window by its mark (identifier). Print in the following
 			getWinID, _ := cmd.Flags().GetBool("window-id")
 			if getWinID {
 				// Single field flag - respect --output flag for json/csv, plain value for text/default
-				if formatErr := formatSingleFieldOutput(outputFormat, "get", windowID, strconv.Itoa(windowID), ""); formatErr != nil {
+				if formatErr := formatSingleFieldOutput(
+					outputFormat,
+					"get",
+					windowID,
+					strconv.Itoa(windowID),
+					"",
+				); formatErr != nil {
 					stdout.ErrorAndExit(formatErr)
 					return
 				}
@@ -132,7 +138,13 @@ This command retrieves a window by its mark (identifier). Print in the following
 			getWinTitle, _ := cmd.Flags().GetBool("window-title")
 			if getWinTitle {
 				// Single field flag - respect --output flag for json/csv, plain value for text/default
-				if formatErr := formatSingleFieldOutput(outputFormat, "get", windowID, window.WindowTitle, ""); formatErr != nil {
+				if formatErr := formatSingleFieldOutput(
+					outputFormat,
+					"get",
+					windowID,
+					window.WindowTitle,
+					"",
+				); formatErr != nil {
 					stdout.ErrorAndExit(formatErr)
 					return
 				}
@@ -142,7 +154,13 @@ This command retrieves a window by its mark (identifier). Print in the following
 			getWinApp, _ := cmd.Flags().GetBool("app-name")
 			if getWinApp {
 				// Single field flag - respect --output flag for json/csv, plain value for text/default
-				if formatErr := formatSingleFieldOutput(outputFormat, "get", windowID, window.AppName, "app_name"); formatErr != nil {
+				if formatErr := formatSingleFieldOutput(
+					outputFormat,
+					"get",
+					windowID,
+					window.AppName,
+					"app_name",
+				); formatErr != nil {
 					stdout.ErrorAndExit(formatErr)
 					return
 				}
@@ -152,7 +170,13 @@ This command retrieves a window by its mark (identifier). Print in the following
 			getWinAppBundleID, _ := cmd.Flags().GetBool("app-bundle-id")
 			if getWinAppBundleID {
 				// Single field flag - respect --output flag for json/csv, plain value for text/default
-				if formatErr := formatSingleFieldOutput(outputFormat, "get", windowID, window.AppBundleID, ""); formatErr != nil {
+				if formatErr := formatSingleFieldOutput(
+					outputFormat,
+					"get",
+					windowID,
+					window.AppBundleID,
+					"",
+				); formatErr != nil {
 					stdout.ErrorAndExit(formatErr)
 					return
 				}
