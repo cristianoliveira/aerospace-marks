@@ -127,7 +127,7 @@ func (f *ListOutputFormatter) formatText(windows []MarkedWindow) error {
 	var b strings.Builder
 	for i, row := range rows {
 		for j, field := range row {
-			b.WriteString(fmt.Sprintf("%-*s", colWidths[j], field))
+			fmt.Fprintf(&b, "%-*s", colWidths[j], field)
 			if j < len(row)-1 {
 				b.WriteString(" | ")
 			}

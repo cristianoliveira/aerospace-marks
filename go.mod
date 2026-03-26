@@ -1,17 +1,17 @@
 module github.com/cristianoliveira/aerospace-marks
 
-go 1.24.2
-
-toolchain go1.24.3
+go 1.26.0
 
 require (
 	github.com/cristianoliveira/aerospace-ipc v0.3.0
 	github.com/gkampitakis/go-snaps v0.5.11
+	github.com/kr/pretty v0.3.1
 	github.com/mattn/go-sqlite3 v1.14.28
 	github.com/pressly/goose/v3 v3.24.3
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/mock v0.5.2
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -20,7 +20,6 @@ require (
 	github.com/gkampitakis/go-diff v1.3.2 // indirect
 	github.com/goccy/go-yaml v1.15.13 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/maruel/natural v1.1.1 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
@@ -34,7 +33,6 @@ require (
 	github.com/tidwall/sjson v1.2.5 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/sync v0.14.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 // NOTE: for development only
