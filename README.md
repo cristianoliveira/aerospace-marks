@@ -4,9 +4,14 @@
 
 ## AeroSpace Compatibility
 
+AeroSpace introduced a new socket protocol (handshake + framing) in 0.21.0.
+aerospace-marks tracks the latest protocol, so older AeroSpace versions must
+pin an older release:
+
  - Stable version: v1.0.0
- - v0.20.0 use v0.3.x or higher
- - v0.19.1 use v0.2.x or lower
+ - AeroSpace 0.21.x → use aerospace-marks latest
+ - AeroSpace 0.20.x → pin aerospace-marks to v1.0.2
+ - AeroSpace 0.19.x → use aerospace-marks v0.2.x or lower
 
 ## Demo
 
