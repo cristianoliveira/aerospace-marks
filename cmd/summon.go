@@ -15,7 +15,6 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
 
-	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/workspaces"
 )
 
@@ -94,10 +93,8 @@ Output format can be controlled with --output flag (text, json, csv).
 
 			if shouldFocus {
 				focusErr := aerospaceClient.Client().
-					Windows().
-					SetFocusByWindowID(windows.SetFocusArgs{
-						WindowID: windowID,
-					})
+					Focus().
+					SetFocusByWindowID(windowID)
 				if focusErr != nil {
 					stdout.ErrorAndExit(focusErr)
 					return
