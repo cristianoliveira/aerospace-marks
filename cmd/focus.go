@@ -15,8 +15,6 @@ import (
 	"github.com/cristianoliveira/aerospace-marks/internal/stdout"
 	"github.com/cristianoliveira/aerospace-marks/internal/storage"
 	"github.com/spf13/cobra"
-
-	"github.com/cristianoliveira/aerospace-ipc/pkg/aerospace/windows"
 )
 
 //nolint:gochecknoglobals // focusDelay is a configuration constant
@@ -71,9 +69,7 @@ Output format can be controlled with --output flag (text, json, csv).
 			// The program is too fast, what a problem to have!
 			// Delay setting focus to ensure the window is ready
 			time.Sleep(focusDelay)
-			err = aerospaceClient.Client().Windows().SetFocusByWindowID(windows.SetFocusArgs{
-				WindowID: windowID,
-			})
+			err = aerospaceClient.Client().Focus().SetFocusByWindowID(windowID)
 			if err != nil {
 				stdout.ErrorAndExit(err)
 				return

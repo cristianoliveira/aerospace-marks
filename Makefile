@@ -19,25 +19,18 @@ test: ## Run the tests
 	@echo "Running the tests..."
 	@go test ./... -v
 
-.PHONY: setup-ci
-setup-ci: ## Install dependencies for CI
-	@echo "Setting up CI dependencies..."
-	@if ! command -v golangci-lint &> /dev/null; then \
-		echo "golangci-lint could not be found, installing..."; \
-		go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest; \
-	else \
-		echo "golangci-lint is already installed"; \
-	fi
-
+# Lint/format run through the flake devShell so golangci-lint is pinned
+# (via flake.lock) and built with the same Go as the project. Avoids the
+# stale/floaty `go install @latest` binary on PATH that lags the go directive.
 .PHONY: fmt
-fmt: setup-ci ## Format the code
+fmt: ## Format the code
 	@echo "Formatting the code..."
-	@golangci-lint run --fix
+	@nix develop -c golangci-lint run --fix
 
 .PHONY: lint
-lint: setup-ci ## Run the linter
+lint: ## Run the linter
 	@echo "Running the linter..."
-	@golangci-lint run 
+	@nix develop -c golangci-lint run
 
 .PHONY: update-snap-all
 update-snap-all: ## Update all the snaps
