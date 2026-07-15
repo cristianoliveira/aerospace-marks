@@ -5,6 +5,8 @@ Context:
     - app-bundle-id: ""
       app-name: app1
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title1
       workspace: ""
 
@@ -23,11 +25,15 @@ Context:
     - app-bundle-id: ""
       app-name: app1
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title1
       workspace: ""
     - app-bundle-id: ""
       app-name: app2
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title2
       workspace: ""
 
@@ -46,6 +52,8 @@ Context:
     - app-bundle-id: ""
       app-name: app1
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title1
       workspace: ""
 
@@ -77,6 +85,8 @@ Context:
     - app-bundle-id: ""
       app-name: app2
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title2
       workspace: ""
 
@@ -95,6 +105,8 @@ Context:
     - app-bundle-id: ""
       app-name: app2
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title2
       workspace: ""
 
@@ -113,6 +125,8 @@ Context:
     - app-bundle-id: ""
       app-name: app2
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title2
       workspace: ""
 
