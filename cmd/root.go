@@ -69,4 +69,4 @@ func Run(storage storage.MarkStorage, aerospaceClient aerospace.AerosSpaceMarkWi
 // and then run scripts/validate-version.sh.
 //
 //nolint:gochecknoglobals // VERSION is a build-time constant
-var VERSION = "v1.0.2"
+var VERSION = "v1.0.3"
