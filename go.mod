@@ -3,7 +3,7 @@ module github.com/cristianoliveira/aerospace-marks
 go 1.26.0
 
 require (
-	github.com/cristianoliveira/aerospace-ipc v0.3.0
+	github.com/cristianoliveira/aerospace-ipc v0.4.0
 	github.com/gkampitakis/go-snaps v0.5.11
 	github.com/kr/pretty v0.3.1
 	github.com/mattn/go-sqlite3 v1.14.28

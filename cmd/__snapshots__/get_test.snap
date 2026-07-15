@@ -8,16 +8,22 @@ Context:
     - app-bundle-id: ""
       app-name: app1
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title1
       workspace: ""
     - app-bundle-id: ""
       app-name: app2
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title2
       workspace: ""
     - app-bundle-id: ""
       app-name: app3
       window-id: 3
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title3
       workspace: ""
 
@@ -39,16 +45,22 @@ Context:
     - app-bundle-id: ""
       app-name: app1
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title1
       workspace: ""
     - app-bundle-id: ""
       app-name: app2
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title2
       workspace: ""
     - app-bundle-id: ""
       app-name: app3
       window-id: 3
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title3
       workspace: ""
 
@@ -70,16 +82,22 @@ Context:
     - app-bundle-id: ""
       app-name: app1
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title1
       workspace: ""
     - app-bundle-id: ""
       app-name: app2
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title2
       workspace: ""
     - app-bundle-id: ""
       app-name: app3
       window-id: 3
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title3
       workspace: ""
 
@@ -101,16 +119,22 @@ Context:
     - app-bundle-id: bundle1
       app-name: app1
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title1
       workspace: ""
     - app-bundle-id: bundle2
       app-name: app2
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title2
       workspace: ""
     - app-bundle-id: bundle3
       app-name: app3
       window-id: 3
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: title3
       workspace: ""
 
@@ -132,11 +156,15 @@ Context:
     - app-bundle-id: com.test.app
       app-name: Test App
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: Test Window Title
       workspace: workspace1
     - app-bundle-id: com.another.app
       app-name: Another App
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: Another Window
       workspace: workspace2
 
@@ -158,11 +186,15 @@ Context:
     - app-bundle-id: com.test.app
       app-name: Test App
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: Test Window Title
       workspace: workspace1
     - app-bundle-id: com.another.app
       app-name: Another App
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: Another Window
       workspace: workspace2
 
@@ -193,11 +225,15 @@ Context:
     - app-bundle-id: com.test.app
       app-name: Test App
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: Test Window Title
       workspace: workspace1
     - app-bundle-id: com.another.app
       app-name: Another App
       window-id: 2
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: Another Window
       workspace: workspace2
 
@@ -220,6 +256,8 @@ Context:
     - app-bundle-id: com.test.app
       app-name: Test App
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: Test Window Title
       workspace: workspace1
 
@@ -250,6 +288,8 @@ Context:
     - app-bundle-id: com.test.app
       app-name: Test App
       window-id: 1
+      window-layout: ""
+      window-parent-container-layout: ""
       window-title: Test Window Title
       workspace: workspace1
 

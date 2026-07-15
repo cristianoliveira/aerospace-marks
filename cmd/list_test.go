@@ -78,7 +78,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -159,7 +159,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -233,7 +233,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(&aerospacecli.Response{
 				ServerVersion: "1.0",
@@ -297,7 +297,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -362,7 +362,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -423,7 +423,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -551,7 +551,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -614,7 +614,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -691,7 +691,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -769,7 +769,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -838,7 +838,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(
 				&aerospacecli.Response{
@@ -937,7 +937,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(&aerospacecli.Response{
 				ServerVersion: "1.0",
@@ -995,7 +995,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(&aerospacecli.Response{
 				ServerVersion: "1.0",
@@ -1053,7 +1053,7 @@ func TestListCommand(t *testing.T) {
 					"--all",
 					"--json",
 					"--format",
-					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace}",
+					"%{window-id} %{window-title} %{app-name} %{app-bundle-id} %{workspace} %{window-layout} %{window-parent-container-layout}",
 				}).
 			Return(&aerospacecli.Response{
 				ServerVersion: "1.0",
